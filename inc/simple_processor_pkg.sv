@@ -2,10 +2,10 @@
 `define SIMPLE_PROCESSOR_PKG__
 
 package simple_processor_pkg;
-  localparam int ADDR_WIDTH = 32;
-  localparam int DATA_WIDTH = 32;
-  localparam int INSTR_WIDTH = 16;
-  localparam int XLEN = 32;
+  parameter int ADDR_WIDTH = 32;
+  parameter int DATA_WIDTH = 32;
+  parameter int INSTR_WIDTH = 16;
+  parameter int INT_REG_WIDTH = 32;
 
   typedef enum logic [3:0] {
     ADDI  = 'b0001,
