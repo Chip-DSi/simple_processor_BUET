@@ -1,4 +1,4 @@
-# Project Specification
+gi# Project Specification
 Design a simple processor that performs some simple arithmetic & logical operations and also perform load & store operations from memory.
 
 ## System Architecture
