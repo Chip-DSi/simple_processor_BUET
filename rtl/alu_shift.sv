@@ -3,19 +3,6 @@ Write a markdown documentation for this systemverilog module:
 Author : Bokhtiar Foysol Himon (bokhtiarfoysol@gmail.com)
 */
 
-module shift_left (
-    input  logic        clk,
-    input  logic [31:0] data_in,
-    input  logic [4:0]  shift_amount,  // assuming 5-bit shift amount to cover shift ranges from 0 to 31
-    output logic [31:0] data_out
-);
-
-    always_ff @(posedge clk) begin
-        data_out <= data_in << shift_amount;
-    end
-
-endmodule
-
 module alu_shift #(
     //-PARAMETERS
     //-LOCALPARAMS
