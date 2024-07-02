@@ -1,0 +1,25 @@
+<svg height="590" width="590" xmlns="http://www.w3.org/2000/svg">
+<rect width="100%" height="100%" x="0" y="0" style="fill:white;stroke:white;stroke-width:0"/>
+<g style="fill:white;stroke:black;stroke-width:1">
+<rect width="475" height="475" x="60" y="60"/>
+<polygon points="10,95 10,85 30,85 40,95 60,95 40,95 30,105 10,105 10,95"/>
+<text x="65" y="85" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">clk_i</text>
+<polygon points="10,195 10,185 30,185 40,195 60,195 40,195 30,205 10,205 10,195"/>
+<text x="65" y="185" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">arst_ni</text>
+<polygon points="10,295 10,285 30,285 40,295 60,295 40,295 30,305 10,305 10,295"/>
+<text x="65" y="285" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">elem_in_i</text>
+<polygon points="10,395 10,385 30,385 40,395 60,395 40,395 30,405 10,405 10,395"/>
+<text x="65" y="385" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">elem_in_valid_i</text>
+<polygon points="10,495 10,485 30,485 40,495 60,495 40,495 30,505 10,505 10,495"/>
+<text x="65" y="485" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">elem_out_ready_i</text>
+<polygon points="535,195 555,195 555,185 575,185 585,195 575,205 555,205 555,195 535,195"/>
+<text x="530" y="185" dominant-baseline="hanging" text-anchor="end" font-size="20" style="fill:black;stroke:black;stroke-width:0">elem_in_ready_o</text>
+<polygon points="535,295 555,295 555,285 575,285 585,295 575,305 555,305 555,295 535,295"/>
+<text x="530" y="285" dominant-baseline="hanging" text-anchor="end" font-size="20" style="fill:black;stroke:black;stroke-width:0">elem_out_valid_o</text>
+<polygon points="535,395 555,395 555,385 575,385 585,395 575,405 555,405 555,395 535,395"/>
+<text x="530" y="385" dominant-baseline="hanging" text-anchor="end" font-size="20" style="fill:black;stroke:black;stroke-width:0">elem_out_o</text>
+<polygon points="535,495 555,495 565,485 575,485 585,495 575,505 565,505 555,495 535,495"/>
+<text x="530" y="485" dominant-baseline="hanging" text-anchor="end" font-size="20" style="fill:black;stroke:black;stroke-width:0"></text>
+<text x="295" y="550" dominant-baseline="hanging" text-anchor="middle" font-size="30" style="fill:black;stroke:black;stroke-width:0">anindya_FIFO</text>
+</g>
+</svg>
