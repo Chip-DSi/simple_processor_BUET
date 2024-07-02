@@ -1,4 +1,4 @@
-`ifndif
+`ifndef SIMPLE_PROCESSOR_PKG__
 `define SIMPLE_PROCESSOR_PKG__
 
 package simple_processor_pkg;
@@ -7,8 +7,8 @@ package simple_processor_pkg;
   localparam int INSTR_WIDTH = 16;
   localparam int XLEN = 32;
 
-  typedef enum logic [3:0]{
-    ADDI  = 'b0001, 
+  typedef enum logic [3:0] {
+    ADDI  = 'b0001,
     ADD   = 'b0011,
     SUB   = 'b1011,
     AND   = 'b0101,
