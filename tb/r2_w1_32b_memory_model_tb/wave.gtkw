@@ -1,0 +1,31 @@
+[*]
+[*] GTKWave Analyzer v3.3.100 (w)1999-2019 BSI
+[*] Tue Jul 02 15:01:45 2024
+[*]
+[dumpfile] "C:\Users\foeza\Documents\simple_processor_BUET\tb\r2_w1_32b_memory_model_tb\dump.vcd"
+[dumpfile_mtime] "Tue Jul 02 14:31:19 2024"
+[dumpfile_size] 2597
+[savefile] "C:\Users\foeza\Documents\simple_processor_BUET\tb\r2_w1_32b_memory_model_tb\wave.gtkw"
+[timestart] 0
+[size] 1920 1009
+[pos] -1 -1
+*-13.360800 37230 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[sst_width] 197
+[signals_width] 150
+[sst_expanded] 1
+[sst_vpaned_height] 297
+@28
+r2_w1_32b_memory_model_tb.clk_i
+[color] 2
+r2_w1_32b_memory_model_tb.we_i
+@22
+[color] 2
+r2_w1_32b_memory_model_tb.w_addr_i[31:0]
+[color] 2
+r2_w1_32b_memory_model_tb.w_data_i[31:0]
+r2_w1_32b_memory_model_tb.r0_addr_i[31:0]
+r2_w1_32b_memory_model_tb.r0_data_o[31:0]
+r2_w1_32b_memory_model_tb.r1_addr_i[31:0]
+r2_w1_32b_memory_model_tb.r1_data_o[31:0]
+[pattern_trace] 1
+[pattern_trace] 0
