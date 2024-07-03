@@ -1,0 +1,41 @@
+module and_gate (
+    input  logic A_i,
+    input  logic B_i,
+    output logic O_o
+);
+  assign O_o = A_i & B_i;
+endmodule
+
+
+module another_module(
+  input  logic A_i,
+  output logic O_o
+);
+
+
+  logic B;
+
+  and_gate u0 (
+    .A_i(A_i),
+    .B_i(B),
+    .O_o(O_o)
+  );
+
+  and_gate u1 (
+    .A_i,
+    .B_i(B),
+    .O_o
+  );
+
+  and_gate u2 (
+    A_i,
+    B,
+    O_o
+  );
+
+  and_gate u3 (
+    .B_i(B),
+    .*
+  );
+
+endmodule
