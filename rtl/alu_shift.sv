@@ -37,12 +37,12 @@ module alu_shift #(
     parameter int DATA_WIDTH = 32
 ) (
     //-PORTS
-    input logic clk,
-    input logic [DATA_WIDTH - 1:0] rs1_i,
-    input logic [DATA_WIDTH - 1:0] rs2_i,
-    input logic [DATA_WIDTH - 1:0] imm,
-    input logic use_imm,
-    input logic shift_l
+    input logic   [DATA_WIDTH - 1:0] rs1_data_i,
+    input logic   [DATA_WIDTH - 1:0] rs2_data_i,
+    input logic   [DATA_WIDTH - 1:0] imm_i,
+    input logic   use_imm,
+    input instr_t func_i,
+    input logic   shift_l
 
     output logic [DATA_WIDTH - 1:0] rd_o
 >>>>>>> 33525d2 (added SLL, SLLI, SLR, SLRI to alu_shift)
