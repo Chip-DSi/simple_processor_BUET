@@ -63,7 +63,7 @@ module r2_w1_32b_memory_model
 
   // Address sensitive as combinational
   // Clock sensitive to maintain correct output if data itself gets update
-  for (genvar i = 0; i < 4; i++) begin : g_read0s
+  for (genvar i = 0; i < DATA_WIDTH / 8; i++) begin : g_read0s
     always @(r0_addr_i, clk_i) begin
       r0_data_o[i*8+7:i*8] <= mem[{r0_addr_i[ADDR_WIDTH-1:2], 2'b0}+i];
     end
@@ -71,7 +71,7 @@ module r2_w1_32b_memory_model
 
   // Address sensitive as combinational
   // Clock sensitive to maintain correct output if data itself gets update
-  for (genvar i = 0; i < 4; i++) begin : g_read1s
+  for (genvar i = 0; i < DATA_WIDTH / 8; i++) begin : g_read1s
     always @(r1_addr_i, clk_i) begin
       r1_data_o[i*8+7:i*8] <= mem[{r1_addr_i[ADDR_WIDTH-1:2], 2'b0}+i];
     end
@@ -79,7 +79,7 @@ module r2_w1_32b_memory_model
 
   // Associative array can not be driven by a non-blocking assignment
   // Anyway, we're not synthesizing this memory
-  for (genvar i = 0; i < 4; i++) begin : g_writes
+  for (genvar i = 0; i < DATA_WIDTH / 8; i++) begin : g_writes
     always @(posedge clk_i) begin
       if (we_i) begin
         mem[{w_addr_i[ADDR_WIDTH-1:2], 2'b0}+i] = w_data_i[i*8+7:i*8];
