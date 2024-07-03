@@ -1,0 +1,25 @@
+name: Vivado_CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  Vivado_CI:
+
+    runs-on: self-hosted
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Simulate
+      shell: bash
+      run: |
+        make CI
+
+    - name: Fail if Simulation Contains Fails
+      shell: bash
+      run: |
+        [[ -s ___CI_ERROR ]] && exit 1 || exit 0
