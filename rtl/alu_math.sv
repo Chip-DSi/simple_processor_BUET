@@ -9,9 +9,12 @@ import simple_processor_pkg::DATA_WIDTH;
     //-PARAMETERS
     //-LOCALPARAMS
 ) (
-    input logic [DATA_WIDTH-1:0] rs1_data_o,
-    input logic                  func_o,
-    
+    input  logic  [DATA_WIDTH-1:0] rs1_data_o,
+    input  logic                   func_o, //confused about instr_t
+    input  logic  [5:0]            imm,
+    input  logic  [DATA_WIDTH-1:0] rs2_data_o,
+    output logic  [DATA_WIDTH-1:0] result 
+
 );
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -25,14 +28,52 @@ import simple_processor_pkg::DATA_WIDTH;
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-SIGNALS
   //////////////////////////////////////////////////////////////////////////////////////////////////
+  
+  logic [DATA_WIDTH-1:0] rs2_data_o_2c;
+  logic [DATA_WIDTH-1:0] imm_extended;
+  logic [DATA_WIDTH-1:0] selected_input;
+  
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-ASSIGNMENTS
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
+  //2's complement for the sub operation
+  assign rs2_data_o_2c = ~rs2_data_o + 1;
+
+  //Sign extention for the immediate
+  assign imm_extended = {{26{imm[5]}}, imm};
+
+ 
+
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-RTLS
   //////////////////////////////////////////////////////////////////////////////////////////////////
+  
+  //mimicking the input mux operation
+
+  always_comb begin
+    case(func_o)
+      ADDI: selected_input = imm_extended;
+      ADD : selected_input = rs2_data_o;
+      SUB : selected_input = rs2_data_o_2c;
+      //every other input selection for different block will be done here
+      default : selected_input = 32'b0;
+    endcase
+  end
+  
+    //mimicking the output mux operation
+  always_comb begin
+    case(func_o)
+      ADDI: result = rs1_data_o + selected_input;
+      ADD : result = rs1_data_o + selected_input;
+      SUB : result = rs1_data_o + selected_input;
+      //every other block operation will be added in this manner from gate, mem and shift op
+      default : selected_input = 32'b0;
+    endcase
+  end
+
+  
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-METHODS
