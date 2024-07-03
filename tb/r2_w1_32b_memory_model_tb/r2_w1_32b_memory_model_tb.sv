@@ -137,6 +137,7 @@ module r2_w1_32b_memory_model_tb;
     result_print(OK, "backdoor clear");
 
     // Data flow checking
+    @(posedge clk_i);
     start_rand_dvr();
     start_checking();
     repeat (5000) @(posedge clk_i);
