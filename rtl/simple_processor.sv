@@ -9,7 +9,7 @@ module simple_processor #(
 ) (
     // Global Synchronous Clock
     input logic clk_i,
-    // Active low asynchronous reset 
+    // Active low asynchronous reset
     input logic arst_ni,
 
     // Boot address of the processor
