@@ -4,7 +4,7 @@ Author : Ramisa Tahsin Shreya (ramisashreya@gmail.com)
 */
 `include "simple_processor_pkg.sv"
 
-module Alugate_tb;
+module AluGate_tb;
 
   `define ENABLE_DUMPFILE
 
