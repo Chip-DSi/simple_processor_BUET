@@ -100,7 +100,8 @@ module alu_gate_tb;
     // Data Flow Checking
     start_rand_dvr();
     start_checking();
-    $display("Testbench completed with %0d passes and %0d fails", pass, fail);
+    result_print("Testbench completed with %0d passes and %0d fails", pass, fail);
+
   end
   $finish;
 
