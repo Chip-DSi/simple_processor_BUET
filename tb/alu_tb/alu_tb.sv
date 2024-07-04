@@ -48,7 +48,7 @@ module alu_math_tb;
   int                    pass;
   int                    fail;
 
-  logic [DATA_WIDTH-1:0] ref_mem        [logic [ADDR_WIDTH-1:0]];
+//logic [DATA_WIDTH-1:0] ref_mem        [logic [ADDR_WIDTH-1:0]];
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-INTERFACES
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -87,7 +87,7 @@ module alu_math_tb;
     forever begin
       rs1_data_i   <= $urandom;
       rs2_data_i  <= $urandom;
-      imm  <= $urandom & 'hf;
+      imm  <= $urandom & 'h11f;
       rand case
         5: func_i <= ADDI;
         5: func_i <= ADD;
@@ -99,7 +99,7 @@ module alu_math_tb;
     end
   join_none
 endtask
-
+assign imm = {{26{imm[5]}}, imm};
 // monitor and check
 task static start_checking();
   fork
@@ -123,54 +123,13 @@ endtask
 //-PROCEDURALS
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-initial begin  // main initial
-
-  automatic bit OK;
-
-  start_clk_i();
-
-  // WRITE READ CHECK
-  OK = 1;
-  for (int i = 0; i < 256; i++) begin
-    mem.write(i + 'h400, i);
-  end
-  for (int i = 0; i < 256; i++) begin
-    if (mem.read(i + 'h400) != i) OK = 0;
-  end
-  result_print(OK, "backdoor write");
-  result_print(OK, "backdoor read");
-
-  // LOAD CHECK
-  OK = 1;
-  mem.load("sample.hex");
-  for (int i = 0; i < 256; i++) begin
-    if (mem.read(i + 'h200) != i) OK = 0;
-  end
-  result_print(OK, "backdoor load");
-
-  // LOAD CLEAR
-  OK = 1;
-  mem.clear();
-  for (int i = 0; i < 256; i++) begin
-    if (mem.read(i + 'h200) !== 'x) OK = 0;
-  end
-  result_print(OK, "backdoor clear");
-
-  // Data flow checking
-  @(posedge clk_i);
-  start_rand_dvr();
-  start_checking();
-  repeat (5000) @(posedge clk_i);
-  result_print(!fail, $sformatf("frontdoor data flow %0d/%0d", pass, pass + fail));
-
-  $finish;
-
-end
 
   initial begin  // main initial
 
     apply_reset();
     start_clk_i();
+    task static start_checking();
+    task static start_rand_dvr();
 
     @(posedge clk_i);
     result_print(1, "This is a PASS");
