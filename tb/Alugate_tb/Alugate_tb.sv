@@ -17,13 +17,6 @@ module Alu_Gate_tb;
   import simple_processor_pkg::*;
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
-  //-LOCALPARAMS
-  //////////////////////////////////////////////////////////////////////////////////////////////////
-
-  localparam int DATA_WIDTH    = 32;
-  localparam int INT_REG_WIDTH = 32;
-
-  //////////////////////////////////////////////////////////////////////////////////////////////////
   //-SIGNALS
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -48,7 +41,7 @@ module Alu_Gate_tb;
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-RTLS
   //////////////////////////////////////////////////////////////////////////////////////////////////
-  
+
   AluGate #(
   ) u_AluGate(
     .rs1_data_i,
@@ -80,7 +73,7 @@ module Alu_Gate_tb;
        5: func_i <= AND;
        5: func_i <= OR;
        5: func_i <= XOR;
-       5: func_i <= NOT; 
+       5: func_i <= NOT;
        1: func_i <= INVALID;
       endcase // Randomly choose between 0 (AND), 1 (OR), 2 (XOR), 3 (NOT)
       @(posedge clk_i);
@@ -95,10 +88,11 @@ module Alu_Gate_tb;
         @(posedge clk_i);
         // Reference model logic to generate expected results
         case (func_i)
-          AND: ref_mem[rd_addr_i] = rs1_data_i & rs2_data_i;
-          OR:  ref_mem[rd_addr_i] = rs1_data_i | rs2_data_i;
-          XOR: ref_mem[rd_addr_i] = rs1_data_i ^ rs2_data_i;
-          NOT: ref_mem[rd_addr_i] = ~rs1_data_i;
+          AND:      ref_mem[rd_addr_i] = rs1_data_i & rs2_data_i;
+          OR:       ref_mem[rd_addr_i] = rs1_data_i | rs2_data_i;
+          XOR:      ref_mem[rd_addr_i] = rs1_data_i ^ rs2_data_i;
+          NOT:      ref_mem[rd_addr_i] = ~rs1_data_i;
+          default:  ref_mem[rd_addr_i] = 32'b0;
         endcase
         if (rd_data_o == ref_mem[rd_addr_i]) begin
           pass++;
@@ -107,12 +101,12 @@ module Alu_Gate_tb;
           fail++;
           $write("\033[1;31m");
         end
-        $display("rs1_data_i: %h, rs2_data_i: %h, func_i: %b, rd_data_o: %h, ref_mem: %h [%0t]", 
+        $display("rs1_data_i: %h, rs2_data_i: %h, func_i: %b, rd_data_o: %h, ref_mem: %h [%0t]",
         rs1_data_i, rs2_data_i, func_i, rd_data_o, ref_mem, $realtime);
       end
     join_none
   endtask
-    
+
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-PROCEDURALS
   //////////////////////////////////////////////////////////////////////////////////////////////////
