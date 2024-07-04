@@ -11,7 +11,7 @@ module AluGate
   output  logic [DATA_WIDTH-1:0] rd_data_o,   // destination reg data
   input   logic [DATA_WIDTH-1:0] rs1_data_i,  // source reg 01 data
   input   logic [DATA_WIDTH-1:0] rs2_data_i,  // source reg 02 data
-  input   logic                  func_o       // function of and, or, xor, not
+  input   func_t                 func_i       // function of and, or, xor, not
 );
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -25,7 +25,7 @@ module AluGate
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
   always_comb begin
-    case (func_o)
+    case (func_i)
       AND:      result = rs1_data_i & rs2_data_i;  // AND operation
       OR:       result = rs1_data_i | rs2_data_i;  // OR operation
       XOR:      result = rs1_data_i ^ rs2_data_i;  // XOR operation
