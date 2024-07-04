@@ -9,7 +9,7 @@
 <polygon points="285,195 305,195 315,185 335,185 335,195 335,205 315,205 305,195 285,195"/>
 <text x="280" y="185" dominant-baseline="hanging" text-anchor="end" font-size="20" style="fill:black;stroke:black;stroke-width:0">rs2_data_i</text>
 <polygon points="285,245 305,245 315,235 335,235 335,245 335,255 315,255 305,245 285,245"/>
-<text x="280" y="235" dominant-baseline="hanging" text-anchor="end" font-size="20" style="fill:black;stroke:black;stroke-width:0">func_o</text>
+<text x="280" y="235" dominant-baseline="hanging" text-anchor="end" font-size="20" style="fill:black;stroke:black;stroke-width:0">func_i</text>
 <text x="170" y="300" dominant-baseline="hanging" text-anchor="middle" font-size="30" style="fill:black;stroke:black;stroke-width:0">AluGate</text>
 </g>
 </svg>

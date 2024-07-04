@@ -19,4 +19,4 @@ Write a markdown documentation for this systemverilog module:
 |rd_data_o|output|logic [DATA_WIDTH-1:0]||destination reg data|
 |rs1_data_i|input|logic [DATA_WIDTH-1:0]||source reg 01 data|
 |rs2_data_i|input|logic [DATA_WIDTH-1:0]||source reg 02 data|
-|func_o|input|logic||function of and, or, xor, not|
+|func_i|input|func_t||function of and, or, xor, not|
