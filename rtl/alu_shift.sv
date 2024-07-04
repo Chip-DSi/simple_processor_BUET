@@ -45,16 +45,26 @@ import simple_processor_pkg::DATA_WIDTH;
 
   always_comb begin
     case(func_i)
-      SLL     : shift_r = '0;
+      SLL     : begin
+                shift_r = '0;
                 shift_amount = rs2_data_i;
-      SLLI    : shift_r = '0;
+      end
+      SLLI    : begin
+                shift_r = '0;
                 shift_amount = imm_extended;
-      SLR     : shift_r = '1;
+      end
+      SLR     : begin
+                shift_r = '1;
                 shift_amount = rs2_data_i;
-      SLRI    : shift_r = '1;
+      end
+      SLRI    : begin
+                shift_r = '1;
                 shift_amount = imm_extended;
-      default : shift_r = '1;
+      end
+      default : begin
+                shift_r = '1;
                 shift_amount = rs2_data_i;
+      end
     endcase
   end
 
