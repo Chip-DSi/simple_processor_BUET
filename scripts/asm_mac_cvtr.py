@@ -38,7 +38,6 @@ with open(sys.argv[1], "r") as read_file:
         line = re.sub("\n*", "", line)
         line = line.replace(",", " ")
         line = line.replace(".", " ")
-        line = line.replace("-", " ")
         line = line.replace("\t", " ")
         line = re.sub("^ *", "", line)
         line = re.sub(" *$", "", line)
@@ -56,6 +55,7 @@ for i in range(len(lines)):
     for j in range(len(words)):
         # replace register with address
         if words[j] == "ZERO": words[j] = "000"
+        elif words[j] == "X0": words[j] = "000"
         elif words[j] == "X1": words[j] = "001"
         elif words[j] == "X2": words[j] = "010"
         elif words[j] == "X3": words[j] = "011"

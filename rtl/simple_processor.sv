@@ -4,8 +4,8 @@ Author : name (email)
 */
 
 module simple_processor #(
-    parameter int MEM_ADDR_WIDTH = 32,  // With of memory address bus
-    parameter int MEM_DATA_WIDTH = 32   // With of memory data bus
+    parameter int MEM_ADDR_WIDTH = simple_processor_pkg::ADDR_WIDTH,  // With of memory address bus
+    parameter int MEM_DATA_WIDTH = simple_processor_pkg::DATA_WIDTH   // With of memory data bus
 ) (
     // Global Synchronous Clock
     input logic clk_i,
@@ -26,6 +26,8 @@ module simple_processor #(
 
     // Signifies there is active request for memory at address dmem_addr_o
     output logic                      dmem_req_o,
+    // Signifies it is a write operation
+    output logic                      dmem_we_o,
     // Data address bus
     output logic [MEM_ADDR_WIDTH-1:0] dmem_addr_o,
     // Write data bus
