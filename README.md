@@ -20,6 +20,7 @@ To know how to use different commands on this repo, type `make help` or just `ma
 
 ## RTL
 [alu_math ](./docs/rtl/alu_math.md)<br>
+[ins_dec ](./docs/rtl/ins_dec.md)<br>
 [r2_w1_32b_memory_model ](./docs/rtl/r2_w1_32b_memory_model.md)<br>
 [simple_processor ](./docs/rtl/simple_processor.md)<br>
 
