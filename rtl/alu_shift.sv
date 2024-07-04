@@ -13,7 +13,7 @@ import simple_processor_pkg::DATA_WIDTH;
     input logic   [DATA_WIDTH - 1:0]   rs1_data_i, //input data from Rs1
     input logic   [DATA_WIDTH - 1:0]   rs2_data_i, //input data from Rs2
     input func_t                       func_i,     //input func_t from Instruction Decoder
-    input logic   [5:0]                imm;        //extracted imm from func_t
+    input logic   [5:0]                imm,        //extracted imm from func_t
     output logic  [DATA_WIDTH - 1:0]   result      //output result
 );
 
