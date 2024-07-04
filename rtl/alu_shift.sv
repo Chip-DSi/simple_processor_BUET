@@ -14,7 +14,7 @@ import simple_processor_pkg::DATA_WIDTH;
     input logic   [DATA_WIDTH - 1:0]   rs1_data_i, //input data from Rs1
     input logic   [DATA_WIDTH - 1:0]   rs2_data_i, //input data from Rs2
     input func_t                       func_i,     //input func_t from Instruction Decoder
-    input logic   [             5:0]   imm;        //extracted imm from func_t
+    input logic   [5:0]                imm;        //extracted imm from func_t
     output logic  [DATA_WIDTH - 1:0]   result      //output result
 );
 
@@ -24,10 +24,8 @@ import simple_processor_pkg::DATA_WIDTH;
 
   logic                                shift_r;           //shift right if HIGH, shift left if LOW
   logic           [DATA_WIDTH - 1:0 ]  imm_extended;      //extended 32 bit imm
-  logic           [SHIFT_WIDTH - 1:0]  shift_amount;      //number of bits we want to shift
-                                                          //extracted from imm or Rs2
-  logic           [DATA_WIDTH - 1:0 ]  stage[SHIFT_WIDTH];//array of registers representing
-                                                          //intermediate stages
+  logic           [SHIFT_WIDTH - 1:0]  shift_amount;      //number of bits we want to shift extracted from imm or Rs2
+  logic           [DATA_WIDTH - 1:0 ]  stage[SHIFT_WIDTH];//array of registers representing intermediate stages
   logic           [DATA_WIDTH - 1:0 ]  lr_init;
   logic           [DATA_WIDTH - 1:0 ]  lr_final;
 
