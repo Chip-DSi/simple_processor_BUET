@@ -3,7 +3,7 @@ Write a markdown documentation for this systemverilog module:
 Author : Bokhtiar Foysol Himon (bokhtiarfoysol@gmail.com)
 */
 
-module Alu_Shift
+module alu_shift
 import simple_processor_pkg::DATA_WIDTH;
 #(
     //-PARAMETERS

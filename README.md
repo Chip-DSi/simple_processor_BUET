@@ -19,7 +19,7 @@ The repository is structured into several directories, each with a distinct role
 To know how to use different commands on this repo, type `make help` or just `make` at the repo root and further details with be printed on the terminal.
 
 ## RTL
-[Alu_Shift ](./docs/rtl/Alu_Shift.md)<br>
+[alu_shift ](./docs/rtl/alu_shift.md)<br>
 [r2_w1_32b_memory_model ](./docs/rtl/r2_w1_32b_memory_model.md)<br>
 [simple_processor ](./docs/rtl/simple_processor.md)<br>
 

@@ -1,9 +1,9 @@
-# Alu_Shift (module)
+# alu_shift (module)
 
 ### Author : Bokhtiar Foysol Himon (bokhtiarfoysol@gmail.com)
 
 ## TOP IO
-<img src="./Alu_Shift_top.svg">
+<img src="./alu_shift_top.svg">
 
 ## Description
 
