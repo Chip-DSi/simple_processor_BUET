@@ -4,17 +4,17 @@ Author : name (email)
 */
 
 `include "simple_processor_pkg.sv"
-module rtl_model 
+module AluGate
 import simple_processor_pkg::DATA_WIDTH;
 import simple_processor_pkg::INT_REG_WIDTH;
 #(
+
 ) (
     //-PORTS
 output  logic [DATA_WIDTH-1:0] rd_data_i,
 input   logic [DATA_WIDTH-1:0] rs1_data_i,
 input   logic [DATA_WIDTH-1:0] rs2_data_i,
 input   logic                  func_o
-//input   logic [DATA_WIDTH-1:0] imm_o,
 );
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
