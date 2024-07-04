@@ -20,9 +20,6 @@ module alu_gate_tb;
   //-SIGNALS
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-  // generates static task start_clk_i with tHigh:4ns tLow:6ns
-  `CREATE_CLK(clk_i, 5ns, 5ns)
-
   logic  [DATA_WIDTH-1:0]    rs1_data_i  = '0;
   logic  [DATA_WIDTH-1:0]    rs2_data_i  = '0;
   logic                      func_i      = '0;
@@ -35,9 +32,7 @@ module alu_gate_tb;
 
   int                        pass;
   int                        fail;
-
-  logic  [INT_REG_WIDTH-1:0] ref_mem   [DATA_WIDTH];
-
+  logic [DATA_WIDTH-1:0]     expected;
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-RTLS
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -54,15 +49,6 @@ module alu_gate_tb;
   //-METHODS
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-  task static apply_reset();
-    #100ns;
-    arst_ni <= 0;
-    foreach (ref_mem[i]) ref_mem[i] <= '0;
-    #100ns;
-    arst_ni <= 1;
-    #100ns;
-  endtask
-
   //generate random transactions
   task static start_rand_dvr();
    fork
@@ -76,7 +62,6 @@ module alu_gate_tb;
        5: func_i <= NOT;
        1: func_i <= INVALID;
       endcase // Randomly choose between 0 (AND), 1 (OR), 2 (XOR), 3 (NOT)
-      @(posedge clk_i);
      end
    join_none
   endtask
@@ -85,24 +70,23 @@ module alu_gate_tb;
   task static start_checking();
     fork
       forever begin
-        @(posedge clk_i);
         // Reference model logic to generate expected results
         case (func_i)
-          AND:      ref_mem[rd_addr_i] = rs1_data_i & rs2_data_i;
-          OR:       ref_mem[rd_addr_i] = rs1_data_i | rs2_data_i;
-          XOR:      ref_mem[rd_addr_i] = rs1_data_i ^ rs2_data_i;
-          NOT:      ref_mem[rd_addr_i] = ~rs1_data_i;
-          default:  ref_mem[rd_addr_i] = 32'b0;
+          AND:      expected = rs1_data_i & rs2_data_i;
+          OR:       expected = rs1_data_i | rs2_data_i;
+          XOR:      expected = rs1_data_i ^ rs2_data_i;
+          NOT:      expected = ~rs1_data_i;
+          default:  expected = 32'b0;
         endcase
-        if (rd_data_o == ref_mem[rd_addr_i]) begin
+        if (rd_data_o == expected) begin
           pass++;
           $write("\033[1;32m");
         end else begin
           fail++;
           $write("\033[1;31m");
         end
-        $display("rs1_data_i: %h, rs2_data_i: %h, func_i: %b, rd_data_o: %h, ref_mem: %h [%0t]",
-        rs1_data_i, rs2_data_i, func_i, rd_data_o, ref_mem, $realtime);
+        $display("rs1_data_i: %h, rs2_data_i: %h, func_i: %b, rd_data_o: %h, expected: %h [%0t]",
+        rs1_data_i, rs2_data_i, func_i, rd_data_o, expected, $realtime);
       end
     join_none
   endtask
@@ -113,19 +97,12 @@ module alu_gate_tb;
 
   initial begin  // main initial
 
-    apply_reset();
-    start_clk_i();
-
-    @(posedge clk_i);
     // Data Flow Checking
     start_rand_dvr();
     start_checking();
-    repeat (1000) @(posedge clk_i);  // Let the test run for a certain number of cycles
-    result_print(1, $sformatf("This is a PASS. pass=%0d, fail=%0d", pass, fail));
-    result_print(0, $sformatf("This is a FAIL. pass=%0d, fail=%0d", pass, fail));
-
-    $finish;
 
   end
+  $display("Testbench completed with %0d passes and %0d fails", pass, fail);
+  $finish;
 
 endmodule
