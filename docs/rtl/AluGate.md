@@ -18,5 +18,5 @@ Write a markdown documentation for this systemverilog module:
 |-|-|-|-|-|
 |rs1_data_i|input|logic [DATA_WIDTH-1:0]||source reg 01 data|
 |rs2_data_i|input|logic [DATA_WIDTH-1:0]||source reg 02 data|
-|rd_data_o|input|func_t func_i logic [DATA_WIDTH-1:0]||destination reg data|
-||interface||||
+|func_i|input|func_t||function of and, or, xor, not|
+|rd_data_o|output|logic [DATA_WIDTH-1:0]||destination reg data|
