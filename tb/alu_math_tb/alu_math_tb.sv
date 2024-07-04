@@ -35,7 +35,7 @@ module alu_math_tb;
   logic arst_ni = 1;
 
   logic  [DATA_WIDTH-1:0] rs1_data_i;
-  logic  [3:0]            func_i;
+  logic  func_t            func_i; //added func_t here by akc
   logic  [5:0]            imm;
   logic  [DATA_WIDTH-1:0] rs2_data_i;
   logic  [DATA_WIDTH-1:0] result;
