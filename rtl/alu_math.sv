@@ -3,7 +3,7 @@ Write a markdown documentation for this systemverilog module:
 Author : Anindya Kishore Choudhury (anindyakchoudhury@gmail.com)
 */
 
-module alu_math 
+module alu_math
 import simple_processor_pkg::DATA_WIDTH;
 #(
     //-PARAMETERS
@@ -28,11 +28,10 @@ import simple_processor_pkg::DATA_WIDTH;
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-SIGNALS
   //////////////////////////////////////////////////////////////////////////////////////////////////
-  
+
   logic [DATA_WIDTH-1:0] rs2_data_i_2c;
   logic [DATA_WIDTH-1:0] imm_extended;
   logic [DATA_WIDTH-1:0] selected_input;
-  
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-ASSIGNMENTS
@@ -44,12 +43,12 @@ import simple_processor_pkg::DATA_WIDTH;
   //Sign extention for the immediate
   assign imm_extended = {{26{imm[5]}}, imm};
 
- 
+
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-RTLS
   //////////////////////////////////////////////////////////////////////////////////////////////////
-  
+
   //mimicking the input mux operation
 
   always_comb begin
@@ -61,9 +60,9 @@ import simple_processor_pkg::DATA_WIDTH;
       default : selected_input = 32'b0;
     endcase
   end
-  
+
   assign result = rs1_data_i + selected_input;
-  
+
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-METHODS
