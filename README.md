@@ -20,7 +20,6 @@ To know how to use different commands on this repo, type `make help` or just `ma
 
 ## RTL
 [Alu_Shift ](./docs/rtl/Alu_Shift.md)<br>
-[and_gate ](./docs/rtl/and_gate.md)<br>
 [r2_w1_32b_memory_model ](./docs/rtl/r2_w1_32b_memory_model.md)<br>
 [simple_processor ](./docs/rtl/simple_processor.md)<br>
 
