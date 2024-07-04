@@ -12,7 +12,6 @@ Write a markdown documentation for this systemverilog module:
 ## Parameters
 |Name|Type|Dimension|Default Value|Description|
 |-|-|-|-|-|
-|SHIFT_WIDTH|int||5| -PARAMETERS -LOCALPARAMS|
 
 ## Ports
 |Name|Direction|Type|Dimension|Description|

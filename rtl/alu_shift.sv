@@ -8,7 +8,6 @@ import simple_processor_pkg::DATA_WIDTH;
 #(
     //-PARAMETERS
     //-LOCALPARAMS
-    parameter int SHIFT_WIDTH = 5
 ) (
     //-PORTS
     input logic   [DATA_WIDTH - 1:0]   rs1_data_i, //input data from Rs1
@@ -24,10 +23,7 @@ import simple_processor_pkg::DATA_WIDTH;
 
   logic                                shift_r;           //shift right if HIGH, shift left if LOW
   logic           [DATA_WIDTH - 1:0 ]  imm_extended;      //extended 32 bit imm
-  logic           [SHIFT_WIDTH - 1:0]  shift_amount;      //number of bits we want to shift extracted from imm or Rs2
-  logic           [DATA_WIDTH - 1:0 ]  stage[SHIFT_WIDTH];//array of registers representing intermediate stages
-  logic           [DATA_WIDTH - 1:0 ]  lr_init;
-  logic           [DATA_WIDTH - 1:0 ]  lr_final;
+  logic           [DATA_WIDTH - 1:0 ]  shift_amount;      //number of bits we want to shift extracted from imm or Rs2
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-TYPEDEFS
@@ -41,8 +37,7 @@ import simple_processor_pkg::DATA_WIDTH;
   //-ASSIGNMENTS
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-  assign imm = func_i[9:4];  //extracting immediate from func_t
-  assign imm_extended = {{26{imm[5]}}, imm};//extending immediate
+  assign imm_extended = {{26{imm[5]}}, imm};//sign-extending immediate
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-RTLS
