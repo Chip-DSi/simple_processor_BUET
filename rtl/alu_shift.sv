@@ -60,7 +60,7 @@ import simple_processor_pkg::DATA_WIDTH;
                 shift_amount = rs2_data_i;
       SLRI    : shift_r = '1,
                 shift_amount = imm_extended;
-      default : shift_r = '0,
+      default : shift_r = '1,
                 shift_amount = rs2_data_i;
     endcase
   end
