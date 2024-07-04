@@ -78,9 +78,10 @@ task static start_checking();
     forever begin
       @(posedge clk_i);
       case(func_i)
-      ADDI: temp = imm_ext;
-      ADD : temp = rs2_data_i;
-      SUB : temp = ~rs2_data_i + 1;
+      ADDI    : temp = imm_ext;
+      ADD     : temp = rs2_data_i;
+      SUB     : temp = ~rs2_data_i + 1;
+      default : temp = 32'b0;
       //every other input selection for different block will be done here
        endcase
       if (result === (rs1_data_i + temp)) pass++;
