@@ -3,27 +3,34 @@ Write a markdown documentation for this systemverilog module:
 Author : Bokhtiar Foysol Himon (bokhtiarfoysol@gmail.com)
 */
 
-module alu_shift #(
+module alu_shift 
+import simple_processor_pkg::DATA_WIDTH;
+#(
     //-PARAMETERS
     //-LOCALPARAMS
-    parameter int DATA_WIDTH = 32
+    parameter int SHIFT_WIDTH = 5
 ) (
     //-PORTS
     input logic   [DATA_WIDTH - 1:0] rs1_data_i,
     input logic   [DATA_WIDTH - 1:0] rs2_data_i,
-    input logic   [DATA_WIDTH - 1:0] imm_i,
-    input logic   use_imm,
     input instr_t func_i,
-    input logic   shift_l
 
-    output logic [DATA_WIDTH - 1:0] rd_o
+    output logic [DATA_WIDTH - 1:0] result
 );
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-LOCALPARAMS GENERATED
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-logic [DATA_WIDTH - 1:0] shift_amount;
+  logic                     shift_r;
+  logic                     use_imm;
+  logic [DATA_WIDTH - 1:0]  imm;
+  logic [SHIFT_WIDTH- 1:0] 
+  logic [SHIFT_WIDTH - 1:0]  shift_amount;
+  logic [DATA_WIDTH-1:0]    stage[SHIFT_WIDTH];
+  logic [DATA_WIDTH-1:0]    lr_init;
+  logic [DATA_WIDTH-1:0]    lr_final;
+
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-TYPEDEFS
@@ -43,6 +50,20 @@ always_comb begin
         shift_amount = rs2_i;
 end
 
+
+
+  for (genvar i = 0; i < DATA_WIDTH; i++) begin : g_right_shift_invertions
+    assign lr_init[i] = shift_r ? rs1_data_i[DATA_WIDTH-1-i] : rs1_data_i[i];
+    assign lr_final[i] = shift_r ? stage[SHIFT_WIDTH-1][DATA_WIDTH-1-i]
+                                       : stage[SHIFT_WIDTH-1][i];
+  end
+
+  assign stage[0] = shift_amount[0] ? {lr_init, 1'b0}: lr_init;
+  for (genvar i = 1; i < SHIFT_WIDTH; i++) begin : g_shift_mux
+    assign stage[i] = shift_amount[i] ? {stage[i-1], {(2**i){1'b0}}} : stage[i-1];
+  end
+
+  assign data_o = lr_final;
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-RTLS
   //////////////////////////////////////////////////////////////////////////////////////////////////
