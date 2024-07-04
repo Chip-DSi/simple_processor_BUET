@@ -17,8 +17,7 @@ module alu_shift_tb;
   // bring in the testbench essentials functions and macros
   `include "vip/tb_ess.sv"
 
-  import simple_processor_pkg::ADDR_WIDTH;
-  import simple_processor_pkg::DATA_WIDTH;
+  import simple_processor_pkg::*;
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-LOCALPARAMS
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -145,9 +144,9 @@ initial begin  // main initial
   start_rand_dvr();
 
   @(posedge clk_i);
-  result_print(1, "This is a PASS");
+  result_print(1, "PASS");
   @(posedge clk_i);
-  result_print(0, "And this is a FAIL");
+  result_print(0, "FAIL");
 
   $finish;
 
