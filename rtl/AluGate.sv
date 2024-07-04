@@ -11,6 +11,7 @@ module AluGate
   input   logic [DATA_WIDTH-1:0] rs1_data_i,  // source reg 01 data
   input   logic [DATA_WIDTH-1:0] rs2_data_i,  // source reg 02 data
   input   func_t                 func_i,      // function of and, or, xor, not
+ 
   output  logic [DATA_WIDTH-1:0] rd_data_o    // destination reg data
 );
 
