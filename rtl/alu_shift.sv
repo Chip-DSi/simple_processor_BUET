@@ -9,7 +9,7 @@ import simple_processor_pkg::DATA_WIDTH;
 #(
     //-PARAMETERS
     //-LOCALPARAMS
-    parameter int SHIFT_WIDTH = 5
+    parameter int DATA_WIDTH = 32
 ) (
     //-PORTS
     input logic   [DATA_WIDTH - 1:0] rs1_data_i,
