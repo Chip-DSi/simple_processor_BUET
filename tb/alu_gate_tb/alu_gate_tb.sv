@@ -20,6 +20,8 @@ module alu_gate_tb;
   //-SIGNALS
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
+  `CREATE_CLK(clk_i, 5ns, 5ns)
+  logic arst_ni = 1;
   logic  [DATA_WIDTH-1:0]    rs1_data_i  = '0;
   logic  [DATA_WIDTH-1:0]    rs2_data_i  = '0;
   logic                      func_i      = '0;
@@ -62,6 +64,7 @@ module alu_gate_tb;
        5: func_i <= NOT;
        1: func_i <= AND;
       endcase // Randomly choose between 0 (AND), 1 (OR), 2 (XOR), 3 (NOT)
+      @(posedge clk_i);
      end
    join_none
   endtask
@@ -100,7 +103,9 @@ module alu_gate_tb;
     // Data Flow Checking
     start_rand_dvr();
     start_checking();
+    @(posedge clk_i);
     result_print(1, $sformatf("This is pass"));
+    @(posedge clk_i);
     result_print(0, $sformatf("This is fail"));
 
     $finish;
