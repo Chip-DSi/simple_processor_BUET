@@ -6,7 +6,7 @@ Author : Ramisa Tahsin Shreya (ramisashreya@gmail.com)
 
 module AluGate_tb;
 
-  `define ENABLE_DUMPFILE
+  `define ENABLE_DUMPFILEmake 
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-IMPORTS
