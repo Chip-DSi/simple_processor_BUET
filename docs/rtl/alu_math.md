@@ -16,8 +16,8 @@ Write a markdown documentation for this systemverilog module:
 ## Ports
 |Name|Direction|Type|Dimension|Description|
 |-|-|-|-|-|
-|rs1_data_i|input|logic [DATA_WIDTH-1:0]|||
-|func_o|input|logic||confused about instr_t|
-|imm|input|logic [5:0]|| confused about instr_t|
-|rs2_data_i|input|logic [DATA_WIDTH-1:0]|||
-|result|output|logic [DATA_WIDTH-1:0]|||
+|rs1_data_i|input|logic [DATA_WIDTH-1:0]||source register 1 data input from RF|
+|func_t|input|logic||confused about instr_t|
+|imm|input|logic [5:0]||immediate input|
+|rs2_data_i|input|logic [DATA_WIDTH-1:0]||second register value input|
+|result|output|logic [DATA_WIDTH-1:0]||final result input|
