@@ -1,9 +1,9 @@
-# AluGate (module)
+# alu_gate (module)
 
 ### Author : Mymuna Khatun Sadia (maimuna14400@gmail.com)
 
 ## TOP IO
-<img src="./AluGate_top.svg">
+<img src="./alu_gate_top.svg">
 
 ## Description
 
