@@ -4,9 +4,9 @@ Author : Ramisa Tahsin Shreya (ramisashreya@gmail.com)
 */
 `include "simple_processor_pkg.sv"
 
-module AluGate_tb;
+module alu_gate_tb;
 
-  `define ENABLE_DUMPFILEmake 
+  `define ENABLE_DUMPFILE
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-IMPORTS
@@ -42,8 +42,8 @@ module AluGate_tb;
   //-RTLS
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-  AluGate #(
-  ) u_AluGate(
+  alu_gate #(
+  ) u_alu_gate(
     .rs1_data_i,
     .rs2_data_i,
     .func_i,

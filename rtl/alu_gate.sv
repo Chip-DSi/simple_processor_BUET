@@ -4,7 +4,7 @@ Author : Mymuna Khatun Sadia (maimuna14400@gmail.com)
 */
 
 `include "simple_processor_pkg.sv"
-module AluGate
+module alu_gate
   import simple_processor_pkg::*;
 #(
 ) (
