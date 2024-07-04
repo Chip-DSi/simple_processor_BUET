@@ -1,12 +1,11 @@
 /*
 Write a markdown documentation for this systemverilog module:
-Author : Mymunaks (maimuna14400@gmail.com)
+Author : Mymuna Khatun Sadia (maimuna14400@gmail.com)
 */
 
 `include "simple_processor_pkg.sv"
 module AluGate
-import simple_processor_pkg::DATA_WIDTH;
-import simple_processor_pkg::INT_REG_WIDTH;
+  import simple_processor_pkg::*;
 #(
 ) (
   output  logic [DATA_WIDTH-1:0] rd_data_o,   // destination reg data
