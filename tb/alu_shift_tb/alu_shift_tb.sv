@@ -95,8 +95,7 @@ module alu_shift_tb;
         4: func_i <= SLL;
         4: func_i <= SLLI;
         4: func_i <= SLR;
-        3: func_i <= SLRI;
-        1: func_i<=INVALID;
+        4: func_i <= SLRI;
     endcase
 
       @(posedge clk_i);
