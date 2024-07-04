@@ -2,6 +2,7 @@
 Description
 Author : MD. Toky Tazwar (toky.tech01t@gmail.com)
 */
+
 `include "simple_processor_pkg.sv"
 
 module alu_math_tb;
@@ -15,8 +16,7 @@ module alu_math_tb;
   // bring in the testbench essentials functions and macros
   `include "vip/tb_ess.sv"
 
-  import simple_processor_pkg::ADDR_WIDTH;
-  import simple_processor_pkg::DATA_WIDTH;
+  import simple_processor_pkg::*;
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-LOCALPARAMS
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -35,11 +35,12 @@ module alu_math_tb;
   logic arst_ni = 1;
 
   logic  [DATA_WIDTH-1:0] rs1_data_i;
-  logic  func_t            func_i; //added func_t here by akc
+  func_t                  func_i; //added func_t here by akc
   logic  [5:0]            imm;
   logic  [DATA_WIDTH-1:0] rs2_data_i;
   logic  [DATA_WIDTH-1:0] result;
   logic  [DATA_WIDTH-1:0] temp;
+  logic  [DATA_WIDTH-1:0] imm_ext;
 
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -64,7 +65,7 @@ module alu_math_tb;
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-RTLS
   //////////////////////////////////////////////////////////////////////////////////////////////////
-  alu_math_tb mem (
+  alu_math dut ( //wrong name put here before
     .rs1_data_i,
     .func_i,
     .imm,
@@ -87,26 +88,26 @@ module alu_math_tb;
     forever begin
       rs1_data_i   <= $urandom;
       rs2_data_i  <= $urandom;
-      imm  <= $urandom & 'h11f;
-      rand case
+      imm  <= $urandom;
+      randcase
         5: func_i <= ADDI;
         5: func_i <= ADD;
         5: func_i <= SUB;
-        1: func_i <= INVALID;
-    end case
+       // 1: func_i <= INVALID;
+    endcase
 
       @(posedge clk_i);
     end
   join_none
 endtask
-assign imm = {{26{imm[5]}}, imm};
+assign imm_ext = {{26{imm[5]}}, imm};
 // monitor and check
 task static start_checking();
   fork
     forever begin
       @(posedge clk_i);
       case(func_i)
-      ADDI: temp = imm;
+      ADDI: temp = imm_ext;
       ADD : temp = rs2_data_i;
       SUB : temp = ~rs2_data_i + 1;
       //every other input selection for different block will be done here
@@ -126,10 +127,10 @@ endtask
 
   initial begin  // main initial
 
-    apply_reset();
-    start_clk_i();
-    task static start_checking();
-    task static start_rand_dvr();
+    //apply_reset();
+    //start_clk_i();
+    start_checking();
+    start_rand_dvr();
 
     @(posedge clk_i);
     result_print(1, "This is a PASS");

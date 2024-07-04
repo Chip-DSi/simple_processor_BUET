@@ -6,7 +6,7 @@ Author : Anindya Kishore Choudhury (anindyakchoudhury@gmail.com)
 `include "simple_processor_pkg.sv"
 
 module alu_math
-import simple_processor_pkg::DATA_WIDTH;
+import simple_processor_pkg::*;
 #(
     //-PARAMETERS
     //-LOCALPARAMS
