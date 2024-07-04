@@ -80,13 +80,13 @@ module alu_gate_tb;
         endcase
         if (rd_data_o == expected) begin
           pass++;
-          $write("\033[1;32m");
+          //$write("\033[1;32m");
         end else begin
           fail++;
-          $write("\033[1;31m");
+          //$write("\033[1;31m");
         end
-        $display("rs1_data_i: %h, rs2_data_i: %h, func_i: %b, rd_data_o: %h, expected: %h [%0t]",
-        rs1_data_i, rs2_data_i, func_i, rd_data_o, expected, $realtime);
+        //$display("rs1_data_i: %h, rs2_data_i: %h, func_i: %b, rd_data_o: %h, expected: %h [%0t]",
+        //rs1_data_i, rs2_data_i, func_i, rd_data_o, expected, $realtime);
       end
     join_none
   endtask
@@ -100,9 +100,12 @@ module alu_gate_tb;
     // Data Flow Checking
     start_rand_dvr();
     start_checking();
-    result_print("Testbench completed with %0d passes and %0d fails", pass, fail);
+    result_print(1, $sformatf("This is pass"));
+    result_print(0, $sformatf("This is fail"));
+
+    $finish;
 
   end
-  $finish;
+
 
 endmodule
