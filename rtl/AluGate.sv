@@ -11,7 +11,7 @@ import simple_processor_pkg::INT_REG_WIDTH;
 
 ) (
     //-PORTS
-output  logic [DATA_WIDTH-1:0] rd_data_i,
+output  logic [DATA_WIDTH-1:0] rd_data_o,
 input   logic [DATA_WIDTH-1:0] rs1_data_i,
 input   logic [DATA_WIDTH-1:0] rs2_data_i,
 input   logic                  func_o
@@ -48,7 +48,7 @@ always_comb begin
   end
 
   // Assign the result to the output port
-  assign rd_data_i = result;
+  assign rd_data_o = result;
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-METHODS
   //////////////////////////////////////////////////////////////////////////////////////////////////
