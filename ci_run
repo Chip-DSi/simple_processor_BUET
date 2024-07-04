@@ -1,6 +1,7 @@
 .PHONY: ci_vivado_run
 ci_vivado_run:
 	@> ___CI_REPORT;
+	@$(MAKE) vivado TOP=alu_gate_tb CONFIG=default
 	@$(MAKE) vivado TOP=alu_math_tb CONFIG=default
-	@$(MAKE) vivado TOP=simple_processor_tb CONFIG=default
 	@$(MAKE) vivado TOP=r2_w1_32b_memory_model_tb CONFIG=default
+	@$(MAKE) vivado TOP=simple_processor_tb CONFIG=default
