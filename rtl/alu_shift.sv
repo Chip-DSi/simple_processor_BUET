@@ -11,9 +11,9 @@ import simple_processor_pkg::DATA_WIDTH;
     parameter int SHIFT_WIDTH = 5
 ) (
     //-PORTS
-    input logic   [DATA_WIDTH - 1:0] rs1_data_i,
-    input logic   [DATA_WIDTH - 1:0] rs2_data_i,
-    input instr_t func_i,
+    input logic   [DATA_WIDTH - 1:0]  rs1_data_i,
+    input logic   [DATA_WIDTH - 1:0]  rs2_data_i,
+    input logic   [DATA_WIDTH - 1:0]  func_t,
 
     output logic [DATA_WIDTH - 1:0] result
 );
@@ -23,8 +23,8 @@ import simple_processor_pkg::DATA_WIDTH;
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
   logic                     shift_r;
-  logic                     use_imm;
   logic [DATA_WIDTH - 1:0]  imm;
+  logic [DATA_WIDTH-1:0]    imm_extended;
   logic [SHIFT_WIDTH- 1:0] 
   logic [SHIFT_WIDTH - 1:0]  shift_amount;
   logic [DATA_WIDTH-1:0]    stage[SHIFT_WIDTH];
@@ -43,14 +43,23 @@ import simple_processor_pkg::DATA_WIDTH;
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-ASSIGNMENTS
   //////////////////////////////////////////////////////////////////////////////////////////////////
-always_comb begin
-    if(use_imm)
-        shift_amount = imm;
-    else
-        shift_amount = rs2_i;
-end
+  assign imm = [9:4]func_t;  
+  assign imm_extended = {{26{imm[5]}}, imm};
 
-
+  always_comb begin
+    case(func_t)
+      SLL     : shift_r = '0,
+                shift_amount = rs2_data_i;
+      SLLI    : shift_r = '0,
+                shift_amount = imm_extended;
+      SLR     : shift_r = '1,
+                shift_amount = rs2_data_i;
+      SLRI    : shift_r = '1,
+                shift_amount = imm_extended;
+      default : shift_r = '0,
+                shift_amount = rs2_data_i;;
+    endcase
+  end
 
   for (genvar i = 0; i < DATA_WIDTH; i++) begin : g_right_shift_invertions
     assign lr_init[i] = shift_r ? rs1_data_i[DATA_WIDTH-1-i] : rs1_data_i[i];
@@ -63,17 +72,12 @@ end
     assign stage[i] = shift_amount[i] ? {stage[i-1], {(2**i){1'b0}}} : stage[i-1];
   end
 
-  assign data_o = lr_final;
+  assign result = lr_final;
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-RTLS
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-always_ff @(posedge clk) begin
-    if(shift_l)
-        rd_o <= rs1_i << shift_amount;
-    else
-        rd_o <= rs1_i >> shift_amount;
-end
+
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-METHODS
