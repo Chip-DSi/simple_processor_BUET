@@ -52,7 +52,7 @@ import simple_processor_pkg::DATA_WIDTH;
   //mimicking the input mux operation
 
   always_comb begin
-    case(func_o)
+    case(func_i)
       ADDI: selected_input = imm_extended;
       ADD : selected_input = rs2_data_i;
       SUB : selected_input = rs2_data_i_2c;
