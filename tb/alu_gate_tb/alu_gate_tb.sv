@@ -60,7 +60,7 @@ module alu_gate_tb;
        5: func_i <= OR;
        5: func_i <= XOR;
        5: func_i <= NOT;
-       1: func_i <= INVALID;
+       1: func_i <= AND;
       endcase // Randomly choose between 0 (AND), 1 (OR), 2 (XOR), 3 (NOT)
      end
    join_none
@@ -100,9 +100,8 @@ module alu_gate_tb;
     // Data Flow Checking
     start_rand_dvr();
     start_checking();
-
+    $display("Testbench completed with %0d passes and %0d fails", pass, fail);
   end
-  $display("Testbench completed with %0d passes and %0d fails", pass, fail);
   $finish;
 
 endmodule
