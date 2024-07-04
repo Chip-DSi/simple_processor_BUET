@@ -64,7 +64,7 @@ module alu_math_tb;
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-RTLS
   //////////////////////////////////////////////////////////////////////////////////////////////////
-  alu_math_tb mem ( 
+  alu_math_tb mem (
     .rs1_data_i,
     .func_i,
     .imm,
@@ -87,7 +87,7 @@ module alu_math_tb;
     forever begin
       rs1_data_i   <= $urandom;
       rs2_data_i  <= $urandom;
-      imm  <= $urandom & 'hf;
+      imm  <= $urandom & 'hf;//6bit random should be made--remarks by akc
       rand case
         5: func_i <= ADDI;
         5: func_i <= ADD;
@@ -108,7 +108,7 @@ task static start_checking();
       case(func_i)
       ADDI: temp = imm;
       ADD : temp = rs2_data_i;
-      SUB : temp = ~rs2_data_i+1;
+      SUB : temp = ~rs2_data_i + 1;
       //every other input selection for different block will be done here
        endcase
       if (result === (rs1_data_i + temp)) pass++;
