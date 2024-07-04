@@ -16,26 +16,17 @@ module alu_gate
 );
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
-  //-SIGNALS
-  //////////////////////////////////////////////////////////////////////////////////////////////////
-
-  logic [DATA_WIDTH-1:0] result;// intermediate result
-
-  //////////////////////////////////////////////////////////////////////////////////////////////////
   //-ASSIGNMENTS
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
   always_comb begin
     case (func_i)
-      AND:      result = rs1_data_i & rs2_data_i;  // AND operation
-      OR:       result = rs1_data_i | rs2_data_i;  // OR operation
-      XOR:      result = rs1_data_i ^ rs2_data_i;  // XOR operation
-      NOT:      result = ~rs1_data_i;              // NOT operation (only uses rs1_data_i)
-      default:  result = {DATA_WIDTH{1'b0}};       // Default case to handle invalid opcodes
+      AND:      rd_data_o = rs1_data_i & rs2_data_i;  // AND operation
+      OR:       rd_data_o = rs1_data_i | rs2_data_i;  // OR operation
+      XOR:      rd_data_o = rs1_data_i ^ rs2_data_i;  // XOR operation
+      NOT:      rd_data_o = ~rs1_data_i;              // NOT operation (only uses rs1_data_i)
+      default:  rd_data_o = {DATA_WIDTH{1'b0}};       // Default case to handle invalid opcodes
     endcase
   end
-
-  // Assign the result to the output port
-  assign rd_data_o = result;
 
 endmodule

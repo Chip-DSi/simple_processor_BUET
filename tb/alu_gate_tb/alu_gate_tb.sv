@@ -35,6 +35,7 @@ module alu_gate_tb;
   int                     pass;
   int                     fail;
   logic  [DATA_WIDTH-1:0] expected;
+
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-RTLS
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -102,12 +103,12 @@ module alu_gate_tb;
 
     // Data Flow Checking
     start_clk_i();
+    @(posedge clk_i);
     start_rand_dvr();
     start_checking();
-    @(posedge clk_i);
-    result_print(1, $sformatf("This is pass"));
-    @(posedge clk_i);
-    result_print(0, $sformatf("This is fail"));
+
+    repeat(5000)@(posedge clk_i);
+    result_print(!fail, $sformatf("Data flow %0d/%0d", pass, pass + fail));
 
     $finish;
 
