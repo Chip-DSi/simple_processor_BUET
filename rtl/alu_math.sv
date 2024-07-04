@@ -9,11 +9,11 @@ import simple_processor_pkg::DATA_WIDTH;
     //-PARAMETERS
     //-LOCALPARAMS
 ) (
-    input  logic  [DATA_WIDTH-1:0] rs1_data_i, 
-    input  logic                   func_o, //confused about instr_t
-    input  logic  [5:0]            imm,
-    input  logic  [DATA_WIDTH-1:0] rs2_data_i,
-    output logic  [DATA_WIDTH-1:0] result 
+    input  logic  [DATA_WIDTH-1:0] rs1_data_i, //source register 1 data input from RF
+    input  logic                   func_t,//confused about instr_t
+    input  logic  [5:0]            imm, //immediate input
+    input  logic  [DATA_WIDTH-1:0] rs2_data_i, //second register value input
+    output logic  [DATA_WIDTH-1:0] result //final result input
 
 );
 
