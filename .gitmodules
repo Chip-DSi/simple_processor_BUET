@@ -1,3 +1,9 @@
 [submodule "sub/documenter"]
 	path = sub/documenter
 	url = https://github.com/squared-studio/documenter.git
+[submodule "sub/SystemVerilog"]
+	path = sub/SystemVerilog
+	url = https://github.com/squared-studio/SystemVerilog.git
+[submodule "sub/DSi_DV_Training"]
+	path = sub/DSi_DV_Training
+	url = https://github.com/foez-ahmed-dsi/DSi_DV_Training.git
