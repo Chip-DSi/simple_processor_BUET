@@ -11,7 +11,7 @@ import simple_processor_pkg::*;
 ) (
     //-PORTS
     input  logic [INSTR_WIDTH-1:0] imem_rdata_i, //instruction data coming from IMEM
-    input  logic                   imem_ack_i,   //IMEM acknowledge to select between imem_rdata_i or 0
+    input  logic                   imem_ack_i,   //IMEM ack to select between imem_rdata_i or 0
 
     output func_t                  func_o,       //op codes are stored in this typedef
     output logic                   we_o,         //write enable pin
