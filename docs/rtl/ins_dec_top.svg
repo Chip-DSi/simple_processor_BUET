@@ -1,0 +1,27 @@
+<svg height="490" width="490" xmlns="http://www.w3.org/2000/svg">
+<rect width="100%" height="100%" x="0" y="0" style="fill:white;stroke:white;stroke-width:0"/>
+<g style="fill:white;stroke:black;stroke-width:1">
+<rect width="375" height="375" x="60" y="60"/>
+<polygon points="10,95 10,85 30,85 40,95 60,95 40,95 30,105 10,105 10,95"/>
+<text x="65" y="85" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">imem_rdata_i</text>
+<polygon points="10,145 10,135 30,135 40,145 60,145 40,145 30,155 10,155 10,145"/>
+<text x="65" y="135" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">imem_ack_i</text>
+<polygon points="10,195 10,185 30,185 40,195 60,195 40,195 30,205 10,205 10,195"/>
+<text x="65" y="185" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">imem_addr_i</text>
+<polygon points="435,95 455,95 455,85 475,85 485,95 475,105 455,105 455,95 435,95"/>
+<text x="430" y="85" dominant-baseline="hanging" text-anchor="end" font-size="20" style="fill:black;stroke:black;stroke-width:0">func_o</text>
+<polygon points="435,145 455,145 455,135 475,135 485,145 475,155 455,155 455,145 435,145"/>
+<text x="430" y="135" dominant-baseline="hanging" text-anchor="end" font-size="20" style="fill:black;stroke:black;stroke-width:0">we_o</text>
+<polygon points="435,195 455,195 455,185 475,185 485,195 475,205 455,205 455,195 435,195"/>
+<text x="430" y="185" dominant-baseline="hanging" text-anchor="end" font-size="20" style="fill:black;stroke:black;stroke-width:0">rd_addr_o</text>
+<polygon points="435,245 455,245 455,235 475,235 485,245 475,255 455,255 455,245 435,245"/>
+<text x="430" y="235" dominant-baseline="hanging" text-anchor="end" font-size="20" style="fill:black;stroke:black;stroke-width:0">rs1_addr_o</text>
+<polygon points="435,295 455,295 455,285 475,285 485,295 475,305 455,305 455,295 435,295"/>
+<text x="430" y="285" dominant-baseline="hanging" text-anchor="end" font-size="20" style="fill:black;stroke:black;stroke-width:0">rs2_addr_o</text>
+<polygon points="435,345 455,345 455,335 475,335 485,345 475,355 455,355 455,345 435,345"/>
+<text x="430" y="335" dominant-baseline="hanging" text-anchor="end" font-size="20" style="fill:black;stroke:black;stroke-width:0">imm_o</text>
+<polygon points="435,395 455,395 455,385 475,385 485,395 475,405 455,405 455,395 435,395"/>
+<text x="430" y="385" dominant-baseline="hanging" text-anchor="end" font-size="20" style="fill:black;stroke:black;stroke-width:0">valid_pc</text>
+<text x="245" y="450" dominant-baseline="hanging" text-anchor="middle" font-size="30" style="fill:black;stroke:black;stroke-width:0">ins_dec</text>
+</g>
+</svg>
