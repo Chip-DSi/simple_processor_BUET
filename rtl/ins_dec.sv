@@ -12,6 +12,7 @@ import simple_processor_pkg::*;
     //-PORTS
     input  logic [INSTR_WIDTH-1:0] imem_rdata_i, //instruction data coming from IMEM
     input  logic                   imem_ack_i,   //IMEM ack to select between imem_rdata_i or 0
+    input  logic [INSTR_WIDTH-1:0] imem_addr_i,  //Address we are fetching from imem_rdata_i
 
     output func_t                  func_o,       //op codes are stored in this typedef
     output logic                   we_o,         //write enable pin for RF
@@ -33,12 +34,13 @@ import simple_processor_pkg::*;
   //-ASSIGNMENTS
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-  assign instruction = imem_ack_i ? imem_rdata_i : '0; //not required, imem_ack_i is hardcoded to 0
+  assign instruction = imem_addr_i[1] ? imem_rdata_i[31:16] : imem_rdata_i[15:0]; //muxtochoose ins
   assign func_o      = func_t'(instruction[3:0]); //enum variable assignment technique
   assign rs1_addr_o  = instruction[12:10];
   assign imm_o       = instruction[9:4];
   assign rs2_addr_o  = instruction[9:7];
   assign rd_addr_o   = instruction[15:13];
+  assign imem_ack_i  = 1'b1; //hardcoded to one always for our case
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-RTLS
