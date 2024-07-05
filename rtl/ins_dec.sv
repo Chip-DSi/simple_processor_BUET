@@ -14,7 +14,7 @@ import simple_processor_pkg::*;
     input  logic                   imem_ack_i,   //IMEM ack to select between imem_rdata_i or 0
 
     output func_t                  func_o,       //op codes are stored in this typedef
-    output logic                   we_o,         //write enable pin
+    output logic                   we_o,         //write enable pin for RF
     output logic [2:0]             rd_addr_o,    //destination register address
     output logic [2:0]             rs1_addr_o,   //RS1 register address
     output logic [2:0]             rs2_addr_o,   //RS2 register address
@@ -33,7 +33,7 @@ import simple_processor_pkg::*;
   //-ASSIGNMENTS
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-  assign instruction = imem_ack_i ? imem_rdata_i : '0;
+  assign instruction = imem_ack_i ? imem_rdata_i : '0; //not required, imem_ack_i is hardcoded to 0
   assign func_o      = func_t'(instruction[3:0]); //enum variable assignment technique
   assign rs1_addr_o  = instruction[12:10];
   assign imm_o       = instruction[9:4];
