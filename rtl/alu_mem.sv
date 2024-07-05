@@ -42,13 +42,11 @@ import simple_processor_pkg::ADDR_WIDTH;
 
 
     always_comb begin
-    //mem_write_o = 1'b0;  // normally no memory write operation
       case(func_i)
         LOAD: begin
           result = mem_data_i; // Data read from memory
         end
         STORE: always @(posedge clk_i) begin
-         // mem_write_o = 
            if(we_i)  begin // Enable memory write based on we_i
           result = mem_data_o;  // Data to be stored to memory
         end
