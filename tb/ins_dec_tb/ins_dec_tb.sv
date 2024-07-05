@@ -16,13 +16,12 @@ module ins_dec_tb;
  
 `include "vip/tb_ess.sv"
 
-  import simple_processor_pkg::ADDR_WIDTH;
-  import simple_processor_pkg::DATA_WIDTH;
+  import simple_processor_pkg::*;
 
   // generates static task start_clk_i with tHigh:4ns tLow:6ns
   `CREATE_CLK(clk_i, 4ns, 6ns)
 
-  logic arst_ni = 1;
+  //logic arst_ni = 1;
 
   logic [INSTR_WIDTH-1:0] imem_rdata_i; //instruction data coming from IMEM
   logic                   imem_ack_i;   //IMEM ack to select between imem_rdata_i or 0
@@ -67,14 +66,6 @@ module ins_dec_tb;
   //-METHODS
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-  task static apply_reset();
-    #100ns;
-    arst_ni <= 0;
-    #100ns;
-    arst_ni <= 1;
-    #100ns;
-  endtask
-
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-SEQUENTIALS
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -100,7 +91,7 @@ module ins_dec_tb;
   assign rs2_addr_o1       = instruction[9:7];
   assign rd_addr_o1        = instruction[15:13];
        
-  case(func_o)
+  case(func_middle)
         ADDI, ADD, SUB        : valid_pc_middle = 1'b1; 
         AND, OR, XOR, NOT     : valid_pc_middle = 1'b1;
         LOAD, STORE           : valid_pc_middle = 1'b1;
@@ -108,7 +99,7 @@ module ins_dec_tb;
         default               : valid_pc_middle = 1'b0;
   endcase
 
-  case(func_o)
+  case(func_middle)
         ADDI, ADD, SUB        : w_middle = 1'b1; 
         AND, OR, XOR, NOT     : w_middle = 1'b1;
         LOAD                  : w_middle = 1'b1;
@@ -136,6 +127,7 @@ task static start_checking();
 
   initial begin  // main initial
 
+    apply_reset();
     apply_reset();
     start_clk_i();
     start_rand_dvr();
