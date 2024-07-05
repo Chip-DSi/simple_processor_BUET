@@ -92,7 +92,7 @@ endtask
 
 initial begin  // main initial
 
-  apply_reset();
+  //apply_reset();
   start_clk_i();
   @(posedge clk_i);
   start_rand_dvr();
