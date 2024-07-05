@@ -38,7 +38,8 @@ module alu_mem
   always_comb begin
       case(func_i)
         LOAD: begin
-          result = mem_data_i; // Data read from memory
+          //result = mem_data_i; // Data read from memory
+          result = rd_data_o; // Data read from memory
         end
         STORE: begin
            if (we_i) begin // Enable memory write based on we_i
