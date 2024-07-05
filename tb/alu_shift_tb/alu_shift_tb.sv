@@ -38,7 +38,7 @@ module alu_shift_tb;
       rs1_data_i   <= $urandom;
       rs2_data_i  <= $urandom;
       imm  <= $urandom & 'h11f;
-      rand case
+      randcase
         4: func_i <= SLL;
         4: func_i <= SLLI;
         4: func_i <= SLR;
