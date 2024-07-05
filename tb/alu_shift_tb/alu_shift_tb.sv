@@ -22,7 +22,7 @@ module alu_shift_tb;
   logic  [DATA_WIDTH-1:0] temp;
   logic                   s_r;
 
-  alu_shift_tb dut (
+  alu_shift dut (
     .rs1_data_i,
     .func_i,
     .imm,
