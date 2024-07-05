@@ -1,0 +1,32 @@
+/*
+Write a markdown documentation for this systemverilog module:
+Author : Mymuna Khatun Sadia (maimuna14400@gmail.com)
+*/
+
+`include "simple_processor_pkg.sv"
+module alu_gate
+  import simple_processor_pkg::*;
+#(
+) (
+  input   logic [DATA_WIDTH-1:0] rs1_data_i,  // source reg 01 data
+  input   logic [DATA_WIDTH-1:0] rs2_data_i,  // source reg 02 data
+  input   func_t                 func_i,      // function of and, or, xor, not
+
+  output  logic [DATA_WIDTH-1:0] rd_data_o    // destination reg data
+);
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////
+  //-ASSIGNMENTS
+  //////////////////////////////////////////////////////////////////////////////////////////////////
+
+  always_comb begin
+    case (func_i)
+      AND:      rd_data_o = rs1_data_i & rs2_data_i;  // AND operation
+      OR:       rd_data_o = rs1_data_i | rs2_data_i;  // OR operation
+      XOR:      rd_data_o = rs1_data_i ^ rs2_data_i;  // XOR operation
+      NOT:      rd_data_o = ~rs1_data_i;              // NOT operation (only uses rs1_data_i)
+      default:  rd_data_o = {DATA_WIDTH{1'b0}};       // Default case to handle invalid opcodes
+    endcase
+  end
+
+endmodule
