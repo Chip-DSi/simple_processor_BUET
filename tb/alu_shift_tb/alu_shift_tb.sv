@@ -6,8 +6,7 @@ Author : Md. Julkar Naim Joy (naimjoy567@gmail.com)
 module alu_shift_tb;
   // bring in the testbench essentials functions and macros
   `include "vip/tb_ess.sv"
-  import simple_processor_pkg::ADDR_WIDTH;
-  import simple_processor_pkg::DATA_WIDTH;
+  import simple_processor_pkg::*;
   // generates static task start_clk_i with tHigh:4ns tLow:6ns
   `CREATE_CLK(clk_i, 4ns, 6ns)
   logic  [DATA_WIDTH-1:0] rs1_data_i;
