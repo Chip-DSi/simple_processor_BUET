@@ -57,22 +57,23 @@ task static start_checking();
     forever begin
       @(posedge clk_i);
       case(func_i)
-        SLLI: begin
-              temp = imm;
-              s_r = '0;
-              end
-        SLRI: begin
-              temp = imm;
-              s_r = '1;
-              end
-        SLL : begin
-              temp = rs2_data_i;
-              s_r = '0 ;
-              end
-        SLR : begin
-              temp = rs2_data_i;
-              s_r = '1;
-              end
+        SLLI:     begin
+                  temp = imm;
+                  s_r = '0;
+                  end
+        SLRI:     begin
+                  temp = imm;
+                  s_r = '1;
+                  end
+        SLL :     begin
+                  temp = rs2_data_i;
+                  s_r = '0 ;
+                  end
+        SLR :     begin
+                  temp = rs2_data_i;
+                  s_r = '1;
+                  end
+        default:  temp = 32'b0;
         //every other input selection for different block will be done here
       endcase
       if(s_r=='1)

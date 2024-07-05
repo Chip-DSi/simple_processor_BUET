@@ -26,7 +26,8 @@ import simple_processor_pkg::*;
 
   logic                                shift_r;           //shift right if HIGH, shift left if LOW
   logic           [DATA_WIDTH - 1:0 ]  imm_extended;      //extended 32 bit imm
-  logic           [DATA_WIDTH - 1:0 ]  shift_amount;      //number of bits we want to shift extracted from imm or Rs2
+  //number of bits we want to shift extracted from imm or Rs2
+  logic           [DATA_WIDTH - 1:0 ]  shift_amount;
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-ASSIGNMENTS
