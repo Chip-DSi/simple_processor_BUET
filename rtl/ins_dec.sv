@@ -50,7 +50,7 @@ import simple_processor_pkg::*;
     we_o = 1'b1;
 
     case(func_o)
-      ADDI, ADD, SUB        : is_valid = 1'b1;
+      ADDI, ADD, SUB        : is_valid = 1'b1; //is_valid can be replaced by valid_pc
       AND, OR, XOR, NOT     : is_valid = 1'b1;
       LOAD, STORE           : is_valid = 1'b1;
       SLL, SLR, SLLI, SLRI  : is_valid = 1'b1;
@@ -61,7 +61,8 @@ import simple_processor_pkg::*;
     //or a wrong opcode is stored in the IMEM
     //boot address will get loaded in PC
     //write enable will be made zero
-    if (rd_addr_o == 'b0 || (!is_valid))
+    //if (rd_addr_o == 'b0 || (!is_valid)) we actually need the rd_addr_ = '0 for NOP
+    if(!is_valid)
     begin
       valid_pc = 1'b0;
       we_o     = 1'b0;
