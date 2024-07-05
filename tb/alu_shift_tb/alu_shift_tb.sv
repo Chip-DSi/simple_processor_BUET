@@ -10,7 +10,7 @@ module alu_shift_tb;
   // generates static task start_clk_i with tHigh:4ns tLow:6ns
   `CREATE_CLK(clk_i, 4ns, 6ns)
   logic  [DATA_WIDTH-1:0] rs1_data_i;
-  logic  [3:0]            func_i;
+  func_t                  func_i;
   logic  [5:0]            imm;
   logic  [DATA_WIDTH-1:0] rs2_data_i;
   logic  [DATA_WIDTH-1:0] result;
