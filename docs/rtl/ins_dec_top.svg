@@ -6,6 +6,8 @@
 <text x="65" y="85" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">imem_rdata_i</text>
 <polygon points="10,145 10,135 30,135 40,145 60,145 40,145 30,155 10,155 10,145"/>
 <text x="65" y="135" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">imem_ack_i</text>
+<polygon points="10,195 10,185 30,185 40,195 60,195 40,195 30,205 10,205 10,195"/>
+<text x="65" y="185" dominant-baseline="hanging" text-anchor="start" font-size="20" style="fill:black;stroke:black;stroke-width:0">imem_addr_i</text>
 <polygon points="435,95 455,95 455,85 475,85 485,95 475,105 455,105 455,95 435,95"/>
 <text x="430" y="85" dominant-baseline="hanging" text-anchor="end" font-size="20" style="fill:black;stroke:black;stroke-width:0">func_o</text>
 <polygon points="435,145 455,145 455,135 475,135 485,145 475,155 455,155 455,145 435,145"/>
