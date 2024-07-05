@@ -39,7 +39,9 @@ module alu_mem
       case(func_i)
         LOAD: begin
           //result = mem_data_i; // Data read from memory
-          result = rd_data_o; // Data read from memory
+          if(!we_i) begin
+            result = rd_data_o; // Data read from memory
+          end
         end
         STORE: begin
            if (we_i) begin // Enable memory write based on we_i
