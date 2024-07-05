@@ -30,7 +30,7 @@ module alu_shift_tb;
     .rs2_data_i,
     .result
   );
-  
+
   //-PROCEDURALS
   //////////////////////////////////////////////////////////////////////////////////////////////////
   task static start_rand_dvr();
@@ -43,9 +43,9 @@ module alu_shift_tb;
         4: func_i <= SLL;
         4: func_i <= SLLI;
         4: func_i <= SLR;
-        3: func_i <= SLRI;
-        1: func_i<=INVALID;
-    endcase
+        4: func_i <= SLRI;
+        //1: func_i<=INVALID;
+      endcase
 
       @(posedge clk_i);
     end
@@ -95,13 +95,11 @@ initial begin  // main initial
 
   apply_reset();
   start_clk_i();
-  //task static start_checking();
-  //task static start_rand_dvr();
   @(posedge clk_i);
   start_rand_dvr();
   start_checking();
-  repeat(1000)@(posedge clk_i);
-  result_print(!fail,$sformatf("frontdoor data flow %0d/%0d" ,pass,pass+fail));
+  repeat(1000) @(posedge clk_i);
+  result_print(!fail, $sformatf("frontdoor data flow %0d/%0d" , pass, pass + fail));
   $finish;
 
 end
