@@ -21,7 +21,9 @@ To know how to use different commands on this repo, type `make help` or just `ma
 ## RTL
 [alu_gate ](./docs/rtl/alu_gate.md)<br>
 [alu_math ](./docs/rtl/alu_math.md)<br>
+[alu_mem ](./docs/rtl/alu_mem.md)<br>
 [alu_shift ](./docs/rtl/alu_shift.md)<br>
+[gateand ](./docs/rtl/gateand.md)<br>
 [ins_dec ](./docs/rtl/ins_dec.md)<br>
 [merge_execution ](./docs/rtl/merge_execution.md)<br>
 [r2_w1_32b_memory_model ](./docs/rtl/r2_w1_32b_memory_model.md)<br>
