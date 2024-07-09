@@ -1,6 +1,6 @@
 /*
 Write a markdown documentation for this systemverilog module:
-Author : name (email)
+Author : Mymuna Khatun Sadia (maimuna14400@gmail.com)
 */
 
 module simple_processor #(
