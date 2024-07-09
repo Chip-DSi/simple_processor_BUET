@@ -57,12 +57,10 @@ module alu_mem_tb;
             default: result = 32'b0;
           endcase
           if(result === mem_data_o) begin
-            //$display("pass %0h %0h %0h %0h %0h", we_i, result, mem_data_o, rd_data_i, rs2_data_i);
             pass++;
           end
           //if(result === rd_data_o ) pass++;
           else  begin
-            //$display("fail %0h %0h %0h %0h %0h", we_i, result, mem_data_o, rd_data_i, rs2_data_i);
             fail++;
           end
         end
@@ -85,7 +83,7 @@ module alu_mem_tb;
         start_rand_dvr();
         start_checking();
         repeat(5000)@(posedge clk_i);
-        result_print(!fail, $sformatf("Successful memory load and store: %0d;Total attempts: %0d", pass, pass + fail));
+        result_print(!fail, $sformatf("Pass: %0d; Total: %0d", pass, pass + fail));
 
         // End simulation
         $finish;
