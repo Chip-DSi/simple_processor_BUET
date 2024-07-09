@@ -43,7 +43,16 @@ module simple_processor #(
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
   logic [MEM_ADDR_WIDTH-1:0] imm_pc_i; // intermediate result
-  logic                      valid_pc; // if the pc value is valid
+  logic                      valid_pc;
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////
+  //-RTLS
+  //////////////////////////////////////////////////////////////////////////////////////////////////
+
+  // Instantiate for valid_pc
+  ins_dec u_ins_dec (
+    .valid_pc(valid_pc)
+);
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-ASSIGNMENTS
@@ -51,9 +60,9 @@ module simple_processor #(
 
   always_comb begin
     case(valid_pc)
-      1       :  imm_pc_i   = imem_addr_o + 2; // next pc
-      0       :  imm_pc_i   = boot_addr_i;     // boot address
-      default :  imm_pc_i   = boot_addr_i;     // for default boot address
+      1'b1       :  imm_pc_i   = imem_addr_o + 2; // next pc
+      1'b0       :  imm_pc_i   = boot_addr_i;     // boot address
+      default    :  imm_pc_i   = boot_addr_i;     // for default boot address
     endcase
   end
 
@@ -63,9 +72,9 @@ module simple_processor #(
 
   always @(posedge clk_i or negedge arst_ni) begin
     if (~arst_ni) begin
-        imm_pc_i <= '0;
+      imem_addr_o <= '0;
     end else begin
-        imem_addr_o <= imm_pc_i;
+      imem_addr_o <= imm_pc_i;
     end
   end
 
