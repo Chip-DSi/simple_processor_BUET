@@ -5,7 +5,7 @@ Author : nusratanila (nusratanila94@gmail.com)
 
 `include "simple_processor_pkg.sv"
 
-module execution_tb;
+module execution_unit_tb;
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-IMPORTS
