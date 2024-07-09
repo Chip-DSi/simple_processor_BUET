@@ -4,8 +4,8 @@ Author : Mymuna Khatun Sadia (maimuna14400@gmail.com)
 */
 
 module simple_processor #(
-    parameter int MEM_ADDR_WIDTH = simple_processor_pkg::ADDR_WIDTH,  // With of memory address bus
-    parameter int MEM_DATA_WIDTH = simple_processor_pkg::DATA_WIDTH   // With of memory data bus
+    parameter int MEM_ADDR_WIDTH = simple_processor_pkg::ADDR_WIDTH,  // Width of memory address bus
+    parameter int MEM_DATA_WIDTH = simple_processor_pkg::DATA_WIDTH   // Width of memory data bus
 ) (
     // Global Synchronous Clock
     input logic clk_i,
@@ -65,6 +65,9 @@ module simple_processor #(
       default    :  imm_pc_i   = boot_addr_i;     // for default boot address
     endcase
   end
+
+  // hardcode imem_req_o = 1 always
+  assign imem_req_o = 1'b1;
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-SEQUENTIALS
