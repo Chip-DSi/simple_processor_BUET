@@ -42,8 +42,8 @@ module simple_processor #(
   //-SIGNALS
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-  logic [MEM_ADDR_WIDTH-1:0] imm_pc_i;// intermediate result
-  logic                      valid_pc;
+  logic [MEM_ADDR_WIDTH-1:0] imm_pc_i; // intermediate result
+  logic                      valid_pc; // if the pc value is valid
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-ASSIGNMENTS
