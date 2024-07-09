@@ -142,7 +142,19 @@ module simple_processor_tb;
       .dmem_ack_i
   );
 
-  // Model to act as main memory
+  // Model to act as instruction memory //added by AKC
+  r2_w1_32b_memory_model mMEM (
+      .clk_i,
+      //.we_i(dmem_we_o), //write enable not necessary
+      //.w_addr_i(dmem_addr_o), //no write operation considered as out of the microprocessor
+      //.w_data_i(dmem_wdata_o), //no write data will come in
+      .r0_addr_i(imem_addr_o), //imem_addr_o is coming from the microprocessor,entering to mem module
+      .r0_data_o(imem_rdata_i),
+      //.r1_addr_i(imem_addr_o), //imem does not need second data read port
+      //.r1_data_o(imem_rdata_i)
+  );
+
+    // Model to act as main memory
   r2_w1_32b_memory_model mMEM (
       .clk_i,
       .we_i(dmem_we_o),
@@ -153,7 +165,6 @@ module simple_processor_tb;
       .r1_addr_i(imem_addr_o),
       .r1_data_o(imem_rdata_i)
   );
-
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-METHODS
   //////////////////////////////////////////////////////////////////////////////////////////////////
