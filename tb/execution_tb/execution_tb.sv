@@ -103,16 +103,13 @@ initial begin
   rs2_data_i = 0;
   imm = 0;
   func_i = AND;
-
   // Monitor signals
   $monitor("Time=%0t, rs1_data_i=%h, rs2_data_i=%h, imm=%h, func_i=%h, res_math=%h, rd_data_o=%h, res_shift=%h, result=%h", 
             $time, rs1_data_i, rs2_data_i, imm, func_i, res_math, rd_data_o, res_shift, result);
-
   // Apply test vectors
   // Test AND operation
   #10 rs1_data_i = 32'hA5A5A5A5; rs2_data_i = 32'h5A5A5A5A; func_i = AND;
   #10 if (rd_data_o !== 32'h00000000) $display("AND test failed!");
-
   // Test OR operation
   #10 func_i = OR;
   #10 if (rd_data_o !== 32'hFFFFFFFF) $display("OR test failed!");
