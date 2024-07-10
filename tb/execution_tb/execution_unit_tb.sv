@@ -151,7 +151,7 @@ module execution_unit_tb;
      endcase
    end
 
-   // Finish simulation
+   // Finishing the simulation
    #10 $display("All tests completed.");
    $finish;
  end
