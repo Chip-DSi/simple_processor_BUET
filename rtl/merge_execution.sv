@@ -1,10 +1,8 @@
 /*
-Write a markdown documentation for this systemverilog module:
-This is merged file for execution of 4 blocks
-Author : Mymuna Khatun Sadia (maimuna14400@gmail.com)
+Write a markdown documentation for this systemverilog module: execution unit merge
+Author : Ramisa Tahsin (ramisashreya@gmail.com)
 */
 
-`include "simple_processor_pkg.sv"
 
 module merge_execution
 import simple_processor_pkg::*;
@@ -12,32 +10,27 @@ import simple_processor_pkg::*;
 ) (
     //-PORTS
 input  logic  [DATA_WIDTH-1:0]  rs1_data_i,     //source register 1 data input from RF
-input  func_t                   func_i,        //confused about instr_t
+input  func_t                   func_i,         //funct_i
 input  logic  [5:0]             imm,            //immediate input
 input  logic  [DATA_WIDTH-1:0]  rs2_data_i,     //second register value input
-
-output logic [DATA_WIDTH-1:0]  res_math,          //final result input
-output logic [DATA_WIDTH-1:0]  rd_data_o,         // destination reg data
-output logic [DATA_WIDTH-1:0]  res_shift,
-output logic [DATA_WIDTH-1:0]  result
+output logic [DATA_WIDTH-1:0]   res_math,          //final result input for add,addi,sub
+output logic [DATA_WIDTH-1:0]   res_gate,         //result for gate operation
+output logic [DATA_WIDTH-1:0]   res_shift,         //result for shift operation
+//output logic [DATA_WIDTH-1:0]  res_mem          //result for memory operation
 );
-
-  //////////////////////////////////////////////////////////////////////////////////////////////////
-  //-LOCALPARAMS GENERATED
-  //////////////////////////////////////////////////////////////////////////////////////////////////
-
-  logic                                shift_r;           //shift right if HIGH, shift left if LOW
-  logic           [DATA_WIDTH - 1:0 ]  imm_extended_1;      //extended 32 bit imm
-  //number of bits we want to shift extracted from imm or Rs2
-  logic           [DATA_WIDTH - 1:0 ]  shift_amount;
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-SIGNALS
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-logic [DATA_WIDTH-1:0] rs2_data_i_2c;
-logic [DATA_WIDTH-1:0] imm_extended;
-logic [DATA_WIDTH-1:0] selected_input;
+  logic                        shift_r;          //shift right if HIGH, shift left if LOW
+  logic   [DATA_WIDTH - 1:0 ]  imm_extended_1;   //extended 32 bit imm
+  logic   [DATA_WIDTH - 1:0 ]  shift_amount;     //number of bits we want to shift 
+                                                          //extracted from imm or Rs2
+  
+  logic   [DATA_WIDTH-1:0]     rs2_data_i_2c;    //intermediate value for 2's complement
+  logic   [DATA_WIDTH-1:0]     imm_extended;     //Sign extension for imm
+  logic   [DATA_WIDTH-1:0]     selected_input;   //to select between Rs2 or imm
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-ASSIGNMENTS
@@ -55,11 +48,11 @@ assign imm_extended = {{26{imm[5]}}, imm};
 
 always_comb begin
   case (func_i)
-    AND:      rd_data_o = rs1_data_i & rs2_data_i;  // AND operation
-    OR:       rd_data_o = rs1_data_i | rs2_data_i;  // OR operation
-    XOR:      rd_data_o = rs1_data_i ^ rs2_data_i;  // XOR operation
-    NOT:      rd_data_o = ~rs1_data_i;              // NOT operation (only uses rs1_data_i)
-    default:  rd_data_o = {DATA_WIDTH{1'b0}};       // Default case to handle invalid opcodes
+    ADD:      res_gate = rs1_data_i & rs2_data_i;  // AND operation
+    OR:       res_gate = rs1_data_i | rs2_data_i;  // OR operation
+    XOR:      res_gate = rs1_data_i ^ rs2_data_i;  // XOR operation
+    NOT:      res_gate = ~rs1_data_i;              // NOT operation (only uses rs1_data_i)
+    default:  res_gate = {DATA_WIDTH{1'b0}};       // Default case to handle invalid opcodes
   endcase
 end
 
