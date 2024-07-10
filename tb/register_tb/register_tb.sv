@@ -18,8 +18,8 @@ module register_tb;
   //-LOCALPARAMS
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-  localparam int ELEM_WIDTH = 32;
-  localparam bit [ELEM_WIDTH-1:0] RESET_VALUE = '0;
+  localparam int ElemWidth = 32;
+  localparam bit [ElemWidth-1:0] ResetValue = '0;
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-TYPEDEFS
@@ -34,8 +34,8 @@ module register_tb;
 
   logic                        arst_ni = '1;
   logic                        en_i = '0;
-  logic [ELEM_WIDTH-1:0]       d_i = '0;
-  logic [ELEM_WIDTH-1:0]       q_o;
+  logic [ElemWidth-1:0]       d_i = '0;
+  logic [ElemWidth-1:0]       q_o;
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-VARIABLES
@@ -43,15 +43,15 @@ module register_tb;
 
   int                          pass;
   int                          fail;
-  logic [ELEM_WIDTH-1:0]       ref_data;
+  logic [ElemWidth-1:0]       ref_data;
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-RTLS
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
   register #(
-    .ELEM_WIDTH  (ELEM_WIDTH),
-    .RESET_VALUE (RESET_VALUE)
+    .ELEM_WIDTH  (ElemWidth),
+    .RESET_VALUE (ResetValue)
 ) u_register (
     .clk_i,
     .arst_ni,
@@ -67,7 +67,7 @@ module register_tb;
   task static apply_reset();
   #100ns;
   arst_ni <= 0;
-  ref_data <= RESET_VALUE;
+  ref_data <= ResetValue;
   #100ns;
   arst_ni <= 1;
   #100ns;
@@ -97,7 +97,7 @@ module register_tb;
         end
 
         if (~arst_ni) begin
-          ref_data = RESET_VALUE;
+          ref_data = ResetValue;
         end else if (en_i) begin
           ref_data <= d_i;
         end

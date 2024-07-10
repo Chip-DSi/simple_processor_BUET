@@ -18,8 +18,8 @@ module demux_tb;
   //-LOCALPARAMS
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-  localparam int NUM_ELEM = 6;
-  localparam int ELEM_WIDTH = 8;
+  localparam int NumElem = 6;
+  localparam int ElemWidth = 8;
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-TYPEDEFS
@@ -33,9 +33,9 @@ module demux_tb;
   `CREATE_CLK(clk_i, 4ns, 6ns)
 
   logic arst_ni = 1;
-  logic [$clog2(NUM_ELEM)-1:0] s_i;
-  logic [ELEM_WIDTH-1:0] i_i;
-  logic [NUM_ELEM-1:0][ELEM_WIDTH-1:0] o_o;
+  logic [$clog2(NumElem)-1:0] s_i;
+  logic [ElemWidth-1:0] i_i;
+  logic [NumElem-1:0][ElemWidth-1:0] o_o;
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-VARIABLES
@@ -44,15 +44,15 @@ module demux_tb;
   int pass;
   int fail;
 
-  logic [NUM_ELEM-1:0][ELEM_WIDTH-1:0] ref_out;
+  logic [NumElem-1:0][ElemWidth-1:0] ref_out;
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-RTLS
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
   demux #(
-    .NUM_ELEM(NUM_ELEM),
-    .ELEM_WIDTH(ELEM_WIDTH)
+    .NUM_ELEM(NumElem),
+    .ELEM_WIDTH(ElemWidth)
   ) u_demux (
     .s_i(s_i),
     .i_i(i_i),
@@ -75,7 +75,7 @@ module demux_tb;
   task static start_rand_dvr();
     fork
       forever begin
-        s_i <= $urandom_range(0, NUM_ELEM-1);
+        s_i <= $urandom_range(0, NumElem-1);
         i_i <= $urandom;
         @(posedge clk_i);
       end
