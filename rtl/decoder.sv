@@ -12,7 +12,7 @@ Added by: Anindya Kishore Choudhury (anindyakchoudhury@gmail.com)
 */
 
 module decoder #(
-    parameter int NUM_WIRE = 4  // This parameter determines the number of output wires
+    parameter int NUM_WIRE = 8  // This parameter determines the number of output wires
 ) (
     // This is the address input
     input logic [$clog2(NUM_WIRE)-1:0] a_i,       // Address input
