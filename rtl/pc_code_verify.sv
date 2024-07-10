@@ -50,7 +50,7 @@ module simple_processor #(
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
   // Instantiate for valid_pc
-  ins_dec u_ins_dec (
+  ins_dec #() u_ins_dec (
     .valid_pc(valid_pc)
 );
 
