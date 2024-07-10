@@ -73,7 +73,7 @@ module alu_mem_tb;
         start_rand_dvr();
         start_checking();
         repeat(5000)@(posedge clk_i);
-        result_print(!fail, $sformatf("Successful load, store: %0d;\nTotal attempts: %0d", pass, pass + fail));
+        result_print(!fail, $sformatf("Ld St: %0d;\nTotal attempts: %0d", pass, pass + fail));
 
         // End simulation
         $finish;
