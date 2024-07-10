@@ -20,7 +20,7 @@ Added by: Anindya Kishore Choudhury (anindyakchoudhury@gmail.com)
 ## Parameters
 |Name|Type|Dimension|Default Value|Description|
 |-|-|-|-|-|
-|NUM_WIRE|int||4|This parameter determines the number of output wires|
+|NUM_WIRE|int||8|This parameter determines the number of output wires|
 
 ## Ports
 |Name|Direction|Type|Dimension|Description|

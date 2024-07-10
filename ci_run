@@ -5,6 +5,7 @@ ci_vivado_run:
 	@$(MAKE) vivado TOP=alu_math_tb CONFIG=default
 	@$(MAKE) vivado TOP=alu_shift_tb CONFIG=default
 	@$(MAKE) vivado TOP=decoder_tb CONFIG=default
+	@$(MAKE) vivado TOP=demux_tb CONFIG=default
 	@$(MAKE) vivado TOP=ins_dec_tb CONFIG=default
 	@$(MAKE) vivado TOP=register_tb CONFIG=default
 	@$(MAKE) vivado TOP=reg_file_tb CONFIG=default
