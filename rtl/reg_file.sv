@@ -1,12 +1,12 @@
 /*
 The `reg_file` module is a register file with a configurable number of source registers, register
 width, and an option to hardcode zero to the first register.
-Author: Md. Mohiuddin Reyad (mreyad30207@gmail.com)
-Added by: Anindya Kishore Choudhury (anindyakchoudhury@gmail.com)
+Base File Author: Md. Mohiuddin Reyad (mreyad30207@gmail.com)
+Author: Anindya Kishore Choudhury (anindyakchoudhury@gmail.com)
 */
 
 module reg_file #(
-    parameter int NUM_RS = 1,     // number of source register
+    parameter int NUM_RS = 2,     // number of source register
     parameter bit ZERO_REG = 1,   // hardcoded zero(0) to first register
     parameter int NUM_REG = 8,   // number of registers
     parameter int REG_WIDTH = 32  // width of each register
@@ -16,11 +16,14 @@ module reg_file #(
 
     input logic [$clog2(NUM_REG)-1:0] rd_addr_i,  // destination register address
     input logic [      REG_WIDTH-1:0] rd_data_i,  // read data
-    input logic                       rd_en_i,    // read enable
+    //input logic                       rd_en_i,  // read enable not necessary
+    input logic                       we_i,       // write enable
 
-    input logic [NUM_RS-1:0][$clog2(NUM_REG)-1:0] rs_addr_i,  // array of source register address
+    input logic [$clog2(NUM_REG)-1:0] rs1_addr_i,  // source register 1 address
+    input logic [$clog2(NUM_REG)-1:0] rs2_addr_i,  // source register 2 address
 
-    output logic [NUM_RS-1:0][REG_WIDTH-1:0] rs_data_o  // array of source register data
+    output logic [REG_WIDTH-1:0] rs1_data_o,  // source register 1 data
+    output logic [REG_WIDTH-1:0] rs2_data_o   // source register 2 data
 );
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -47,7 +50,7 @@ module reg_file #(
       .ELEM_WIDTH(1)
   ) u_demux_reg (
       .s_i(rd_addr_i),
-      .i_i(rd_en_i),
+      .i_i(we_i),
       .o_o(demux_en)
   );
 
@@ -64,16 +67,23 @@ module reg_file #(
     );
   end
 
-  for (genvar i = 0; i < NUM_RS; i++) begin : g_mux_array
     mux #(
-        .ELEM_WIDTH(REG_WIDTH),
-        .NUM_ELEM  (NUM_REG)
-    ) u_mux_rs (
-        .s_i(rs_addr_i[i]),
-        .i_i(mux_in),
-        .o_o(rs_data_o[i])
-    );
-  end
+      .ELEM_WIDTH(REG_WIDTH),
+      .NUM_ELEM  (NUM_REG)
+  ) u_mux_rs1 (
+      .s_i(rs1_addr_i),
+      .i_i(mux_in),
+      .o_o(rs1_data_o)
+  );
+
+  mux #(
+      .ELEM_WIDTH(REG_WIDTH),
+      .NUM_ELEM  (NUM_REG)
+  ) u_mux_rs2 (
+      .s_i(rs2_addr_i),
+      .i_i(mux_in),
+      .o_o(rs2_data_o)
+  );
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-INITIAL CHECKS

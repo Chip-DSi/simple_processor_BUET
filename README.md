@@ -23,11 +23,13 @@ To know how to use different commands on this repo, type `make help` or just `ma
 [alu_math ](./docs/rtl/alu_math.md)<br>
 [alu_mem ](./docs/rtl/alu_mem.md)<br>
 [alu_shift ](./docs/rtl/alu_shift.md)<br>
+[decoder ](./docs/rtl/decoder.md)<br>
 [demux ](./docs/rtl/demux.md)<br>
 [ins_dec ](./docs/rtl/ins_dec.md)<br>
 [merge_execution ](./docs/rtl/merge_execution.md)<br>
 [mux ](./docs/rtl/mux.md)<br>
 [r2_w1_32b_memory_model ](./docs/rtl/r2_w1_32b_memory_model.md)<br>
+[register ](./docs/rtl/register.md)<br>
 [reg_file ](./docs/rtl/reg_file.md)<br>
 [simple_processor ](./docs/rtl/simple_processor.md)<br>
 
