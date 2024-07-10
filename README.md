@@ -23,6 +23,7 @@ To know how to use different commands on this repo, type `make help` or just `ma
 [alu_math ](./docs/rtl/alu_math.md)<br>
 [alu_mem ](./docs/rtl/alu_mem.md)<br>
 [alu_shift ](./docs/rtl/alu_shift.md)<br>
+[demux ](./docs/rtl/demux.md)<br>
 [ins_dec ](./docs/rtl/ins_dec.md)<br>
 [merge_execution ](./docs/rtl/merge_execution.md)<br>
 [mux ](./docs/rtl/mux.md)<br>
