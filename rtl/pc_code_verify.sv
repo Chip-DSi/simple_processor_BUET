@@ -3,7 +3,7 @@ Write a markdown documentation for this systemverilog module:
 Author : Mymuna Khatun Sadia (maimuna14400@gmail.com)
 */
 
-module simple_processor #(
+module pc_code_verify #(
     parameter int MEM_ADDR_WIDTH = simple_processor_pkg::ADDR_WIDTH,  // Width of memory address bus
     parameter int MEM_DATA_WIDTH = simple_processor_pkg::DATA_WIDTH   // Width of memory data bus
 ) (
