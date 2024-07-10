@@ -21,7 +21,8 @@ module alu_mem
     input logic we_i,                          // Write enable input signal
     input logic [DATA_WIDTH-1:0] mem_data_i,   // Data read from memory for LOAD operation
     //////////// Outputs ////////////
-    output logic [DATA_WIDTH-1:0] rd_data_o,   // Output from the memory operation block to the destination register
+    output logic [DATA_WIDTH-1:0] rd_data_o,   // Output from the memory operation block
+                                                //to the destination register
     output logic [DATA_WIDTH-1:0] result,      // Result (data read from memory for LOAD)
     output logic [DATA_WIDTH-1:0] mem_addr_o,  // Memory address output (for LOAD/STORE)
     output logic [DATA_WIDTH-1:0] mem_data_o   // Data to be written to memory (for STORE)
