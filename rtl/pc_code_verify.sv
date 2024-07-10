@@ -52,7 +52,7 @@ module pc_code_verify #(
   // Instantiate for valid_pc
   ins_dec #() u_ins_dec (
     .valid_pc(valid_pc)
-);
+  );
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-ASSIGNMENTS
