@@ -10,6 +10,7 @@ RTL         = $(shell cat ___RTL)
 TOP_DIR     = $(shell find $(realpath ./tb/) -wholename "*$(TOP)/$(TOP).sv" | sed "s/\/$(TOP).sv//g")
 TBF_LIB     = $(shell find $(TOP_DIR) -name "*.v" -o -name "*.sv")
 DES_LIB     = $(shell find $(realpath ./rtl/) -name "*.v" -o -name "*.sv")
+DES_LIB    += $(shell find $(realpath ./sub/SystemVerilog/rtl/) -name "*.v" -o -name "*.sv")
 INTF_LIB    = $(shell find $(realpath ./intf/) -name "*.sv")
 INC_DIR     = $(realpath ./inc)
 RTL_FILE    = $(shell find $(realpath ./rtl/) -name "$(RTL).sv")
@@ -133,6 +134,10 @@ clean:
 	@- echo -e "$(CLEAN_TARGETS)" | sed "s/  //g" | sed "s/ /\nremoving /g"
 	@rm -rf $(CLEAN_TARGETS)
 
+.PHONY: update_SV
+update_SV:
+	@git submodule update --init -- ./sub/SystemVerilog/
+
 ####################################################################################################
 # FLIST (Vivado)
 ####################################################################################################
@@ -173,7 +178,7 @@ flist: locate_files
 ####################################################################################################
 
 .PHONY: schematic
-schematic: locate_files
+schematic: locate_files update_SV
 	@echo "$(RTL)" > ___RTL
 	@echo "create_project top" > top.tcl
 	@echo "set_property include_dirs ./inc [current_fileset]" >> top.tcl
@@ -198,7 +203,7 @@ config_touch:
 	@touch $(CONFIG_PATH)/des
 
 .PHONY: config_list
-config_list: config_touch
+config_list: config_touch update_SV
 	@echo ""
 	@$(foreach cfg, $(shell ls -d $(TOP_DIR)/config/*/), \
 		$(MAKE) config_print CFG=$(shell basename $(cfg));)
@@ -250,7 +255,7 @@ rtl_init_sim: clean
 ####################################################################################################
 
 .PHONY: CI
-CI: clean ci_vivado_run ci_vivado_collect ci_print
+CI: clean update_SV ci_vivado_run ci_vivado_collect ci_print
 
 include ci_run
 
@@ -315,7 +320,7 @@ gwave:
 # Waveform (Vivado)
 ####################################################################################################
 
-.PHONY: vwave
+.PHONY: vwave update_SV
 vwave:
 	@cd $(TOP_DIR); xsim top -f $(CONFIG_PATH)/xsim -gui
 
