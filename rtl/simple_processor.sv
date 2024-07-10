@@ -79,7 +79,7 @@ module simple_processor #(
 
   always @(posedge clk_i or negedge arst_ni) begin
     if (~arst_ni) begin
-        imm_pc_i <= '0;
+        imem_addr_o <= '0;
     end else begin
         imem_addr_o <= imm_pc_i;
     end
