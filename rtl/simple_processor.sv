@@ -59,7 +59,7 @@ module simple_processor #(
 
   // Instruction Decoder
   ins_dec #() u_ins_dec (
-    .imem_addr_i(imem_addr_o),    // from PC to IMEM to ID
+    .imem_addr_i(imem_addr_o),    // from PC to ID
     .imem_rdata_i(imem_rdata_i),  // from IMEM
     .func_o(func_i),              // to Execution block
     .we_o(we_i),                  // to reg file
