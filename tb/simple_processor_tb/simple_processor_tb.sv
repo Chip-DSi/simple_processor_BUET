@@ -18,8 +18,61 @@ module simple_processor_tb;
 
   // Write a byte in model's internal memory
   // void model_write(int addr, byte data);
+  //import model_pkg::model_write;
+
+  // Read a byte from model's internal memory
+  // byte model_read(int addr);
+  // import model_pkg::model_read;
+
+  // Load a hex file in model's internal memory
+  // void model_load(input string file);
+  // import model_pkg::model_load;
+
+  // Set model's program counter
+  // void model_set_PC(int addr);
+  // import model_pkg::model_set_PC;
+
+  // Get model's program counter
+  // int model_get_PC();
+  // import model_pkg::model_get_PC;
+
+  // Set model's internal register's content
+  // void model_set_GPR(byte addr, int data);
+  // import model_pkg::model_set_GPR;
+
+  // Get model's internal register content
+  // int model_get_GPR(byte addr);
+  // import model_pkg::model_get_GPR;
+
+  // Disassemble instruction
+  // void model_dis_asm(int instr);
+  // import model_pkg::model_dis_asm;
+
+  // check if the last operation was a DMEM operation
+  // bit model_is_dmem_op();
+  // import model_pkg::model_is_dmem_op;
+
+  // check if the last DMEM operation had write enabled
+  // bit model_is_dmem_we();
+  // import model_pkg::model_is_dmem_we;
+
+  // get last DMEM operation's address
+  // int model_dmem_addr();
+  // import model_pkg::model_dmem_addr;
+
+  // get last DMEM operation's data
+  // int model_dmem_data();
+  // import model_pkg::model_dmem_data;
+
+  // execute one instruction and increase program counter by 2
+  // void model_step();
+  // import model_pkg::model_step;
+
   import model_pkg::*;
   import simple_processor_pkg::*;
+
+  //import simple_processor_pkg::ADDR_WIDTH;
+  //import simple_processor_pkg::DATA_WIDTH;
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-LOCALPARAMS
@@ -36,7 +89,7 @@ module simple_processor_tb;
   // generates static task start_clk_i with tHigh:4ns tLow:6ns
   `CREATE_CLK(clk_i, 4ns, 6ns)
 
-  logic                  arst_ni = '1;
+  logic                  arst_ni = 1;
   logic [ADDR_WIDTH-1:0] boot_addr_i = '0;
 
   logic                  imem_req_o;
@@ -68,10 +121,8 @@ module simple_processor_tb;
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
   // TODO: Add delay
-  assign imem_ack_i = 1;
-  assign dmem_ack_i = 1;
-  assign imem_req_o = 1;
-  assign dmem_req_o = 1;
+  assign imem_ack_i = imem_req_o;
+  assign dmem_ack_i = dmem_req_o;
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-RTLS
@@ -95,12 +146,12 @@ module simple_processor_tb;
   );
 
   // Model to act as main memory
-  reg_file mMEM (
+  r2_w1_32b_memory_model mMEM (
       .clk_i,
       .we_i(dmem_we_o),
-      .rs1_data_o(dmem_addr_o), // Data to be read/written to this address
-      .rs2_data_o(dmem_wdata_o), // DATA to be stored in DMEM
-      //.rd_addr_i(dmem_addr_o), // Data to be read/written to this address
+      .w_addr_i(dmem_addr_o),
+      .w_data_i(dmem_wdata_o),
+      .r0_addr_i(dmem_addr_o),
       .r0_data_o(dmem_rdata_i),
       .r1_addr_i(imem_addr_o),
       .r1_data_o(imem_rdata_i)
