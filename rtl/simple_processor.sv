@@ -2,7 +2,7 @@
 Write a markdown documentation for this systemverilog module:
 Author : Mymuna Khatun Sadia (maimuna14400@gmail.com)
 */
-
+`include "simple_processor_pkg.sv"
 module simple_processor #(
     parameter int MEM_ADDR_WIDTH = simple_processor_pkg::ADDR_WIDTH,  // Width of memory address bus
     parameter int MEM_DATA_WIDTH = simple_processor_pkg::DATA_WIDTH   // Width of memory data bus
@@ -21,6 +21,8 @@ module simple_processor #(
     output logic [MEM_ADDR_WIDTH-1:0] imem_addr_o,
     // Instruction data bus
     input  logic [MEM_DATA_WIDTH-1:0] imem_rdata_i,
+    // Signifies instruction request is completed
+    //input  logic                      imem_ack_i,
 
     // Signifies there is active request for memory at address dmem_addr_o
     output logic                      dmem_req_o,
@@ -40,11 +42,11 @@ module simple_processor #(
   //-SIGNALS
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-  logic [MEM_ADDR_WIDTH-1:0]    temp_pc_o;   // intermediate pc value
+  logic [MEM_ADDR_WIDTH-1:0]    pc_o_temp;   // intermediate pc value
   logic                         valid_pc_i;  // from ID to PC
   logic                         we_i;
   func_t                        func_i;
-  logic [5:0]                   imm;
+  logic [5:0]                   imm_i;
   logic [2:0]                   rd_addr_i;
   logic [2:0]                   rs1_addr_i;
   logic [2:0]                   rs2_addr_i;
@@ -66,7 +68,7 @@ module simple_processor #(
     .rd_addr_o(rd_addr_i),        // to reg file
     .rs1_addr_o(rs1_addr_i),      // to reg file
     .rs2_addr_o(rs2_addr_i),      // to reg file
-    .imm_o(imm),                  // to execution block
+    .imm_o(imm_i),                // to execution block
     .valid_pc_o(valid_pc_i)       // to PC
   );
 
@@ -86,7 +88,7 @@ module simple_processor #(
     .rs1_data_i(rs1_data_i),      // from reg file
     .rs2_data_i(rs2_data_i),      // from reg file
     .func_i(func_i),              // from reg file
-    .imm(imm),                    // from instruction decoder
+    .imm_i(imm_i),                // from instruction decoder
     .result(rd_data_i)            // to reg file
   )
 
@@ -96,9 +98,9 @@ module simple_processor #(
 
   always_comb begin
     case(valid_pc_i)
-      1'b1       :  temp_pc_o   = imem_addr_o + 2; // next pc
-      1'b0       :  temp_pc_o   = boot_addr_i;     // boot address
-      default    :  temp_pc_o   = boot_addr_i;     // for default boot address
+      1'b1       :  pc_o_temp   = imem_addr_o + 2; // next pc
+      1'b0       :  pc_o_temp   = boot_addr_i;     // boot address
+      default    :  pc_o_temp   = boot_addr_i;     // for default boot address
     endcase
   end
 
@@ -113,8 +115,8 @@ module simple_processor #(
     if (~arst_ni) begin
       imem_addr_o <= '0;
     end else begin
-      imem_addr_o <= temp_pc_o;
+      imem_addr_o <= pc_o_temp;
     end
-  end
+  end
 
 endmodule
