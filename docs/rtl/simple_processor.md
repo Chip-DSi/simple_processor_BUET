@@ -1,6 +1,6 @@
 # simple_processor (module)
 
-### Author : name (email)
+### Author : Mymuna Khatun Sadia (maimuna14400@gmail.com)
 
 ## TOP IO
 <img src="./simple_processor_top.svg">
@@ -12,8 +12,8 @@ Write a markdown documentation for this systemverilog module:
 ## Parameters
 |Name|Type|Dimension|Default Value|Description|
 |-|-|-|-|-|
-|MEM_ADDR_WIDTH|int||simple_processor_pkg::ADDR_WIDTH|With of memory address bus|
-|MEM_DATA_WIDTH|int||simple_processor_pkg::DATA_WIDTH|With of memory data bus|
+|MEM_ADDR_WIDTH|int||simple_processor_pkg::ADDR_WIDTH|Width of memory address bus|
+|MEM_DATA_WIDTH|int||simple_processor_pkg::DATA_WIDTH|Width of memory data bus|
 
 ## Ports
 |Name|Direction|Type|Dimension|Description|

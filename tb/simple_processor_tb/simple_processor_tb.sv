@@ -18,58 +18,61 @@ module simple_processor_tb;
 
   // Write a byte in model's internal memory
   // void model_write(int addr, byte data);
-  import model_pkg::model_write;
+  //import model_pkg::model_write;
 
   // Read a byte from model's internal memory
   // byte model_read(int addr);
-  import model_pkg::model_read;
+  // import model_pkg::model_read;
 
   // Load a hex file in model's internal memory
   // void model_load(input string file);
-  import model_pkg::model_load;
+  // import model_pkg::model_load;
 
   // Set model's program counter
   // void model_set_PC(int addr);
-  import model_pkg::model_set_PC;
+  // import model_pkg::model_set_PC;
 
   // Get model's program counter
   // int model_get_PC();
-  import model_pkg::model_get_PC;
+  // import model_pkg::model_get_PC;
 
   // Set model's internal register's content
   // void model_set_GPR(byte addr, int data);
-  import model_pkg::model_set_GPR;
+  // import model_pkg::model_set_GPR;
 
   // Get model's internal register content
   // int model_get_GPR(byte addr);
-  import model_pkg::model_get_GPR;
+  // import model_pkg::model_get_GPR;
 
   // Disassemble instruction
   // void model_dis_asm(int instr);
-  import model_pkg::model_dis_asm;
+  // import model_pkg::model_dis_asm;
 
   // check if the last operation was a DMEM operation
   // bit model_is_dmem_op();
-  import model_pkg::model_is_dmem_op;
+  // import model_pkg::model_is_dmem_op;
 
   // check if the last DMEM operation had write enabled
   // bit model_is_dmem_we();
-  import model_pkg::model_is_dmem_we;
+  // import model_pkg::model_is_dmem_we;
 
   // get last DMEM operation's address
   // int model_dmem_addr();
-  import model_pkg::model_dmem_addr;
+  // import model_pkg::model_dmem_addr;
 
   // get last DMEM operation's data
   // int model_dmem_data();
-  import model_pkg::model_dmem_data;
+  // import model_pkg::model_dmem_data;
 
   // execute one instruction and increase program counter by 2
   // void model_step();
-  import model_pkg::model_step;
+  // import model_pkg::model_step;
 
-  import simple_processor_pkg::ADDR_WIDTH;
-  import simple_processor_pkg::DATA_WIDTH;
+  import model_pkg::*;
+  import simple_processor_pkg::*;
+
+  //import simple_processor_pkg::ADDR_WIDTH;
+  //import simple_processor_pkg::DATA_WIDTH;
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-LOCALPARAMS
@@ -187,7 +190,7 @@ module simple_processor_tb;
     model_set_PC('h1000);
 
 
-    repeat (13) begin
+    repeat (13) begin  //does 13 mean anything special here?
       @(posedge clk_i);
       model_step();
     end
