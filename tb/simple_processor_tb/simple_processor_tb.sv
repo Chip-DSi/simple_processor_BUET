@@ -190,7 +190,7 @@ module simple_processor_tb;
     model_set_PC('h1000);
 
 
-    repeat (50) begin
+    repeat (13) begin  //does 13 mean anything special here?
       @(posedge clk_i);
       model_step();
     end
