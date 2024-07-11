@@ -91,6 +91,12 @@ import simple_processor_pkg::*;
     .func_i(func_i_temp),              // from reg file
     .imm_i(imm_i_temp),                // from instruction decoder
     .rd_data_o(rd_data_i_temp)         // to reg file
+    .dmem_rdata_i,                     // to DMEM
+    .dmem_ack_i,
+    .dmem_req_o,
+    .dmem_addr_o,
+    .dmem_we_o,
+    .dmem_wdata_o
   )
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -99,9 +105,9 @@ import simple_processor_pkg::*;
 
   always_comb begin
     case(valid_pc_i)
-      1'b1       :  imem_addr_o   = imem_addr_o + 2; // next pc
-      1'b0       :  imem_addr_o   = boot_addr_i;     // boot address
-      default    :  imem_addr_o   = 32'b0;     // for default boot address
+      1'b1       :  imem_addr_o   <= imem_addr_o + 2; // next pc
+      1'b0       :  imem_addr_o   <= boot_addr_i;     // boot address
+      default    :  imem_addr_o   <= 32'b0;     // for default boot address
     endcase
   end
 
