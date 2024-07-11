@@ -114,6 +114,7 @@ import simple_processor_pkg::*;
 
   // hardcode imem_req_o = 1 always
   assign imem_req_o = 1'b1;
+  assign imem_ack_i = 1'b1;
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-SEQUENTIALS
