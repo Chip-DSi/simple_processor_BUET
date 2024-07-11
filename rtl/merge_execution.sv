@@ -3,7 +3,6 @@ Write a markdown documentation for this systemverilog module: execution unit mer
 Author : Ramisa Tahsin (ramisashreya@gmail.com)
 */
 
-`include "simple_processor_pkg.sv"
 
 module merge_execution
 import simple_processor_pkg::*;
