@@ -3,6 +3,7 @@ Write a markdown documentation for this systemverilog module: execution unit mer
 Author : Ramisa Tahsin (ramisashreya@gmail.com)
 */
 
+`include "simple_processor_pkg.sv"
 
 module merge_execution
 import simple_processor_pkg::*;
@@ -13,6 +14,7 @@ input  logic  [DATA_WIDTH-1:0]  rs1_data_i,     //source register 1 data input f
 input  func_t                   func_i,         //funct_i
 input  logic  [5:0]             imm_i,          //imm_iediate input
 input  logic  [DATA_WIDTH-1:0]  rs2_data_i,     //second register value input
+input  logic                    we_i,          // Write enable input signal
 output logic [DATA_WIDTH-1:0]   result,        //final output from mux
 );
 
