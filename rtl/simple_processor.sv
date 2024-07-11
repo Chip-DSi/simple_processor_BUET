@@ -42,8 +42,16 @@ module simple_processor #(
   //-SIGNALS
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-  logic [MEM_ADDR_WIDTH-1:0] temp_pc_o; // intermediate pc value
-  logic                      valid_pc_i;
+  logic [MEM_ADDR_WIDTH-1:0] temp_pc_o;   // intermediate pc value
+  logic                      valid_pc_i;  // from ID to PC
+  logic                      we_i;
+  func_t                     func_i;
+  logic [5:0]                imm;
+  logic [MEM_DATA_WIDTH-1:0] rd_data_i;
+  logic [4:0]                rd_addr_i;
+  logic [MEM_DATA_WIDTH-1:0] rs1_data_i;
+  logic [MEM_DATA_WIDTH-1:0] rs2_data_i;
+  logic [MEM_DATA_WIDTH-1:0] result;
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-RTLS
@@ -54,27 +62,33 @@ module simple_processor #(
     .imem_addr_i(imem_addr_o),    // from PC to IMEM to ID
     .imem_rdata_i(imem_rdata_i),  // from IMEM
     .imem_ack_i(imem_ack_i),      // from IMEM
-    .func_o,                      // to reg file
-    .we_o,                        // to reg file
-    .rd_addr_o,                   // to reg file
-    .rs1_addr_o,                  // to reg file
-    .rs2_addr_o,                  // to reg file
-    .imm_o(imm),
-    .valid_pc_o(valid_pc_i)
+    .func_o(func_i),              // to Execution block
+    .we_o(we_i),                  // to reg file
+    .rd_addr_o(rd_addr_i),        // to reg file
+    .rs1_addr_o(rs1_addr_i),      // to reg file
+    .rs2_addr_o(rs2_addr_i),      // to reg file
+    .imm_o(imm),                  // to execution block
+    .valid_pc_o(valid_pc_i)       // to PC
   );
 
   // Register File
   reg_file #() u_reg_file (
-    
+    .rs1_addr_i(rs1_addr_i),      // from ID
+    .rs2_addr_i(rs2_addr_i),      // from ID
+    .rd_addr_i(rd_addr_i),        // from ID
+    .rd_data_i(rd_data_i),        // from Execution block
+    .we_i(we_i),                  // from ID
+    .rs1_data_o(rs1_data_i),      // to Execution block
+    .rs2_data_o(rs2_data_i)       // to Execution block
   )
 
   // Execution Block
   merge_execution #() u_merge_execution (
-    .rs1_data_i,  // from reg file
-    .rs2_data_i,  // from reg file
-    .func_i,      // from reg file
-    .imm(imm),    // from instruction decoder
-    .result()     // to reg file
+    .rs1_data_i(rs1_data_i),      // from reg file
+    .rs2_data_i(rs2_data_i),      // from reg file
+    .func_i(func_i),              // from reg file
+    .imm(imm),                    // from instruction decoder
+    .result(rd_data_i)            // to reg file
   )
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
