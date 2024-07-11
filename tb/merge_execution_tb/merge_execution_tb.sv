@@ -30,11 +30,11 @@ m  //`define ENABLE_DUMPFILE
    logic  [DATAWIDTH-1:0]     rs2_data_i;     //source register 2 data
    logic  [5:0]               imm_i;          //immediate value
    func_t                     func_i;         //opcode
-   logic  [DATA_WIDTH-1:0]    dmem_rd_i,      // DMEM data of the requested address
+   logic  [DATA_WIDTH-1:0]    dmem_rdata_i,   // DMEM data of the requested address
    logic  [DATA_WIDTH-1:0]    dmem_ack_i,     // Acknowledge if data request is completed
    logic  [DATA_WIDTH-1:0]    dmem_req_o,     // DMEM is active, always HIGH
-   logic  [DATA_WIDTH-1:0]    dmem_addr_o,    // Data to be read/written to this address
-   logic  [DATA_WIDTH-1:0]    dmem_we_o,      // Active for STORE operation
+   logic  [ADDR_WIDTH-1:0]    dmem_addr_o,    // Data to be read/written to this address
+   logic                      dmem_we_o,      // Active for STORE operation
    logic  [DATA_WIDTH-1:0]    dmem_wdata_o,   // DATA to be stored in DMEM
    logic  [DATAWIDTH-1:0]     rd_data_o;      //unresolved used case
 
