@@ -7,11 +7,11 @@ Editor : Ramisa Tahsin (ramisashreya@gmail.com)
 `include "simple_processor_pkg.sv"
 
 module merge_execution_tb #(
-  parameter int MEM_ADDR_WIDTH = simple_processor_pkg::ADDR_WIDTH;
-  parameter int MEM_DATA_WIDTH = simple_processor_pkg::DATA_WIDTH;
+  parameter int MEM_ADDR_WIDTH = simple_processor_pkg::ADDR_WIDTH,
+  parameter int MEM_DATA_WIDTH = simple_processor_pkg::DATA_WIDTH
 );
 
-m  //`define ENABLE_DUMPFILE
+  //`define ENABLE_DUMPFILE
 
    //////////////////////////////////////////////////////////////////////////////////////////////////
    //-IMPORTS
@@ -35,32 +35,31 @@ m  //`define ENABLE_DUMPFILE
    logic  [DATA_WIDTH-1:0]        rs2_data_i;     //source register 2 data
    logic  [5:0]                   imm_i;          //immediate value
    func_t                         func_i;         //opcode
-  
-   logic  [MEM_DATA_WIDTH-1:0]    dmem_rdata_i,   // DMEM data of the requested address
-   logic                          dmem_ack_i,     // Acknowledge if data request is completed
-   
-   logic                          dmem_req_o,     // DMEM is active, always HIGH
-   logic  [MEM_ADDR_WIDTH-1:0]    dmem_addr_o,    // Data to be read/written to this address
-   logic                          dmem_we_o,      // Active for STORE operation
-   logic  [MEM_DATA_WIDTH-1:0]    dmem_wdata_o,   // DATA to be stored in DMEM
-   
-   logic  [DATA_WIDTH-1:0]        rd_data_o;      //unresolved used case
+
+   logic  [MEM_DATA_WIDTH-1:0]    dmem_rdata_i;   // DMEM data of the requested address
+   logic                          dmem_ack_i;     // Acknowledge if data request is completed
+   logic                          dmem_req_o;     // DMEM is active, always HIGH
+   logic  [MEM_ADDR_WIDTH-1:0]    dmem_addr_o;    // Data to be read/written to this address
+   logic                          dmem_we_o;      // Active for STORE operation
+   logic  [MEM_DATA_WIDTH-1:0]    dmem_wdata_o;   // DATA to be stored in DMEM
+
+   logic  [DATA_WIDTH-1:0]        rd_data_o;      // output of the execution unit
 
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-VARIABLES
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-  int                     pass;
-  int                     fail;
-
-  //logic [DATAWIDTH-1:0]   res_mem;
+  int                              pass;
+  int                              fail;
 
   logic       [DATA_WIDTH-1:0]     rs2_data_i_2c;      //intermediate value for 2's complement
   logic       [DATA_WIDTH-1:0]     imm_i_extended;     //Sign extension for imm_i
 
   logic       [DATA_WIDTH-1:0]     rd_data_o_temp;
   logic                            dmem_we_o_temp;
+  logic       [MEM_ADDR_WIDTH-1:0] dmem_addr_o_temp;
+  logic       [MEM_DATA_WIDTH-1:0] dmem_wdata_o_temp;
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-RTLS
@@ -94,15 +93,15 @@ m  //`define ENABLE_DUMPFILE
   assign imm_i_extended = {{26{imm_i[5]}}, imm_i};
 
   //Memory address and data assignments
-  assign dmem_addr_o  = rs1_data_i;                     // RS1 has address which is load
+  //assign dmem_addr_o  = rs1_data_i;            // RS1 has address which is load
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-METHODS
   //////////////////////////////////////////////////////////////////////////////////////////////////
+
   task static apply_reset();
   #100ns;
   arst_ni <= 0;
-  ref_data <= ResetValue;
   #100ns;
   arst_ni <= 1;
   #100ns;
@@ -127,6 +126,8 @@ m  //`define ENABLE_DUMPFILE
           1: func_i <= SLLI;
           1: func_i <= SLR;
           1: func_i <= SLRI;
+          1: func_i <= LOAD;
+          1: func_i <= STORE;
           //default: func_i <= INVALID;
         endcase
 
@@ -153,12 +154,13 @@ m  //`define ENABLE_DUMPFILE
           SLR     : rd_data_o_temp = rs1_data_i >> rs2_data_i;
           SLRI    : rd_data_o_temp = rs1_data_i >> imm_i_extended;
           LOAD    : begin
-                      rd_data_o_temp = dmem_rdata_i;
                       dmem_we_o_temp = '0;
+                      rd_data_o_temp = dmem_rdata_i; ///confusion about rdata_i and storing in dmem
                     end
           STORE   : begin
-                      rd_data_o_temp = rs2_data_i;  // Not really used, but kept for consistency
                       dmem_we_o_temp = '1;
+                      dmem_wdata_o_temp = rs2_data_i;
+                      rd_data_o_temp = 'x;  // Not really used, but kept for consistency
                     end
           default:  rd_data_o_temp = 32'b0; //every other input selection for different block will be done here
          endcase
@@ -174,7 +176,13 @@ m  //`define ENABLE_DUMPFILE
                fail++;
                $display("FUNC:%0d DMEM_WE GOT:0x%h DMEM_WE EXPECTED:0x%h [%0t]",
                func_i, dmem_we_o, dmem_we_o_temp, $realtime);
-             end    
+             end
+        if(dmem_wdata_o === dmem_wdata_o_temp) pass++;
+        else begin
+               fail++;
+               $display("FUNC:%0d DMEM_WE GOT:0x%h DMEM_WE EXPECTED:0x%h [%0t]",
+               func_i, dmem_wdata_o, dmem_wdata_o_temp, $realtime);
+             end
       end
     join_none
   endtask
@@ -194,7 +202,7 @@ m  //`define ENABLE_DUMPFILE
 
     //@(posedge clk_i);
     //rd_data_o_print(1, "This is a PASS");
-    repeat(5000)@(posedge clk_i);
+    repeat(6000)@(posedge clk_i);
     result_print(!fail, $sformatf("Data flow %0d/%0d", pass, pass + fail));
   $finish;
   end
