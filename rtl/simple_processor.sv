@@ -82,7 +82,7 @@ import simple_processor_pkg::*;
     .we_i(we_i_temp),                  // from ID
     .rs1_data_o(rs1_data_i_temp),      // to Execution block
     .rs2_data_o(rs2_data_i_temp)       // to Execution block
-  )
+  );
 
   // Execution Block
   merge_execution #() u_merge_execution (
@@ -97,7 +97,7 @@ import simple_processor_pkg::*;
     .dmem_addr_o,
     .dmem_we_o,
     .dmem_wdata_o
-  )
+  );
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-ASSIGNMENTS
