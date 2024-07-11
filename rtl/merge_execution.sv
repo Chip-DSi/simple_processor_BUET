@@ -25,7 +25,7 @@ output logic [DATA_WIDTH-1:0]   result,        //final output from mux
   logic [DATA_WIDTH-1:0]   res_math,          //final result input for add,addi,sub
   logic [DATA_WIDTH-1:0]   res_gate,         //result for gate operation
   logic [DATA_WIDTH-1:0]   res_shift,         //result for shift operation
-  logic [DATA_WIDTH-1:0]  res_mem          //result for memory operation
+  logic [DATA_WIDTH-1:0]   res_mem          //result for memory operation
 
   logic                        shift_r;          //shift right if HIGH, shift left if LOW
   logic   [DATA_WIDTH - 1:0 ]  imm_i_extended_1;   //extended 32 bit imm_i
