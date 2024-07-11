@@ -11,26 +11,28 @@ import simple_processor_pkg::*;
     //-PORTS
 input  logic  [DATA_WIDTH-1:0]  rs1_data_i,     //source register 1 data input from RF
 input  func_t                   func_i,         //funct_i
-input  logic  [5:0]             imm,            //immediate input
+input  logic  [5:0]             imm_i,          //imm_iediate input
 input  logic  [DATA_WIDTH-1:0]  rs2_data_i,     //second register value input
-output logic [DATA_WIDTH-1:0]   res_math,          //final result input for add,addi,sub
-output logic [DATA_WIDTH-1:0]   res_gate,         //result for gate operation
-output logic [DATA_WIDTH-1:0]   res_shift,         //result for shift operation
-//output logic [DATA_WIDTH-1:0]  res_mem          //result for memory operation
+output logic [DATA_WIDTH-1:0]   result,        //final output from mux
 );
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-SIGNALS
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
+  logic [DATA_WIDTH-1:0]   res_math,          //final result input for add,addi,sub
+  logic [DATA_WIDTH-1:0]   res_gate,         //result for gate operation
+  logic [DATA_WIDTH-1:0]   res_shift,         //result for shift operation
+  //logic [DATA_WIDTH-1:0]  res_mem          //result for memory operation
+
   logic                        shift_r;          //shift right if HIGH, shift left if LOW
-  logic   [DATA_WIDTH - 1:0 ]  imm_extended_1;   //extended 32 bit imm
+  logic   [DATA_WIDTH - 1:0 ]  imm_i_extended_1;   //extended 32 bit imm_i
   logic   [DATA_WIDTH - 1:0 ]  shift_amount;     //number of bits we want to shift 
-                                                          //extracted from imm or Rs2
+                                                          //extracted from imm_i or Rs2
   
   logic   [DATA_WIDTH-1:0]     rs2_data_i_2c;    //intermediate value for 2's complement
-  logic   [DATA_WIDTH-1:0]     imm_extended;     //Sign extension for imm
-  logic   [DATA_WIDTH-1:0]     selected_input;   //to select between Rs2 or imm
+  logic   [DATA_WIDTH-1:0]     imm_i_extended;     //Sign extension for imm_i
+  logic   [DATA_WIDTH-1:0]     selected_input;   //to select between Rs2 or imm_i
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-ASSIGNMENTS
@@ -41,8 +43,8 @@ output logic [DATA_WIDTH-1:0]   res_shift,         //result for shift operation
   //2's complement for the sub operation
 assign rs2_data_i_2c = ~rs2_data_i + 1;
 
- //Sign extention for the immediate
-assign imm_extended = {{26{imm[5]}}, imm};
+ //Sign extention for the imm_iediate
+assign imm_i_extended = {{26{imm_i[5]}}, imm_i};
 
   //ALU Gate
 
@@ -58,7 +60,7 @@ end
 
 //Shifting
 
-assign imm_extended_1 = {{26{imm[5]}}, imm};          //sign-extending immediate
+assign imm_i_extended_1 = {{26{imm_i[5]}}, imm_i};          //sign-extending imm_iediate
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-RTLS
@@ -68,7 +70,7 @@ assign imm_extended_1 = {{26{imm[5]}}, imm};          //sign-extending immediate
 
 always_comb begin
   case(func_i)
-    ADDI: selected_input = imm_extended;
+    ADDI: selected_input = imm_i_extended;
     ADD : selected_input = rs2_data_i;
     SUB : selected_input = rs2_data_i_2c;
     //every other input selection for different block will be done here
@@ -88,7 +90,7 @@ always_comb begin
     end
     SLLI    : begin
               shift_r = '0;
-              shift_amount = imm_extended_1;
+              shift_amount = imm_i_extended_1;
     end
     SLR     : begin
               shift_r = '1;
@@ -96,7 +98,7 @@ always_comb begin
     end
     SLRI    : begin
               shift_r = '1;
-              shift_amount = imm_extended_1;
+              shift_amount = imm_i_extended_1;
     end
     default : begin
               shift_r = '1;
