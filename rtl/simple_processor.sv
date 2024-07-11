@@ -3,7 +3,7 @@ Write a markdown documentation for this systemverilog module:
 Author : Mymuna Khatun Sadia (maimuna14400@gmail.com)
 */
 `include "simple_processor_pkg.sv"
-module simple_processor
+module simple_processor 
 import simple_processor_pkg::*;
 #(
     parameter int MEM_ADDR_WIDTH = simple_processor_pkg::ADDR_WIDTH,  // Width of memory address bus
@@ -44,7 +44,7 @@ import simple_processor_pkg::*;
   //-SIGNALS
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-  //logic [MEM_ADDR_WIDTH-1:0]    pc_o_temp;   // intermediate pc value
+  logic [MEM_ADDR_WIDTH-1:0]    pc_o_temp;   // intermediate pc value
   logic                         valid_pc_i;  // from ID to PC
   logic                         we_i_temp;
   func_t                        func_i_temp;
@@ -106,9 +106,9 @@ import simple_processor_pkg::*;
 
   always_comb begin
     case(valid_pc_i)
-      1'b1       :  imem_addr_o   = imem_addr_o + 2; // next pc
-      1'b0       :  imem_addr_o   = boot_addr_i;     // boot address
-      default    :  imem_addr_o   = 32'b0;     // for default boot address
+      1'b1       :  pc_o_temp   = imem_addr_o + 2; // next pc
+      1'b0       :  pc_o_temp   = boot_addr_i;     // boot address
+      default    :  pc_o_temp   = 32'b0;     // for default boot address
     endcase
   end
 
@@ -123,7 +123,7 @@ import simple_processor_pkg::*;
     if (~arst_ni) begin
       imem_addr_o <= 32'b0;
     end else begin
-      imem_addr_o <= imem_addr_o;
+      imem_addr_o <= pc_o_temp;
     end
   end
 

@@ -95,12 +95,12 @@ module simple_processor_tb;
   );
 
   // Model to act as main memory
-  r2_w1_32b_memory_model mMEM (
+  reg_file mMEM (
       .clk_i,
       .we_i(dmem_we_o),
-      .w_addr_i(dmem_addr_o),
-      .w_data_i(dmem_wdata_o),
-      .r0_addr_i(dmem_addr_o),
+      .rs1_data_o(dmem_addr_o), // Data to be read/written to this address
+      .rs2_data_o(dmem_wdata_o), // DATA to be stored in DMEM
+      //.rd_addr_i(dmem_addr_o), // Data to be read/written to this address
       .r0_data_o(dmem_rdata_i),
       .r1_addr_i(imem_addr_o),
       .r1_data_o(imem_rdata_i)
