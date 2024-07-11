@@ -190,7 +190,7 @@ module simple_processor_tb;
     model_set_PC('h1000);
 
 
-    repeat (13) begin
+    repeat (50) begin
       @(posedge clk_i);
       model_step();
     end
