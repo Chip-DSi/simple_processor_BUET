@@ -26,11 +26,17 @@ m  //`define ENABLE_DUMPFILE
 
    logic arst_ni = 1;
 
-   logic [DATAWIDTH-1:0] rs1_data_i;  //source register 1 data
-   logic [DATAWIDTH-1:0] rs2_data_i;  //source register 2 data
-   logic [5:0]           imm_i;       //immediate value
-   func_t                func_i;      //opcode
-   logic [DATAWIDTH-1:0] result;      //unresolved used case
+   logic  [DATAWIDTH-1:0]     rs1_data_i;     //source register 1 data
+   logic  [DATAWIDTH-1:0]     rs2_data_i;     //source register 2 data
+   logic  [5:0]               imm_i;          //immediate value
+   func_t                     func_i;         //opcode
+   logic  [DATA_WIDTH-1:0]    dmem_rd_i,      // DMEM data of the requested address
+   logic  [DATA_WIDTH-1:0]    dmem_ack_i,     // Acknowledge if data request is completed
+   logic  [DATA_WIDTH-1:0]    dmem_req_o,     // DMEM is active, always HIGH
+   logic  [DATA_WIDTH-1:0]    dmem_addr_o,    // Data to be read/written to this address
+   logic  [DATA_WIDTH-1:0]    dmem_we_o,      // Active for STORE operation
+   logic  [DATA_WIDTH-1:0]    dmem_wdata_o,   // DATA to be stored in DMEM
+   logic  [DATAWIDTH-1:0]     rd_data_o;      //unresolved used case
 
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -40,17 +46,12 @@ m  //`define ENABLE_DUMPFILE
   int                     pass;
   int                     fail;
 
-  logic  [DATAWIDTH-1:0]  res_math;
-  logic  [DATAWIDTH-1:0]  res_gate;
-  logic  [DATAWIDTH-1:0]  res_shift;
-  //logic [DATAWIDTH-1:0] res_mem;
+  //logic [DATAWIDTH-1:0]   res_mem;
 
-  logic  [DATA_WIDTH-1:0] res_math_exp;
-  logic  [DATA_WIDTH-1:0] res_gate_exp;
-  logic  [DATA_WIDTH-1:0] res_shift_exp;
-  //logic [DATAWIDTH-1:0] res_mem_exp;
-
-  logic  [DATAWIDTH-1:0]  result_exp;
+  logic  [DATA_WIDTH-1:0] res_math_temp;
+  logic  [DATA_WIDTH-1:0] res_gate_temp;
+  logic  [DATA_WIDTH-1:0] res_shift_temp;
+  logic  [DATA_WIDTH-1:0] res_shift_temp;
 
   logic  [DATA_WIDTH-1:0] temp_math;
   logic  [DATA_WIDTH-1:0] temp_shift;
@@ -66,7 +67,7 @@ m  //`define ENABLE_DUMPFILE
     .func_i,
     .imm_i,
     .rs2_data_i,
-    .result
+    .rd_data_o
   );
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -93,7 +94,7 @@ m  //`define ENABLE_DUMPFILE
       forever begin
         rs1_data_i <= $urandom;
         rs2_data_i <= $urandom;
-        imm_i <= $urandom;  // 6-bit random imm_iediate value
+        imm_i      <= $urandom;  // 6-bit random imm_iediate value
         randcase
           1: func_i <= AND;
           1: func_i <= OR;
@@ -122,116 +123,117 @@ m  //`define ENABLE_DUMPFILE
         case(func_i)
           ADDI    : begin
                      temp_math = imm_i_ext;
-                     res_math_exp = rs1_data_i + res_math_exp;
-                       if(res_math === res_math_exp) pass++;
+                     res_math_temp = rs1_data_i + res_math_temp;
+                       if(rd_data_o === res_math_temp) pass++;
                        else begin
                             fail++;
                             $display("ADDI RS1:0x%h IMM:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i,
-                                      res_math_exp, res_math, res_math_exp, $realtime);
+                                      res_math_temp, rd_data_o, res_math_temp, $realtime);
                        end
                     end
           ADD     : begin
                      temp_math = rs2_data_i;
-                     res_math_exp = rs1_data_i + temp_math;
-                       if(res_math === res_math_exp) pass++;
+                     res_math_temp = rs1_data_i + temp_math;
+                       if(rd_data_o === res_math_temp) pass++;
                        else begin
                           fail++;
                           $display("ADD RS1:0x%h RS2:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i,
-                                      rs2_data_i, res_math, res_math_exp, $realtime);
+                                      rs2_data_i, rd_data_o, res_math_temp, $realtime);
                        end
                     end
           SUB     : begin
                      temp_math = ~rs2_data_i + 1;
-                     res_math_exp = rs1_data_i + temp_math;
-                     if(res_math === res_math_exp) pass++;
+                     res_math_temp = rs1_data_i + temp_math;
+                     if(rd_data_o === res_math_temp) pass++;
                      else begin
                           fail++;
                           $display("SUB RS1:0x%h RS2:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i,
-                                      rs2_data_i, res_math, res_math_exp, $realtime);
+                                      rs2_data_i, rd_data_o, res_math_temp, $realtime);
                      end
                     end
           AND     : begin
-                     res_gate_exp = rs1_data_i & rs2_data_i;
-                     if (res_gate === res_gate_exp) pass++;
+                     res_gate_temp = rs1_data_i & rs2_data_i;
+                     if (rd_data_o === res_gate_temp) pass++;
                      else begin
                           fail++;
                           $display("AND RS1:0x%h RS2:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i,
-                                      rs2_data_i, res_gate, res_gate_exp, $realtime);
+                                      rs2_data_i, rd_data_o, res_gate_temp, $realtime);
                      end
                     end
           OR      : begin
-                     res_gate_exp = rs1_data_i | rs2_data_i;
-                     if (res_gate === res_gate_exp) pass++;
+                     res_gate_temp = rs1_data_i | rs2_data_i;
+                     if (rd_data === res_gate_temp) pass++;
                      else begin
                           fail++;
                           $display("OR RS1:0x%h RS2:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i,
-                          rs2_data_i, res_gate, res_gate_exp, $realtime);
+                          rs2_data_i, rd_data_o, res_gate_temp, $realtime);
                      end
                     end
           XOR     : begin
-                     res_gate_exp = rs1_data_i ^ rs2_data_i;
-                     if (res_gate === res_gate_exp) pass++;
+                     res_gate_temp = rs1_data_i ^ rs2_data_i;
+                     if (rd_data_o === res_gate_temp) pass++;
                      else begin
                           fail++;
                           $display("XOR RS1:0x%h RS2:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i,
-                          rs2_data_i, res_gate, res_gate_exp, $realtime);
+                          rs2_data_i, rd_data_o, res_gate_temp, $realtime);
                      end
                     end
           NOT     : begin
-                     res_gate_exp = ~rs1_data_i;
-                     if (res_gate === res_gate_exp) pass++;
+                     res_gate_temp = ~rs1_data_i;
+                     if (rd_data_o === res_gate_temp) pass++;
                      else begin
                           fail++;
                           $display("NOT RS1:0x%h RS2:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i,
-                          rs2_data_i, res_gate, res_gate_exp, $realtime);
+                          rs2_data_i, rd_data_o, res_gate_temp, $realtime);
                      end
                     end
           SLLI    : begin
                       temp_shift = imm_i_ext;
-                      res_shift_exp = rs1_data_i << temp_shift;
+                      res_shift_temp = rs1_data_i << temp_shift;
                       s_r = '0;
-                      if (res_shift === res_shift_exp) pass++;
+                      if (rd_data_o === res_shift_temp) pass++;
                        else begin
                             fail++;
                             $display("SLLI RS1:0x%h IMM:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i,
-                            imm_i, res_shift, res_shift_exp, $realtime);
+                            imm_i, rd_data_o, res_shift_temp, $realtime);
                       end
                     end
           SLRI    : begin
                       temp_shift = imm_i_ext;
-                      res_shift_exp = rs1_data_i >> res_gate_exp;
+                      res_shift_temp = rs1_data_i >> res_gate_temp;
                       s_r = '1;
-                      if (res_shift === res_shift_exp) pass++;
+                      if (rd_data_o === res_shift_temp) pass++;
                        else begin
                             fail++;
                             $display("SLRI RS1:0x%h IMM:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i,
-                            imm_i, res_shift, res_shift_exp, $realtime);
+                            imm_i, rd_data_o, res_shift_temp, $realtime);
                       end
                     end
           SLL     : begin
                       temp_shift = rs2_data_i;
-                      res_shift_exp = rs1_data_i << res_gate_exp;
+                      res_shift_temp = rs1_data_i << res_gate_temp;
                       s_r = '0 ;
-                      if (res_shift === res_shift_exp) pass++;
+                      if (rd_data_o === res_shift_temp) pass++;
                        else begin
                             fail++;
                             $display("SLL RS1:0x%h RS2:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i,
-                            rs2_data_i, res_shift, res_shift_exp, $realtime);
+                            rs2_data_i, rd_data_o, res_shift_temp, $realtime);
                       end
                     end
           SLR     : begin
-                      res_shift_exp = rs2_data_i;
+                      res_shift_temp = rs2_data_i;
                       s_r = '1;
-                      if (res_shift === (rs1_data_i >> res_gate_exp)) pass++;
+                      if (rd_data_o === (rs1_data_i >> res_gate_temp)) pass++;
                        else begin
                             fail++;
                             $display("SLR RS1:0x%h RS2:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i,
-                            rs2_data_i, res_shift, res_shift_exp, $realtime);
+                            rs2_data_i, rd_data_o, res_shift_temp, $realtime);
                       end
                     end
-          default  :  res_math_exp=32'b0 & res_gate_exp = 32'b0 & res_shift_exp = 32'b0;
-//default for math,gate, shift different???
-//every other input selection for different block will be done here
+          //LOAD    :
+          //STORE   :
+          default  :  res_math_temp=32'b0 & res_gate_temp = 32'b0 & res_shift_temp = 32'b0;
+                                //every other input selection for different block will be done here
          endcase
 
       end
@@ -252,9 +254,9 @@ m  //`define ENABLE_DUMPFILE
     start_checking();
 
     //@(posedge clk_i);
-    //result_print(1, "This is a PASS");
+    //rd_data_o_print(1, "This is a PASS");
     repeat(5000)@(posedge clk_i);
-    result_print(!fail, $sformatf("Data flow %0d/%0d", pass, pass + fail));
+    rd_data_o_print(!fail, $sformatf("Data flow %0d/%0d", pass, pass + fail));
   $finish;
   end
 endmodule
