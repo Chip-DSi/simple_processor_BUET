@@ -5,7 +5,7 @@ Author : nusratanila (nusratanila94@gmail.com)
 
 `include "simple_processor_pkg.sv"
 
-module eu_merge_tb;
+module merge_execution_tb;
 
    //`define ENABLE_DUMPFILE
 
