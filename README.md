@@ -20,6 +20,7 @@ To know how to use different commands on this repo, type `make help` or just `ma
 
 ## RTL
 [addr_decoder ](./docs/rtl/addr_decoder.md)<br>
+[addr_decoder ](./docs/rtl/addr_decoder.md)<br>
 [alu_gate ](./docs/rtl/alu_gate.md)<br>
 [alu_math ](./docs/rtl/alu_math.md)<br>
 [alu_mem ](./docs/rtl/alu_mem.md)<br>
@@ -31,12 +32,19 @@ To know how to use different commands on this repo, type `make help` or just `ma
 [jk_ff ](./docs/rtl/jk_ff.md)<br>
 [latch ](./docs/rtl/latch.md)<br>
 [mem ](./docs/rtl/mem.md)<br>
+[io_pad ](./docs/rtl/io_pad.md)<br>
+[jk_ff ](./docs/rtl/jk_ff.md)<br>
+[latch ](./docs/rtl/latch.md)<br>
+[mem ](./docs/rtl/mem.md)<br>
 [merge_execution ](./docs/rtl/merge_execution.md)<br>
 [mux ](./docs/rtl/mux.md)<br>
 [r2_w1_32b_memory_model ](./docs/rtl/r2_w1_32b_memory_model.md)<br>
 [register ](./docs/rtl/register.md)<br>
 [reg_file ](./docs/rtl/reg_file.md)<br>
 [simple_processor ](./docs/rtl/simple_processor.md)<br>
+[sr_latch_arstn ](./docs/rtl/sr_latch_arstn.md)<br>
+[uart_parity_checker ](./docs/rtl/uart_parity_checker.md)<br>
+[xbar ](./docs/rtl/xbar.md)<br>
 [sr_latch_arstn ](./docs/rtl/sr_latch_arstn.md)<br>
 [uart_parity_checker ](./docs/rtl/uart_parity_checker.md)<br>
 [xbar ](./docs/rtl/xbar.md)<br>
