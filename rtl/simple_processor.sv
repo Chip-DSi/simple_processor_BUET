@@ -101,7 +101,7 @@ import simple_processor_pkg::*;
     case(valid_pc_i)
       1'b1       :  imem_addr_o   = imem_addr_o + 2; // next pc
       1'b0       :  imem_addr_o   = boot_addr_i;     // boot address
-      default    :  imem_addr_o   = `0;     // for default boot address
+      default    :  imem_addr_o   = 32'b0;     // for default boot address
     endcase
   end
 
@@ -114,7 +114,7 @@ import simple_processor_pkg::*;
 
   always @(posedge clk_i or negedge arst_ni) begin
     if (~arst_ni) begin
-      imem_addr_o <= `0;
+      imem_addr_o <= 32'b0;
     end else begin
       imem_addr_o <= imem_addr_o;
     end
