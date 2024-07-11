@@ -44,16 +44,15 @@ module simple_processor #(
 
   logic [MEM_ADDR_WIDTH-1:0]    pc_o_temp;   // intermediate pc value
   logic                         valid_pc_i;  // from ID to PC
-  logic                         we_i;
-  func_t                        func_i;
-  logic [5:0]                   imm_i;
-  logic [2:0]                   rd_addr_i;
-  logic [2:0]                   rs1_addr_i;
-  logic [2:0]                   rs2_addr_i;
-  logic [MEM_DATA_WIDTH-1:0]    rd_data_i;
-  logic [MEM_DATA_WIDTH-1:0]    rs1_data_i;
-  logic [MEM_DATA_WIDTH-1:0]    rs2_data_i;
-  logic [MEM_DATA_WIDTH-1:0]    result;
+  logic                         we_i_temp;
+  func_t                        func_i_temp;
+  logic [5:0]                   imm_i_temp;
+  logic [2:0]                   rd_addr_i_temp;
+  logic [2:0]                   rs1_addr_i_temp;
+  logic [2:0]                   rs2_addr_i_temp;
+  logic [MEM_DATA_WIDTH-1:0]    rd_data_i_temp;
+  logic [MEM_DATA_WIDTH-1:0]    rs1_data_i_temp;
+  logic [MEM_DATA_WIDTH-1:0]    rs2_data_i_temp;
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-RTLS
@@ -61,35 +60,35 @@ module simple_processor #(
 
   // Instruction Decoder
   ins_dec #() u_ins_dec (
-    .imem_addr_i(imem_addr_o),    // from PC to ID
-    .imem_rdata_i(imem_rdata_i),  // from IMEM
-    .func_o(func_i),              // to Execution block
-    .we_o(we_i),                  // to reg file
-    .rd_addr_o(rd_addr_i),        // to reg file
-    .rs1_addr_o(rs1_addr_i),      // to reg file
-    .rs2_addr_o(rs2_addr_i),      // to reg file
-    .imm_o(imm_i),                // to execution block
-    .valid_pc_o(valid_pc_i)       // to PC
+    .imem_addr_i(imem_addr_o),         // from PC to ID
+    .imem_rdata_i(imem_rdata_i),       // from IMEM
+    .func_o(func_i_temp),              // to Execution block
+    .we_o(we_i_temp),                  // to reg file
+    .rd_addr_o(rd_addr_i_temp),        // to reg file
+    .rs1_addr_o(rs1_addr_i_temp),      // to reg file
+    .rs2_addr_o(rs2_addr_i_temp),      // to reg file
+    .imm_o(imm_i_temp),                // to execution block
+    .valid_pc_o(valid_pc_i)            // to PC
   );
 
   // Register File
   reg_file #() u_reg_file (
-    .rs1_addr_i(rs1_addr_i),      // from ID
-    .rs2_addr_i(rs2_addr_i),      // from ID
-    .rd_addr_i(rd_addr_i),        // from ID
-    .rd_data_i(rd_data_i),        // from Execution block
-    .we_i(we_i),                  // from ID
-    .rs1_data_o(rs1_data_i),      // to Execution block
-    .rs2_data_o(rs2_data_i)       // to Execution block
+    .rs1_addr_i(rs1_addr_i_temp),      // from ID
+    .rs2_addr_i(rs2_addr_i_temp),      // from ID
+    .rd_addr_i(rd_addr_i_temp),        // from ID
+    .rd_data_i(rd_data_i_temp),        // from Execution block
+    .we_i(we_i_temp),                  // from ID
+    .rs1_data_o(rs1_data_i_temp),      // to Execution block
+    .rs2_data_o(rs2_data_i_temp)       // to Execution block
   )
 
   // Execution Block
   merge_execution #() u_merge_execution (
-    .rs1_data_i(rs1_data_i),      // from reg file
-    .rs2_data_i(rs2_data_i),      // from reg file
-    .func_i(func_i),              // from reg file
-    .imm_i(imm_i),                // from instruction decoder
-    .result(rd_data_i)            // to reg file
+    .rs1_data_i(rs1_data_i_temp),      // from reg file
+    .rs2_data_i(rs2_data_i_temp),      // from reg file
+    .func_i(func_i_temp),              // from reg file
+    .imm_i(imm_i_temp),                // from instruction decoder
+    .rd_data_o(rd_data_i_temp)         // to reg file
   )
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
