@@ -1,11 +1,14 @@
 /*
 Description
 Author : nusratanila (nusratanila94@gmail.com)
+Editor : Ramisa Tahsin (ramisashreya@gmail.com)
 */
+
+
+module merge_execution_tb;
 
 `include "simple_processor_pkg.sv"
 
-module merge_execution_tb;
 
    //`define ENABLE_DUMPFILE
 
@@ -14,29 +17,22 @@ module merge_execution_tb;
    //////////////////////////////////////////////////////////////////////////////////////////////////
 
    `include "vip/tb_ess.sv"
+
    import simple_processor_pkg::*;
-
-   //////////////////////////////////////////////////////////////////////////////////////////////////
-   //-LOCALPARAMS
-   //////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 
    //////////////////////////////////////////////////////////////////////////////////////////////////
    //-SIGNALS
    //////////////////////////////////////////////////////////////////////////////////////////////////
+
    `CREATE_CLK(clk_i, 4ns, 6ns)
 
    logic arst_ni = 1;
 
    logic [DATAWIDTH-1:0] rs1_data_i;
    logic [DATAWIDTH-1:0] rs2_data_i;
-   logic [5:0]           imm;
+   logic [5:0]           imm_i;
    func_t                func_i;
-   logic [DATAWIDTH-1:0] res_math;
-   logic [DATAWIDTH-1:0] res_gate;
-   logic [DATAWIDTH-1:0] res_shift;
-   //logic [DATAWIDTH-1:0] result;
+   logic [DATAWIDTH-1:0] result;
 
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -45,34 +41,53 @@ module merge_execution_tb;
 
   int                     pass;
   int                     fail;
+
+  logic  [DATAWIDTH-1:0]  res_math;
+  logic  [DATAWIDTH-1:0]  res_gate;
+  logic  [DATAWIDTH-1:0]  res_shift;
+  //logic [DATAWIDTH-1:0] res_mem;
+
   logic  [DATA_WIDTH-1:0] res_math_exp;
   logic  [DATA_WIDTH-1:0] res_gate_exp;
   logic  [DATA_WIDTH-1:0] res_shift_exp;
+  //logic [DATAWIDTH-1:0] res_mem_exp;
+
+  logic  [DATAWIDTH-1:0]  result_exp;
+
+  logic  [DATA_WIDTH-1:0] temp_math;
+  logic  [DATA_WIDTH-1:0] temp_shift;
+
   logic                   s_r;
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-RTLS
   //////////////////////////////////////////////////////////////////////////////////////////////////
+
   eu_merge dut (
     .rs1_data_i,
     .func_i,
-    .imm,
+    .imm_i,
     .rs2_data_i,
-    .res_math,
-    .res_gate,
-    .res_shift
+    .result
   );
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
-  //-PROCEDURALS
+  //-ASSIGNMENTS
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
+  assign imm_i_ext = {{26{imm_i[5]}}, imm_i};
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////
+  //-METHODS
+  //////////////////////////////////////////////////////////////////////////////////////////////////
+
+  //Randomly drive the address and data 
   task static start_rand_dvr();
     fork
       forever begin
         rs1_data_i <= $urandom;
         rs2_data_i <= $urandom;
-        imm <= $urandom;  // 6-bit random immediate value
+        imm_i <= $urandom;  // 6-bit random imm_iediate value
         randcase
           1: func_i <= AND;
           1: func_i <= OR;
@@ -93,7 +108,6 @@ module merge_execution_tb;
     join_none
   endtask
 
-  assign imm_ext = {{26{imm[5]}}, imm};
 //   monitor and check
   task static start_checking();
     fork
@@ -101,24 +115,33 @@ module merge_execution_tb;
         @(posedge clk_i);
         case(func_i)
           ADDI    : begin
-                     res_math_exp = imm_ext;
-                       if(res_math === rs1_data_i + res_math_exp) pass++;
+                     temp_math = imm_i_ext;
+                     res_math_exp = rs1_data_i + res_math_exp;
+                       if(res_math === res_math_exp) pass++;
                        else begin
                             fail++;
+                            $display("ADDI RS1:0x%h IMM:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i, 
+                                      res_math_exp, res_math, res_math_exp, $realtime);
                        end
                     end
           ADD     : begin
-                     res_math_exp = rs2_data_i;
-                       if(res_math === rs1_data_i + res_math_exp) pass++;
+                     temp_math = rs2_data_i;
+                     res_math_exp = rs1_data_i + temp_math;
+                       if(res_math === res_math_exp) pass++;
                        else begin
                           fail++;
+                          $display("ADD RS1:0x%h RS2:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i, 
+                                      rs2_data_i, res_math, res_math_exp, $realtime);
                        end
                     end
           SUB     : begin
-                     res_math_exp = ~rs2_data_i + 1;
-                     if(res_math === rs1_data_i + res_math_exp) pass++;
+                     temp_math = ~rs2_data_i + 1;
+                     res_math_exp = rs1_data_i + temp_math;
+                     if(res_math === res_math_exp) pass++;
                      else begin
                           fail++;
+                          $display("SUB RS1:0x%h RS2:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i, 
+                                      rs2_data_i, res_math, res_math_exp, $realtime);
                      end
                     end
           AND     : begin
@@ -126,6 +149,8 @@ module merge_execution_tb;
                      if (res_gate === res_gate_exp) pass++;
                      else begin
                           fail++;
+                          $display("AND RS1:0x%h RS2:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i, 
+                                      rs2_data_i, res_gate, res_gate_exp, $realtime);
                      end
                     end
           OR      : begin
@@ -133,13 +158,17 @@ module merge_execution_tb;
                      if (res_gate === res_gate_exp) pass++;
                      else begin
                           fail++;
+                          $display("OR RS1:0x%h RS2:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i, 
+                          rs2_data_i, res_gate, res_gate_exp, $realtime);
                      end
                     end
           XOR     : begin
                      res_gate_exp = rs1_data_i ^ rs2_data_i;
-                     if (res_gate == res_gate_exp) pass++;
+                     if (res_gate === res_gate_exp) pass++;
                      else begin
                           fail++;
+                          $display("XOR RS1:0x%h RS2:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i, 
+                          rs2_data_i, res_gate, res_gate_exp, $realtime);
                      end
                     end
           NOT     : begin
@@ -147,45 +176,54 @@ module merge_execution_tb;
                      if (res_gate === res_gate_exp) pass++;
                      else begin
                           fail++;
+                          $display("NOT RS1:0x%h RS2:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i, 
+                          rs2_data_i, res_gate, res_gate_exp, $realtime);
                      end
                     end
           SLLI    : begin
-                      res_shift_exp = imm_ext;
+                      temp_shift = imm_i_ext;
+                      res_shift_exp = rs1_data_i << temp_shift;
                       s_r = '0;
-                      if (res_shift === (rs1_data_i << res_gate_exp)) pass++;
+                      if (res_shift === res_shift_exp) pass++;
                        else begin
                             fail++;
+                            $display("SLLI RS1:0x%h IMM:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i, 
+                            imm_i, res_shift, res_shift_exp, $realtime);
                       end
                     end
           SLRI    : begin
-                    res_shift_exp = imm_ext;
-                    s_r = '1;
-                    if (res_shift === (rs1_data_i >> res_gate_exp)) pass++;
+                      temp_shift = imm_i_ext;
+                      res_shift_exp = rs1_data_i >> res_gate_exp;
+                      s_r = '1;
+                      if (res_shift === res_shift_exp) pass++;
                        else begin
                             fail++;
+                            $display("SLRI RS1:0x%h IMM:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i, 
+                            imm_i, res_shift, res_shift_exp, $realtime);
                       end
                     end
           SLL     : begin
-                    res_shift_exp = rs2_data_i;
-                    s_r = '0 ;
-                    if (res_shift === (rs1_data_i << res_gate_exp)) pass++;
+                      temp_shift = rs2_data_i;
+                      res_shift_exp = rs1_data_i << res_gate_exp;
+                      s_r = '0 ;
+                      if (res_shift === res_shift_exp) pass++;
                        else begin
                             fail++;
+                            $display("SLL RS1:0x%h RS2:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i, 
+                            rs2_data_i, res_shift, res_shift_exp, $realtime);
                       end
                     end
           SLR     : begin
-                    res_shift_exp = rs2_data_i;
-                    s_r = '1;
-                    if (res_shift === (rs1_data_i >> res_gate_exp)) pass++;
+                      res_shift_exp = rs2_data_i;
+                      s_r = '1;
+                      if (res_shift === (rs1_data_i >> res_gate_exp)) pass++;
                        else begin
                             fail++;
+                            $display("SLR RS1:0x%h RS2:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i, 
+                            rs2_data_i, res_shift, res_shift_exp, $realtime);
                       end
                     end
-         default  : begin
-                    res_math = 32'b0;
-                    res_gate = 32'b0;
-                    res_shift= 32'b0;
-                    end
+          default  :  res_math_exp=32'b0 & res_gate_exp = 32'b0 & res_shift_exp = 32'b0;
 //default for math,gate, shift different???
 //every other input selection for different block will be done here
          endcase
