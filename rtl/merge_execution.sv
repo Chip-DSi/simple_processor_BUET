@@ -23,7 +23,7 @@ output logic [DATA_WIDTH-1:0]   result,        //final output from mux
   logic [DATA_WIDTH-1:0]   res_math,          //final result input for add,addi,sub
   logic [DATA_WIDTH-1:0]   res_gate,         //result for gate operation
   logic [DATA_WIDTH-1:0]   res_shift,         //result for shift operation
-  //logic [DATA_WIDTH-1:0]  res_mem          //result for memory operation
+  logic [DATA_WIDTH-1:0]  res_mem          //result for memory operation
 
   logic                        shift_r;          //shift right if HIGH, shift left if LOW
   logic   [DATA_WIDTH - 1:0 ]  imm_i_extended_1;   //extended 32 bit imm_i
@@ -116,9 +116,9 @@ assign res_shift = shift_r? rs1_data_i >> shift_amount : rs1_data_i << shift_amo
 always_comb begin
   case (func_i)
     AND,ADDI,SUB            :      result = res_math;  // AND operation
-    AND,OR,XOR,NOT          :      result = rd_data_o;  // OR operation
+    AND,OR,XOR,NOT          :      result = res_gate;  // OR operation
     SLL,SLR,SLLI,SLRI       :      result = res_shift;  // XOR operation
-    //LOAD/STORE   :      result = ;              // NOT operation (only uses rs1_data_i)
+    //LOAD/STORE   :               result = res_mem;              // NOT operation (only uses rs1_data_i)
     default:  result = {DATA_WIDTH{1'b0}};       // Default case to handle invalid opcodes
   endcase
 end
