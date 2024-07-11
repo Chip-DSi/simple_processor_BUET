@@ -20,8 +20,8 @@ output logic  [DATA_WIDTH-1:0]    dmem_req_o,     // DMEM is active, always HIGH
 output logic  [DATA_WIDTH-1:0]    dmem_addr_o,    // Data to be read/written to this address
 output logic  [DATA_WIDTH-1:0]    dmem_we_o,      // Active for STORE operation
 output logic  [DATA_WIDTH-1:0]    dmem_wdata_o,   // DATA to be stored in DMEM
-output logic  [DATA_WIDTH-1:0]    rd_data_o       // Data to be written to RF
-output logic  [DATA_WIDTH-1:0]    result,         //final output from mux
+output logic  [DATA_WIDTH-1:0]    rd_data_o,       // Data to be written to RF
+output logic  [DATA_WIDTH-1:0]    result         //final output from mux
 );
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -35,9 +35,9 @@ output logic  [DATA_WIDTH-1:0]    result,         //final output from mux
 
   logic                        shift_r;          //shift right if HIGH, shift left if LOW
   logic   [DATA_WIDTH - 1:0 ]  imm_i_extended_1;   //extended 32 bit imm_i
-  logic   [DATA_WIDTH - 1:0 ]  shift_amount;     //number of bits we want to shift 
+  logic   [DATA_WIDTH - 1:0 ]  shift_amount;     //number of bits we want to shift
                                                           //extracted from imm_i or Rs2
-  
+
   logic   [DATA_WIDTH-1:0]     rs2_data_i_2c;    //intermediate value for 2's complement
   logic   [DATA_WIDTH-1:0]     imm_i_extended;     //Sign extension for imm_i
   logic   [DATA_WIDTH-1:0]     selected_input;   //to select between Rs2 or imm_i
@@ -58,7 +58,7 @@ output logic  [DATA_WIDTH-1:0]    result,         //final output from mux
   assign imm_i_extended_1 = {{26{imm_i[5]}}, imm_i};          //sign-extending imm_iediate
 
   //Memory address and data assignments
-  assign dmem_addr_o  = rs1_data_i;              // RS1 has address which is load 
+  assign dmem_addr_o  = rs1_data_i;              // RS1 has address which is load
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-RTLS
@@ -140,7 +140,7 @@ always_comb begin
     AND,ADDI,SUB            :      result = res_math;  // math operation
     AND,OR,XOR,NOT          :      result = res_gate;  // gate operation
     SLL,SLR,SLLI,SLRI       :      result = res_shift;  // shift operation
-    LOAD                    :      result = res_mem;   // load operation 
+    LOAD                    :      result = res_mem;   // load operation
     default                 :      result = {DATA_WIDTH{1'b0}};       // Default case to handle invalid opcodes
   endcase
 end
