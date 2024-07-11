@@ -4,13 +4,11 @@ Author : nusratanila (nusratanila94@gmail.com)
 Editor : Ramisa Tahsin (ramisashreya@gmail.com)
 */
 
+`include "simple_processor_pkg.sv"
 
 module merge_execution_tb;
 
-`include "simple_processor_pkg.sv"
-
-
-   //`define ENABLE_DUMPFILE
+m  //`define ENABLE_DUMPFILE
 
    //////////////////////////////////////////////////////////////////////////////////////////////////
    //-IMPORTS
@@ -28,11 +26,11 @@ module merge_execution_tb;
 
    logic arst_ni = 1;
 
-   logic [DATAWIDTH-1:0] rs1_data_i;
-   logic [DATAWIDTH-1:0] rs2_data_i;
-   logic [5:0]           imm_i;
-   func_t                func_i;
-   logic [DATAWIDTH-1:0] result;
+   logic [DATAWIDTH-1:0] rs1_data_i;  //source register 1 data
+   logic [DATAWIDTH-1:0] rs2_data_i;  //source register 2 data
+   logic [5:0]           imm_i;       //immediate value
+   func_t                func_i;      //opcode
+   logic [DATAWIDTH-1:0] result;      //unresolved used case
 
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -57,13 +55,13 @@ module merge_execution_tb;
   logic  [DATA_WIDTH-1:0] temp_math;
   logic  [DATA_WIDTH-1:0] temp_shift;
 
-  logic                   s_r;
+  logic                   s_r;      //logical left or right shift
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-RTLS
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-  eu_merge dut (
+  merge_execution dut (
     .rs1_data_i,
     .func_i,
     .imm_i,
@@ -80,8 +78,16 @@ module merge_execution_tb;
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-METHODS
   //////////////////////////////////////////////////////////////////////////////////////////////////
+  task static apply_reset();
+  #100ns;
+  arst_ni <= 0;
+  ref_data <= ResetValue;
+  #100ns;
+  arst_ni <= 1;
+  #100ns;
+  endtask
 
-  //Randomly drive the address and data 
+  //Randomly drive the address and data
   task static start_rand_dvr();
     fork
       forever begin
@@ -120,7 +126,7 @@ module merge_execution_tb;
                        if(res_math === res_math_exp) pass++;
                        else begin
                             fail++;
-                            $display("ADDI RS1:0x%h IMM:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i, 
+                            $display("ADDI RS1:0x%h IMM:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i,
                                       res_math_exp, res_math, res_math_exp, $realtime);
                        end
                     end
@@ -130,7 +136,7 @@ module merge_execution_tb;
                        if(res_math === res_math_exp) pass++;
                        else begin
                           fail++;
-                          $display("ADD RS1:0x%h RS2:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i, 
+                          $display("ADD RS1:0x%h RS2:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i,
                                       rs2_data_i, res_math, res_math_exp, $realtime);
                        end
                     end
@@ -140,7 +146,7 @@ module merge_execution_tb;
                      if(res_math === res_math_exp) pass++;
                      else begin
                           fail++;
-                          $display("SUB RS1:0x%h RS2:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i, 
+                          $display("SUB RS1:0x%h RS2:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i,
                                       rs2_data_i, res_math, res_math_exp, $realtime);
                      end
                     end
@@ -149,7 +155,7 @@ module merge_execution_tb;
                      if (res_gate === res_gate_exp) pass++;
                      else begin
                           fail++;
-                          $display("AND RS1:0x%h RS2:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i, 
+                          $display("AND RS1:0x%h RS2:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i,
                                       rs2_data_i, res_gate, res_gate_exp, $realtime);
                      end
                     end
@@ -158,7 +164,7 @@ module merge_execution_tb;
                      if (res_gate === res_gate_exp) pass++;
                      else begin
                           fail++;
-                          $display("OR RS1:0x%h RS2:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i, 
+                          $display("OR RS1:0x%h RS2:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i,
                           rs2_data_i, res_gate, res_gate_exp, $realtime);
                      end
                     end
@@ -167,7 +173,7 @@ module merge_execution_tb;
                      if (res_gate === res_gate_exp) pass++;
                      else begin
                           fail++;
-                          $display("XOR RS1:0x%h RS2:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i, 
+                          $display("XOR RS1:0x%h RS2:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i,
                           rs2_data_i, res_gate, res_gate_exp, $realtime);
                      end
                     end
@@ -176,7 +182,7 @@ module merge_execution_tb;
                      if (res_gate === res_gate_exp) pass++;
                      else begin
                           fail++;
-                          $display("NOT RS1:0x%h RS2:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i, 
+                          $display("NOT RS1:0x%h RS2:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i,
                           rs2_data_i, res_gate, res_gate_exp, $realtime);
                      end
                     end
@@ -187,7 +193,7 @@ module merge_execution_tb;
                       if (res_shift === res_shift_exp) pass++;
                        else begin
                             fail++;
-                            $display("SLLI RS1:0x%h IMM:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i, 
+                            $display("SLLI RS1:0x%h IMM:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i,
                             imm_i, res_shift, res_shift_exp, $realtime);
                       end
                     end
@@ -198,7 +204,7 @@ module merge_execution_tb;
                       if (res_shift === res_shift_exp) pass++;
                        else begin
                             fail++;
-                            $display("SLRI RS1:0x%h IMM:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i, 
+                            $display("SLRI RS1:0x%h IMM:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i,
                             imm_i, res_shift, res_shift_exp, $realtime);
                       end
                     end
@@ -209,7 +215,7 @@ module merge_execution_tb;
                       if (res_shift === res_shift_exp) pass++;
                        else begin
                             fail++;
-                            $display("SLL RS1:0x%h RS2:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i, 
+                            $display("SLL RS1:0x%h RS2:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i,
                             rs2_data_i, res_shift, res_shift_exp, $realtime);
                       end
                     end
@@ -219,7 +225,7 @@ module merge_execution_tb;
                       if (res_shift === (rs1_data_i >> res_gate_exp)) pass++;
                        else begin
                             fail++;
-                            $display("SLR RS1:0x%h RS2:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i, 
+                            $display("SLR RS1:0x%h RS2:0x%h GOT_DATA:0x%h EXP_DATA:0x%h [%0t]", rs1_data_i,
                             rs2_data_i, res_shift, res_shift_exp, $realtime);
                       end
                     end
@@ -239,7 +245,7 @@ module merge_execution_tb;
 
    initial begin  // main initial
 
-    //apply_reset();
+    apply_reset();
     start_clk_i();
     @(posedge clk_i);
     start_rand_dvr();
