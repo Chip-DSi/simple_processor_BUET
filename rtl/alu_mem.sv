@@ -26,7 +26,7 @@ module alu_mem
     output logic [DATA_WIDTH-1:0] dmem_addr_o,   // Data to be read/written to this address
     output logic [DATA_WIDTH-1:0] dmem_we_o,     // Active for STORE operation
     output logic [DATA_WIDTH-1:0] dmem_wdata_o,  // DATA to be stored in DMEM
-    output logic [DATA_WIDTH-1:0] rd_data_o      // Data to be written to RF
+    output logic [DATA_WIDTH-1:0] res_mem      // Data to be written to RF
 );
 
   // Memory address and data assignments
@@ -36,14 +36,14 @@ module alu_mem
   always_comb begin
       case(func_i)
         LOAD:     begin
-          rd_data_o = dmem_rd_i;                 // Data read from memory
+          res_mem = dmem_rd_i;                 // Data read from memory
           dmem_we_o = '0;
         end
         STORE:    begin
           dmem_wdata_o = rs2_data_i;             // RS2 data to be stored to memory
           dmem_we_o    =  '1;                    // Write is active
         end
-        default:  rd_data_o = 32'b0;             // Default result if no valid operation
+        default:  res_mem = 32'b0;             // Default result if no valid operation
       endcase
   end
 

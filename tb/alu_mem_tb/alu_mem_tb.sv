@@ -13,7 +13,7 @@ module alu_mem_tb;
     `CREATE_CLK(clk_i, 4ns, 6ns)
     logic [DATA_WIDTH-1:0] rs1_data_i, rs2_data_i, dmem_rd_i, dmem_ack_i;
     logic [DATA_WIDTH-1:0] dmem_req_o, dmem_addr_o, dmem_we_o, dmem_wdata_o;
-    logic [DATA_WIDTH-1:0] rd_data_o, result;
+    logic [DATA_WIDTH-1:0] res_mem, result;
     func_t  func_i;
 
     int pass;
@@ -30,7 +30,7 @@ module alu_mem_tb;
         .dmem_addr_o,
         .dmem_we_o,
         .dmem_wdata_o,
-        .rd_data_o
+        .res_mem
     );
 
     task static start_rand_dvr();
@@ -56,7 +56,7 @@ module alu_mem_tb;
           case(func_i)
             LOAD : begin
               result = dmem_rd_i;
-              if(result === rd_data_o) begin
+              if(result === res_mem) begin
                 pass++;
               end
               else  begin
@@ -81,14 +81,14 @@ module alu_mem_tb;
     // Stimulus generation
     initial begin
         // Initialize random seed
-        pass = 0;
-        fail = 0;
-        rs1_data_i = 0;
-        rs2_data_i = 0;
+        pass        = 0;
+        fail        = 0;
+        rs1_data_i  = 0;
+        rs2_data_i  = 0;
         dmem_rd_i   = 0;
-        dmem_ack_i = 0;
-        func_i = LOAD;
-        result = 0;
+        dmem_ack_i  = 0;
+        func_i      = LOAD;
+        result      = 0;
         start_clk_i();
         @(posedge clk_i);
         start_rand_dvr();
