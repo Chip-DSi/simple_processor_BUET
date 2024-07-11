@@ -3,7 +3,7 @@ Write a markdown documentation for this systemverilog module:
 Author : Mymuna Khatun Sadia (maimuna14400@gmail.com)
 */
 `include "simple_processor_pkg.sv"
-module simple_processor 
+module simple_processor
 import simple_processor_pkg::*;
 #(
     parameter int MEM_ADDR_WIDTH = simple_processor_pkg::ADDR_WIDTH,  // Width of memory address bus
