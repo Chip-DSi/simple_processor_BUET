@@ -1,6 +1,7 @@
 # merge_execution (module)
 
-### Author : Ramisa Tahsin (ramisashreya@gmail.com)
+### Author      : Anindya Kishore Choudhury (anindyakchoudhury@gmai.com)
+### Base Author : Ramisa Tahsin (ramisashreya@gmail.com)
 
 ## TOP IO
 <img src="./merge_execution_top.svg">

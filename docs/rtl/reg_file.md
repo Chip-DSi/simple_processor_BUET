@@ -1,6 +1,6 @@
 # reg_file (module)
 
-### Author : Md. Mohiuddin Reyad (mreyad30207@gmail.com)
+### Author : Anindya Kishore Choudhury (anindyakchoudhury@gmail.com)
 
 ## TOP IO
 <img src="./reg_file_top.svg">
