@@ -162,7 +162,7 @@ module merge_execution_tb #(
                       dmem_wdata_o_temp = rs2_data_i;
                       rd_data_o_temp = 'x;  // Not really used, but kept for consistency
                     end
-          default:  rd_data_o_temp = 32'b0; //every other input selection for different block will be done here
+          default:  rd_data_o_temp = 32'b0;
          endcase
 
         if(rd_data_o === rd_data_o_temp) pass++;
