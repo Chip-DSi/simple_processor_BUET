@@ -1,3 +1,4 @@
+
 /*
 Write a markdown documentation for this systemverilog module:
 Author : Md. Nayem Hasan (nayem90375@gmail.com)
@@ -29,7 +30,6 @@ module alu_mem
 );
 
   // Memory address and data assignments
-  assign dmem_req_o   = '1;
   assign dmem_addr_o  = rs1_data_i;              // RS1 has address which is load to DMEM
 
   // Control logic for LOAD and STORE operations
