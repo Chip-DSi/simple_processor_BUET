@@ -44,24 +44,24 @@ import simple_processor_pkg::*;
   //-SIGNALS
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-  logic [MEM_ADDR_WIDTH-1:0]    pc_o_temp;   // intermediate pc value
-  logic                         valid_pc_i;  // from ID to PC
-  logic                         we_i_temp;
-  func_t                        func_i_temp;
-  logic [5:0]                   imm_i_temp;
-  logic [2:0]                   rd_addr_i_temp;
-  logic [2:0]                   rs1_addr_i_temp;
-  logic [2:0]                   rs2_addr_i_temp;
-  logic [MEM_DATA_WIDTH-1:0]    rd_data_i_temp;
-  logic [MEM_DATA_WIDTH-1:0]    rs1_data_i_temp;
-  logic [MEM_DATA_WIDTH-1:0]    rs2_data_i_temp;
+  logic [MEM_ADDR_WIDTH-1:0]    pc_o_temp;        // intermediate pc value
+  logic                         valid_pc_i_temp;  // from ID to PC
+  logic                         we_i_temp;        //connecting to RF from ID
+  func_t                        func_i_temp;      //connecting to EX from ID
+  logic [5:0]                   imm_i_temp;       //connecting to EX from ID
+  logic [2:0]                   rd_addr_i_temp;   //connecting to RF from ID
+  logic [2:0]                   rs1_addr_i_temp;  //connecting to RF from ID
+  logic [2:0]                   rs2_addr_i_temp;  //connecting to RF from ID
+  logic [MEM_DATA_WIDTH-1:0]    rd_data_i_temp;   //connecting to RF from EX
+  logic [MEM_DATA_WIDTH-1:0]    rs1_data_i_temp;  //connecting to EX from RF
+  logic [MEM_DATA_WIDTH-1:0]    rs2_data_i_temp;  //connecting to EX from RF
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-RTLS
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
   // Instruction Decoder
-  ins_dec #() u_ins_dec (
+  ins_dec #() u_ins_dec_top (
     .imem_addr_i(imem_addr_o),         // from PC to ID
     .imem_rdata_i(imem_rdata_i),       // from IMEM
     .func_o(func_i_temp),              // to Execution block
@@ -70,12 +70,12 @@ import simple_processor_pkg::*;
     .rs1_addr_o(rs1_addr_i_temp),      // to reg file
     .rs2_addr_o(rs2_addr_i_temp),      // to reg file
     .imm_o(imm_i_temp),                // to execution block
-    .valid_pc_o(valid_pc_i),            // to PC
+    .valid_pc_o(valid_pc_i_temp),      // to PC
     .imem_ack_i(imem_ack_i)
   );
 
   // Register File
-  reg_file #() u_reg_file (
+  reg_file #() u_reg_file_top (
     .rs1_addr_i(rs1_addr_i_temp),      // from ID
     .rs2_addr_i(rs2_addr_i_temp),      // from ID
     .rd_addr_i(rd_addr_i_temp),        // from ID
@@ -86,7 +86,7 @@ import simple_processor_pkg::*;
   );
 
   // Execution Block
-  merge_execution #() u_merge_execution (
+  merge_execution #() u_merge_execution_top (
     .rs1_data_i(rs1_data_i_temp),      // from reg file
     .rs2_data_i(rs2_data_i_temp),      // from reg file
     .func_i(func_i_temp),              // from reg file
@@ -105,10 +105,9 @@ import simple_processor_pkg::*;
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
   always_comb begin
-    case(valid_pc_i)
+    case(valid_pc_i_temp)
       1'b1       :  pc_o_temp   = imem_addr_o + 2; // next pc
-      1'b0       :  pc_o_temp   = boot_addr_i;     // boot address
-      default    :  pc_o_temp   = 32'b0;     // for default boot address
+      default    :  pc_o_temp   = boot_addr_i;    // for default boot address
     endcase
   end
 
