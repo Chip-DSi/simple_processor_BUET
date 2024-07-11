@@ -180,7 +180,7 @@ module merge_execution_tb #(
         if(dmem_wdata_o === dmem_wdata_o_temp) pass++;
         else begin
                fail++;
-               $display("FUNC:%0d DMEM_WE GOT:0x%h DMEM_WE EXPECTED:0x%h [%0t]",
+               $display("FUNC:%0d DMEM_WDATA GOT:0x%h DMEM_WDATA EXPECTED:0x%h [%0t]",
                func_i, dmem_wdata_o, dmem_wdata_o_temp, $realtime);
              end
       end
