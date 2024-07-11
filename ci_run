@@ -7,6 +7,7 @@ ci_vivado_run:
 	@$(MAKE) vivado TOP=decoder_tb CONFIG=default
 	@$(MAKE) vivado TOP=demux_tb CONFIG=default
 	@$(MAKE) vivado TOP=ins_dec_tb CONFIG=default
+	@$(MAKE) vivado TOP=merge_execution_tb CONFIG=default
 	@$(MAKE) vivado TOP=register_tb CONFIG=default
 	@$(MAKE) vivado TOP=reg_file_tb CONFIG=default
 	@$(MAKE) vivado TOP=r2_w1_32b_memory_model_tb CONFIG=default
