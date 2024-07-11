@@ -1,5 +1,5 @@
 /*
-Write a markdown documentation for this systemverilog module: execution unit merge
+Write a markdown documentation for this systemverilog module: execution unit merge01
 Author : Ramisa Tahsin (ramisashreya@gmail.com)
 */
 
