@@ -20,8 +20,6 @@ Write a markdown documentation for this systemverilog module:
 |func_i|input|func_t||Function code to select LOAD or STORE|
 |rs2_data_i|input|logic [DATA_WIDTH-1:0]||Data to be stored for STORE operation|
 |we_i|input|logic||Write enable input signal|
-|mem_data_i|input|logic [DATA_WIDTH-1:0]||Data read from memory for LOAD operation|
-|rd_data_o|output|logic [DATA_WIDTH-1:0]|| ////////// Inputs //////////// Memory address Function code to select LOAD or STORE Data to be stored for STORE operation Write enable input signal Data read from memory for LOAD operation ////////// Outputs //////////// Output from the memory operation block to the destination register|
-|result|output|logic [DATA_WIDTH-1:0]||Result (data read from memory for LOAD)|
+|rd_data_i|input|logic [DATA_WIDTH-1:0]||Data read from memory for LOAD operation|
 |mem_addr_o|output|logic [DATA_WIDTH-1:0]||Memory address output (for LOAD/STORE)|
 |mem_data_o|output|logic [DATA_WIDTH-1:0]||Data to be written to memory (for STORE)|
