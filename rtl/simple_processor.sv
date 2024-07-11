@@ -1,11 +1,12 @@
 /*
 Write a markdown documentation for this systemverilog module:
-Author : name (email)
+Author : Mymuna Khatun Sadia (maimuna14400@gmail.com)
 */
 
 module simple_processor #(
     parameter int MEM_ADDR_WIDTH = simple_processor_pkg::ADDR_WIDTH,  // Width of memory address bus
-    parameter int MEM_DATA_WIDTH = simple_processor_pkg::DATA_WIDTH   // Width of memory data bus
+    parameter int MEM_DATA_WIDTH = simple_processor_pkg::DATA_WIDTH,  // Width of memory data bus
+    parameter int INSTR_WIDTH    = simple_processor_pkg::INSTR_WIDTH
 ) (
     // Global Synchronous Clock
     input logic                       clk_i,
@@ -21,8 +22,6 @@ module simple_processor #(
     output logic [MEM_ADDR_WIDTH-1:0] imem_addr_o,
     // Instruction data bus
     input  logic [MEM_DATA_WIDTH-1:0] imem_rdata_i,
-    // Signifies instruction request is completed
-    input  logic                      imem_ack_i,
 
     // Signifies there is active request for memory at address dmem_addr_o
     output logic                      dmem_req_o,
@@ -42,16 +41,18 @@ module simple_processor #(
   //-SIGNALS
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-  logic [MEM_ADDR_WIDTH-1:0] temp_pc_o;   // intermediate pc value
-  logic                      valid_pc_i;  // from ID to PC
-  logic                      we_i;
-  func_t                     func_i;
-  logic [5:0]                imm;
-  logic [MEM_DATA_WIDTH-1:0] rd_data_i;
-  logic [4:0]                rd_addr_i;
-  logic [MEM_DATA_WIDTH-1:0] rs1_data_i;
-  logic [MEM_DATA_WIDTH-1:0] rs2_data_i;
-  logic [MEM_DATA_WIDTH-1:0] result;
+  logic [MEM_ADDR_WIDTH-1:0]    temp_pc_o;   // intermediate pc value
+  logic                         valid_pc_i;  // from ID to PC
+  logic                         we_i;
+  func_t                        func_i;
+  logic [5:0]                   imm;
+  logic [2:0]                   rd_addr_i;
+  logic [2:0]                   rs1_addr_i;
+  logic [2:0]                   rs2_addr_i;
+  logic [MEM_DATA_WIDTH-1:0]    rd_data_i;
+  logic [MEM_DATA_WIDTH-1:0]    rs1_data_i;
+  logic [MEM_DATA_WIDTH-1:0]    rs2_data_i;
+  logic [MEM_DATA_WIDTH-1:0]    result;
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-RTLS
@@ -61,7 +62,6 @@ module simple_processor #(
   ins_dec #() u_ins_dec (
     .imem_addr_i(imem_addr_o),    // from PC to IMEM to ID
     .imem_rdata_i(imem_rdata_i),  // from IMEM
-    .imem_ack_i(imem_ack_i),      // from IMEM
     .func_o(func_i),              // to Execution block
     .we_o(we_i),                  // to reg file
     .rd_addr_o(rd_addr_i),        // to reg file
