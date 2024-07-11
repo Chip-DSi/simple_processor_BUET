@@ -55,7 +55,7 @@ import simple_processor_pkg::*;
   logic [MEM_DATA_WIDTH-1:0]    rd_data_i_temp;
   logic [MEM_DATA_WIDTH-1:0]    rs1_data_i_temp;
   logic [MEM_DATA_WIDTH-1:0]    rs2_data_i_temp;
-  logic                         pc;
+
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-RTLS
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -90,7 +90,7 @@ import simple_processor_pkg::*;
     .rs2_data_i(rs2_data_i_temp),      // from reg file
     .func_i(func_i_temp),              // from reg file
     .imm_i(imm_i_temp),                // from instruction decoder
-    .rd_data_o(rd_data_i_temp)         // to reg file
+    .rd_data_o(rd_data_i_temp),        // to reg file
     .dmem_rdata_i,                     // to DMEM
     .dmem_ack_i,
     .dmem_req_o,
@@ -120,9 +120,9 @@ import simple_processor_pkg::*;
 
   always @(posedge clk_i or negedge arst_ni) begin
     if (~arst_ni) begin
-      pc <= 32'b0;
+      imem_addr_o <= 32'b0;
     end else begin
-      pc <= 32'b1;
+      imem_addr_o <= imem_addr_o;
     end
   end
 
