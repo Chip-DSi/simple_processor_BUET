@@ -78,6 +78,7 @@ module simple_processor_tb;
   //-LOCALPARAMS
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
+
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-TYPEDEFS
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -107,6 +108,8 @@ module simple_processor_tb;
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-VARIABLES
   //////////////////////////////////////////////////////////////////////////////////////////////////
+
+  int pass, fail;
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-INTERFACES
@@ -169,6 +172,22 @@ module simple_processor_tb;
     #100ns;
   endtask
 
+  function automatic int read_reg(int reg_num);
+    case(reg_num)
+      1       : return simple_processor_tb.core.u_reg_file_top.g_reg_array[1].register_dut.q_o;
+      2       : return simple_processor_tb.core.u_reg_file_top.g_reg_array[2].register_dut.q_o;
+      3       : return simple_processor_tb.core.u_reg_file_top.g_reg_array[3].register_dut.q_o;
+      4       : return simple_processor_tb.core.u_reg_file_top.g_reg_array[4].register_dut.q_o;
+      5       : return simple_processor_tb.core.u_reg_file_top.g_reg_array[5].register_dut.q_o;
+      6       : return simple_processor_tb.core.u_reg_file_top.g_reg_array[6].register_dut.q_o;
+      7       : return simple_processor_tb.core.u_reg_file_top.g_reg_array[7].register_dut.q_o;
+      default : return 0;
+
+
+    endcase
+  endfunction
+
+
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-SEQUENTIALS
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -193,13 +212,21 @@ module simple_processor_tb;
     repeat (13) begin  //does 13 mean anything special here?
       @(posedge clk_i);
       model_step();
+      for (int i = 0 ; i < 8 ; i++) begin
+        if (model_get_GPR(i) == read_reg(i)) pass++;
+        else begin
+          fail++;
+          $display("")
+        end
+      end
+
     end
 
     // C model is an separetely running program causing
     // race condition with printf & $display
     #100ns;
 
-    result_print(1, "MODEL ONLY");
+    result_print(!fail, $sformatf("Top Reg Check %0d/%0d", pass, pass + fail));
 
     $finish;
 

@@ -53,13 +53,14 @@ import simple_processor_pkg::*;
 
   //Memory address and data assignments
   assign dmem_addr_o  = rs1_data_i;                     // RS1 has address which is load
-
+  assign dmem_wdata_o = rs2_data_i;
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-RTLS
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
   //mimicking the input mux operation for ALU Math
   always_comb begin
+    dmem_we_o = 1'b0;
     case(func_i)
       ADDI    : rd_data_o = rs1_data_i + imm_i_extended;
       ADD     : rd_data_o = rs1_data_i + rs2_data_i;
@@ -73,14 +74,12 @@ import simple_processor_pkg::*;
       SLR     : rd_data_o = rs1_data_i >> rs2_data_i;
       SLRI    : rd_data_o = rs1_data_i >> imm_i_extended;
       LOAD    : begin
-                dmem_we_o = '0;                            // Write is active
                 rd_data_o = dmem_rdata_i;                    // Data read from memory
                 end
       STORE   : begin
                 dmem_we_o    =  '1;                        // Write is active
-                dmem_wdata_o = rs2_data_i;
-                rd_data_o ='x;             // RS2 data to be stored to memory
-      end
+                rd_data_o ='0;             // RS2 data to be stored to memory
+                end
       default:  rd_data_o = 32'b0;               // Default rd_data_o if no valid operation
     endcase
   end

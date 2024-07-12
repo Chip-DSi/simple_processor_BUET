@@ -6,7 +6,7 @@ Author: Anindya Kishore Choudhury (anindyakchoudhury@gmail.com)
 */
 
 module reg_file #(
-    parameter int NUM_RS = 2,     // number of source register
+   // parameter int NUM_RS = 2,     // number of source register
     parameter bit ZERO_REG = 1,   // hardcoded zero(0) to first register
     parameter int NUM_REG = 8,   // number of registers
     parameter int REG_WIDTH = 32  // width of each register
