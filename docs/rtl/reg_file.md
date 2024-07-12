@@ -1,6 +1,6 @@
 # reg_file (module)
 
-### Author : Anindya Kishore Choudhury (anindyakchoudhury@gmail.com)
+### Author : Md. Mohiuddin Reyad (mreyad30207@gmail.com)
 
 ## TOP IO
 <img src="./reg_file_top.svg">
@@ -13,7 +13,6 @@ width, and an option to hardcode zero to the first register.
 ## Parameters
 |Name|Type|Dimension|Default Value|Description|
 |-|-|-|-|-|
-|NUM_RS|int||2|number of source register|
 |ZERO_REG|bit||1|hardcoded zero(0) to first register|
 |NUM_REG|int||8|number of registers|
 |REG_WIDTH|int||32|width of each register|
