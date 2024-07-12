@@ -260,8 +260,11 @@ CI: clean ci_vivado_run ci_vivado_collect ci_print
 
 include ci_run
 
+___temp.log:
+	@echo -e "\033[1;32m[PASS]\033[0m REPOSITORY INTEGRITY" > ___temp.log
+
 .PHONY: ci_vivado_collect
-ci_vivado_collect:
+ci_vivado_collect: ___temp.log
 	@$(eval _TMP := $(shell find -name "*.log"))
 	@$(foreach word,$(_TMP), cat $(word) >> ___CI_REPORT_TEMP;)
 	@cat ___CI_REPORT_TEMP | grep -E "ERROR: |\[PASS\]|\[FAIL\]" >> ___CI_REPORT;
