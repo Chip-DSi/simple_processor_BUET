@@ -1,0 +1,47 @@
+[*]
+[*] GTKWave Analyzer v3.3.100 (w)1999-2019 BSI
+[*] Fri Jul 12 16:06:02 2024
+[*]
+[dumpfile] "C:\Users\foeza\Documents\simple_processor_BUET\tb\simple_processor_tb\dump.vcd"
+[dumpfile_mtime] "Fri Jul 12 16:03:14 2024"
+[dumpfile_size] 20306
+[savefile] "C:\Users\foeza\Documents\simple_processor_BUET\tb\simple_processor_tb\wave.gtkw"
+[timestart] 280000
+[size] 958 1000
+[pos] 718 -1
+*-15.276334 310000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] simple_processor_tb.
+[treeopen] simple_processor_tb.core.
+[treeopen] simple_processor_tb.core.u_reg_file_top.
+[treeopen] simple_processor_tb.core.u_reg_file_top.g_reg_array[2].
+[treeopen] simple_processor_tb.core.u_reg_file_top.g_reg_array[3].
+[treeopen] simple_processor_tb.core.u_reg_file_top.g_reg_array[4].
+[sst_width] 223
+[signals_width] 174
+[sst_expanded] 1
+[sst_vpaned_height] 294
+@28
+simple_processor_tb.core.u_reg_file_top.clk_i
+simple_processor_tb.core.u_reg_file_top.arst_ni
+simple_processor_tb.core.u_reg_file_top.rd_addr_i[2:0]
+simple_processor_tb.clk_i
+simple_processor_tb.core.clk_i
+simple_processor_tb.core.u_reg_file_top.clk_i
+simple_processor_tb.core.u_reg_file_top.arst_ni
+[color] 3
+simple_processor_tb.core.u_reg_file_top.we_i
+simple_processor_tb.core.we_i_temp
+simple_processor_tb.core.u_ins_dec_top.we_o
+simple_processor_tb.core.u_ins_dec_top.is_valid
+@22
+simple_processor_tb.core.u_ins_dec_top.func_o[3:0]
+simple_processor_tb.core.u_ins_dec_top.instruction[15:0]
+simple_processor_tb.core.u_ins_dec_top.imem_addr_i[31:0]
+simple_processor_tb.core.u_ins_dec_top.imem_rdata_i[31:0]
+simple_processor_tb.boot_addr_i[31:0]
+simple_processor_tb.core.u_reg_file_top.g_reg_array[2].register_dut.q_o[95:64]
+simple_processor_tb.core.u_reg_file_top.g_reg_array[3].register_dut.q_o[127:96]
+@23
+simple_processor_tb.core.u_reg_file_top.g_reg_array[4].register_dut.q_o[159:128]
+[pattern_trace] 1
+[pattern_trace] 0

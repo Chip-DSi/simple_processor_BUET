@@ -76,6 +76,8 @@ import simple_processor_pkg::*;
 
   // Register File
   reg_file #() u_reg_file_top (
+    .clk_i,
+    .arst_ni,
     .rs1_addr_i(rs1_addr_i_temp),      // from ID
     .rs2_addr_i(rs2_addr_i_temp),      // from ID
     .rd_addr_i(rd_addr_i_temp),        // from ID

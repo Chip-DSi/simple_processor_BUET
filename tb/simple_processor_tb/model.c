@@ -64,20 +64,20 @@ void model_dis_asm(int instr) {
   if (IMM > 31) IMM = IMM - 64;
   OP  = ((instr & 0x000F)>>00);
   switch (OP) {
-    case ADDI  : printf("ADDI  X%0d X%0d %0d\n" , RD, RS1, IMM); break;
-    case ADD   : printf("ADD   X%0d X%0d X%0d\n", RD, RS1, RS2); break;
-    case SUB   : printf("SUB   X%0d X%0d X%0d\n", RD, RS1, RS2); break;
-    case AND   : printf("AND   X%0d X%0d X%0d\n", RD, RS1, RS2); break;
-    case OR    : printf("OR    X%0d X%0d X%0d\n", RD, RS1, RS2); break;
-    case XOR   : printf("XOR   X%0d X%0d X%0d\n", RD, RS1, RS2); break;
-    case NOT   : printf("NOT   X%0d X%0d\n", RD,  RS1);          break;
-    case LOAD  : printf("LOAD  X%0d X%0d\n", RD,  RS1);          break;
-    case STORE : printf("STORE X%0d X%0d\n", RS2, RS1);          break;
-    case SLL   : printf("SLL   X%0d X%0d X%0d\n", RD, RS1, RS2); break;
-    case SLR   : printf("SLR   X%0d X%0d X%0d\n", RD, RS1, RS2); break;
-    case SLLI  : printf("SLLI  X%0d X%0d %0d\n" , RD, RS1, IMM); break;
-    case SLRI  : printf("SLRI  X%0d X%0d %0d\n" , RD, RS1, IMM); break;
-    default    : printf("INVALID");                              break;
+    case ADDI  : printf("\033[1;32m0x%08x ADDI  X%0d X%0d %0d\033[0m\n" , PC, RD, RS1, IMM); break;
+    case ADD   : printf("\033[1;32m0x%08x ADD   X%0d X%0d X%0d\033[0m\n", PC, RD, RS1, RS2); break;
+    case SUB   : printf("\033[1;32m0x%08x SUB   X%0d X%0d X%0d\033[0m\n", PC, RD, RS1, RS2); break;
+    case AND   : printf("\033[1;32m0x%08x AND   X%0d X%0d X%0d\033[0m\n", PC, RD, RS1, RS2); break;
+    case OR    : printf("\033[1;32m0x%08x OR    X%0d X%0d X%0d\033[0m\n", PC, RD, RS1, RS2); break;
+    case XOR   : printf("\033[1;32m0x%08x XOR   X%0d X%0d X%0d\033[0m\n", PC, RD, RS1, RS2); break;
+    case NOT   : printf("\033[1;32m0x%08x NOT   X%0d X%0d\033[0m\n",      PC, RD, RS1);      break;
+    case LOAD  : printf("\033[1;32m0x%08x LOAD  X%0d X%0d\033[0m\n",      PC, RD, RS1);      break;
+    case STORE : printf("\033[1;32m0x%08x STORE X%0d X%0d\033[0m\n",      PC,     RS2, RS1); break;
+    case SLL   : printf("\033[1;32m0x%08x SLL   X%0d X%0d X%0d\033[0m\n", PC, RD, RS1, RS2); break;
+    case SLR   : printf("\033[1;32m0x%08x SLR   X%0d X%0d X%0d\033[0m\n", PC, RD, RS1, RS2); break;
+    case SLLI  : printf("\033[1;32m0x%08x SLLI  X%0d X%0d %0d\033[0m\n" , PC, RD, RS1, IMM); break;
+    case SLRI  : printf("\033[1;32m0x%08x SLRI  X%0d X%0d %0d\033[0m\n" , PC, RD, RS1, IMM); break;
+    default    : printf("\033[1;32m0x%08x INVALID\033[0m\n");                                break;
   }
 }
 
@@ -132,20 +132,20 @@ void model_step() {
   model_dis_asm(instr);
   DMEM_OP = 0;
   switch (OP) {
-    case ADDI  : GPR[RD] = GPR[RS1] + IMM;           break;
-    case ADD   : GPR[RD] = GPR[RS1] + GPR[RS2];      break;
-    case SUB   : GPR[RD] = GPR[RS1] - GPR[RS2];      break;
-    case AND   : GPR[RD] = GPR[RS1] & GPR[RS2];      break;
-    case OR    : GPR[RD] = GPR[RS1] | GPR[RS2];      break;
-    case XOR   : GPR[RD] = GPR[RS1] ^ GPR[RS2];      break;
-    case NOT   : GPR[RD] = -1 - GPR[RS1];            break;
-    case LOAD  : GPR[RD] = read_word(GPR[RS1]);      break;
-    case STORE : write_word (GPR[RS1], GPR[RS2]);    break;
-    case SLL   : GPR[RD] = GPR[RS1] << GPR[RS2];     break;
-    case SLR   : GPR[RD] = GPR[RS1] >> GPR[RS2];     break;
-    case SLLI  : GPR[RD] = GPR[RS1] << IMM;          break;
-    case SLRI  : GPR[RD] = GPR[RS1] >> IMM;          break;
-    default    : printf("\033[1;31mERROR\033[0m\n"); break;
+    case ADDI  : GPR[RD] = GPR[RS1] + IMM;        GPR[0]=0; break;
+    case ADD   : GPR[RD] = GPR[RS1] + GPR[RS2];   GPR[0]=0; break;
+    case SUB   : GPR[RD] = GPR[RS1] - GPR[RS2];   GPR[0]=0; break;
+    case AND   : GPR[RD] = GPR[RS1] & GPR[RS2];   GPR[0]=0; break;
+    case OR    : GPR[RD] = GPR[RS1] | GPR[RS2];   GPR[0]=0; break;
+    case XOR   : GPR[RD] = GPR[RS1] ^ GPR[RS2];   GPR[0]=0; break;
+    case NOT   : GPR[RD] = -1 - GPR[RS1];         GPR[0]=0; break;
+    case LOAD  : GPR[RD] = read_word(GPR[RS1]);   GPR[0]=0; break;
+    case STORE : write_word (GPR[RS1], GPR[RS2]); GPR[0]=0; break;
+    case SLL   : GPR[RD] = GPR[RS1] << GPR[RS2];  GPR[0]=0; break;
+    case SLR   : GPR[RD] = GPR[RS1] >> GPR[RS2];  GPR[0]=0; break;
+    case SLLI  : GPR[RD] = GPR[RS1] << IMM;       GPR[0]=0; break;
+    case SLRI  : GPR[RD] = GPR[RS1] >> IMM;       GPR[0]=0; break;
+    default    : printf("\033[1;31mERROR\033[0m\n");        break;
   }
   PC = PC + 2;
 }

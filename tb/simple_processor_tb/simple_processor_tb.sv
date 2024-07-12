@@ -7,7 +7,7 @@ Author : Foez Ahmed (foez.official@gmail.com)
 
 module simple_processor_tb;
 
-  //`define ENABLE_DUMPFILE
+  `define ENABLE_DUMPFILE
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-IMPORTS
@@ -173,20 +173,32 @@ module simple_processor_tb;
   endtask
 
   function automatic int read_reg(int reg_num);
-    case(reg_num)
-      1       : return simple_processor_tb.core.u_reg_file_top.g_reg_array[1].register_dut.q_o;
-      2       : return simple_processor_tb.core.u_reg_file_top.g_reg_array[2].register_dut.q_o;
-      3       : return simple_processor_tb.core.u_reg_file_top.g_reg_array[3].register_dut.q_o;
-      4       : return simple_processor_tb.core.u_reg_file_top.g_reg_array[4].register_dut.q_o;
-      5       : return simple_processor_tb.core.u_reg_file_top.g_reg_array[5].register_dut.q_o;
-      6       : return simple_processor_tb.core.u_reg_file_top.g_reg_array[6].register_dut.q_o;
-      7       : return simple_processor_tb.core.u_reg_file_top.g_reg_array[7].register_dut.q_o;
-      default : return 0;
-
-
+    case (reg_num)
+      1:       return simple_processor_tb.core.u_reg_file_top.g_reg_array[1].register_dut.q_o;
+      2:       return simple_processor_tb.core.u_reg_file_top.g_reg_array[2].register_dut.q_o;
+      3:       return simple_processor_tb.core.u_reg_file_top.g_reg_array[3].register_dut.q_o;
+      4:       return simple_processor_tb.core.u_reg_file_top.g_reg_array[4].register_dut.q_o;
+      5:       return simple_processor_tb.core.u_reg_file_top.g_reg_array[5].register_dut.q_o;
+      6:       return simple_processor_tb.core.u_reg_file_top.g_reg_array[6].register_dut.q_o;
+      7:       return simple_processor_tb.core.u_reg_file_top.g_reg_array[7].register_dut.q_o;
+      default: return 0;
     endcase
   endfunction
 
+  function automatic void write_reg(int reg_num, int data);
+    case (reg_num)
+      1: simple_processor_tb.core.u_reg_file_top.g_reg_array[1].register_dut.q_o = data;
+      2: simple_processor_tb.core.u_reg_file_top.g_reg_array[2].register_dut.q_o = data;
+      3: simple_processor_tb.core.u_reg_file_top.g_reg_array[3].register_dut.q_o = data;
+      4: simple_processor_tb.core.u_reg_file_top.g_reg_array[4].register_dut.q_o = data;
+      5: simple_processor_tb.core.u_reg_file_top.g_reg_array[5].register_dut.q_o = data;
+      6: simple_processor_tb.core.u_reg_file_top.g_reg_array[6].register_dut.q_o = data;
+      7: simple_processor_tb.core.u_reg_file_top.g_reg_array[7].register_dut.q_o = data;
+      default: begin
+
+      end
+    endcase
+  endfunction
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-SEQUENTIALS
@@ -203,22 +215,36 @@ module simple_processor_tb;
     model_load("all_test.hex");
     mMEM.load("all_test.hex");
 
+    boot_addr_i <= 'h1000;
+
     apply_reset();
     start_clk_i();
 
-    model_set_PC('h1000);
+    model_set_PC(boot_addr_i);
 
+    for (int i = 0; i < 8; i++) begin
+      model_set_GPR(i, $urandom);
+      write_reg(i, model_get_GPR(i));
+    end
 
-    repeat (13) begin  //does 13 mean anything special here?
+    repeat (1000) begin  //does 13 mean anything special here?
       @(posedge clk_i);
+      if (core.u_ins_dec_top.is_valid) begin
       model_step();
-      for (int i = 0 ; i < 8 ; i++) begin
-        if (model_get_GPR(i) == read_reg(i)) pass++;
-        else begin
+      @(negedge clk_i);
+      for (int i = 0; i < 8; i++) begin
+        if (model_get_GPR(i) == read_reg(i)) begin
+          pass++;
+          $display("\033[1;33mInstr_addr:0x%08h GPR:%0d Model:0x%08h RTL:0x%08h\033[0m",
+                   model_get_PC() - 2, i, model_get_GPR(i), read_reg(i));
+        end else begin
           fail++;
-          $display("")
+          $display("\033[1;31mInstr_addr:0x%08h GPR:%0d Model:0x%08h RTL:0x%08h\033[0m",
+                   model_get_PC() - 2, i, model_get_GPR(i), read_reg(i));
         end
+        
       end
+    end
 
     end
 
