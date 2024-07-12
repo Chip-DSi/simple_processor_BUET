@@ -11,3 +11,4 @@ SLL     X7     ZERO   X1
 SLR     X2     X3     X4
 SLLI    X5     X6     0x07
 SLRI    X7     ZERO   0x01
+SUB     X3     X7     0x01
