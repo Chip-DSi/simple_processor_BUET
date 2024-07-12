@@ -34,8 +34,8 @@ module register_tb;
 
   logic                        arst_ni = '1;
   logic                        en_i = '0;
-  logic [ElemWidth-1:0]       d_i = '0;
-  logic [ElemWidth-1:0]       q_o;
+  logic [ElemWidth-1:0]        d_i = '0;
+  logic [ElemWidth-1:0]        q_o;
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-VARIABLES
