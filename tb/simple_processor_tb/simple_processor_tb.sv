@@ -174,13 +174,13 @@ module simple_processor_tb;
 
   function automatic int read_reg(int reg_num);
     case (reg_num)
-      1:       return simple_processor_tb.core.u_reg_file_top.g_reg_array[1].register_dut.q_o;
-      2:       return simple_processor_tb.core.u_reg_file_top.g_reg_array[2].register_dut.q_o;
-      3:       return simple_processor_tb.core.u_reg_file_top.g_reg_array[3].register_dut.q_o;
-      4:       return simple_processor_tb.core.u_reg_file_top.g_reg_array[4].register_dut.q_o;
-      5:       return simple_processor_tb.core.u_reg_file_top.g_reg_array[5].register_dut.q_o;
-      6:       return simple_processor_tb.core.u_reg_file_top.g_reg_array[6].register_dut.q_o;
-      7:       return simple_processor_tb.core.u_reg_file_top.g_reg_array[7].register_dut.q_o;
+      1: return int'(simple_processor_tb.core.u_reg_file_top.g_reg_array[1].register_dut.q_o);
+      2: return int'(simple_processor_tb.core.u_reg_file_top.g_reg_array[2].register_dut.q_o);
+      3: return int'(simple_processor_tb.core.u_reg_file_top.g_reg_array[3].register_dut.q_o);
+      4: return int'(simple_processor_tb.core.u_reg_file_top.g_reg_array[4].register_dut.q_o);
+      5: return int'(simple_processor_tb.core.u_reg_file_top.g_reg_array[5].register_dut.q_o);
+      6: return int'(simple_processor_tb.core.u_reg_file_top.g_reg_array[6].register_dut.q_o);
+      7: return int'(simple_processor_tb.core.u_reg_file_top.g_reg_array[7].register_dut.q_o);
       default: return 0;
     endcase
   endfunction
@@ -227,24 +227,27 @@ module simple_processor_tb;
       write_reg(i, model_get_GPR(i));
     end
 
-    repeat (1000) begin  //does 13 mean anything special here?
+    @(posedge clk_i);
+
+    while (1) begin  //does 13 mean anything special here?
       @(posedge clk_i);
       if (core.u_ins_dec_top.is_valid) begin
-      model_step();
-      @(negedge clk_i);
-      for (int i = 0; i < 8; i++) begin
-        if (model_get_GPR(i) == read_reg(i)) begin
-          pass++;
-          $display("\033[1;33mInstr_addr:0x%08h GPR:%0d Model:0x%08h RTL:0x%08h\033[0m",
-                   model_get_PC() - 2, i, model_get_GPR(i), read_reg(i));
-        end else begin
-          fail++;
-          $display("\033[1;31mInstr_addr:0x%08h GPR:%0d Model:0x%08h RTL:0x%08h\033[0m",
-                   model_get_PC() - 2, i, model_get_GPR(i), read_reg(i));
+        model_step();
+        @(negedge clk_i);
+        for (int i = 0; i < 8; i++) begin
+          if (model_get_GPR(i) == read_reg(i)) begin
+            pass++;
+            $display("\033[1;33mInstr_addr:0x%08h GPR:%0d Model:0x%08h RTL:0x%08h\033[0m",
+                     model_get_PC() - 2, i, model_get_GPR(i), read_reg(i));
+          end else begin
+            fail++;
+            $display("\033[1;31mInstr_addr:0x%08h GPR:%0d Model:0x%08h RTL:0x%08h\033[0m",
+                     model_get_PC() - 2, i, model_get_GPR(i), read_reg(i));
+          end
         end
-        
+      end else begin
+        break;
       end
-    end
 
     end
 
@@ -252,7 +255,9 @@ module simple_processor_tb;
     // race condition with printf & $display
     #100ns;
 
-    result_print(!fail, $sformatf("Top Reg Check %0d/%0d", pass, pass + fail));
+    result_print(!fail, $sformatf(
+                 "Top Reg Check %0d/%0d for %0d instruction", pass, pass + fail, (pass + fail) / 8
+                 ));
 
     $finish;
 
