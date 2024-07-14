@@ -79,7 +79,7 @@ import simple_processor_pkg::*;
       STORE   : begin
                 dmem_we_o    =  '1;                        // Write is active
                 dmem_wdata_o = rs2_data_i;             // RS2 data to be stored to memory
-      end
+                end
       default:  rd_data_o = 32'b0;               // Default rd_data_o if no valid operation
     endcase
   end
