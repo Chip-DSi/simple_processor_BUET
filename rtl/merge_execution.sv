@@ -13,6 +13,7 @@ import simple_processor_pkg::*;
     parameter int MEM_DATA_WIDTH = simple_processor_pkg::DATA_WIDTH   // With of memory data bus
 ) (
       //-PORTS
+  input                              clk_i,
   input  logic  [DATA_WIDTH-1:0]     rs1_data_i,     //source register 1 data input from RF
   input  func_t                      func_i,         //input func_i from op code
   input  logic  [5:0]                imm_i,          //immiediate input
@@ -57,7 +58,14 @@ import simple_processor_pkg::*;
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-RTLS
   //////////////////////////////////////////////////////////////////////////////////////////////////
-
+  r2_w1_32b_memory_model mergeDMEM (
+    .clk_i,
+    .we_i(dmem_we_o),
+    .w_addr_i(dmem_addr_o),
+    .w_data_i(dmem_wdata_o),
+    .r0_addr_i(dmem_addr_o),
+    .r0_data_o(dmem_rdata_i)
+);
   //mimicking the input mux operation for ALU Math
   always_comb begin
     dmem_we_o = 1'b0;
