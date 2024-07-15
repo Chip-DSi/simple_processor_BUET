@@ -58,14 +58,7 @@ import simple_processor_pkg::*;
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-RTLS
   //////////////////////////////////////////////////////////////////////////////////////////////////
-  r2_w1_32b_memory_model mergeDMEM (
-    .clk_i,
-    .we_i(dmem_we_o),
-    .w_addr_i(dmem_addr_o),
-    .w_data_i(dmem_wdata_o),
-    .r0_addr_i(dmem_addr_o),
-    .r0_data_o(dmem_rdata_i)
-);
+
   //mimicking the input mux operation for ALU Math
   always_comb begin
     dmem_we_o = 1'b0;
