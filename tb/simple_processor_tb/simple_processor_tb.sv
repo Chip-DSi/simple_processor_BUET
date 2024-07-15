@@ -347,11 +347,13 @@ module simple_processor_tb;
           if (model_dmem_data_temp == read_reg(core.u_ins_dec_top.rd_addr_o)) begin
             pass_dmem_load++;
             $display("\033[1;35mInstr_addr:0x%08h DMEM_RDATA Model:0x%0h RTL:0x%0h\033[0m",
-                     model_get_PC() - 2, model_dmem_data_temp, read_reg(core.u_ins_dec_top.rd_addr_o));
+                     model_get_PC() - 2, model_dmem_data_temp,
+                     read_reg(core.u_ins_dec_top.rd_addr_o));
           end else begin
             fail_dmem_load++;
             $display("\033[1;35mInstr_addr:0x%08h DMEM_RDATA Model:0x%0h RTL:0x%0h\033[0m",
-                     model_get_PC() - 2, model_dmem_data_temp, read_reg(core.u_ins_dec_top.rd_addr_o));
+                     model_get_PC() - 2, model_dmem_data_temp,
+                     read_reg(core.u_ins_dec_top.rd_addr_o));
           end
         end
 
@@ -367,14 +369,17 @@ module simple_processor_tb;
     #100ns;
 
     result_print(!fail_reg, $sformatf(
-                 "Top Reg Check %0d/%0d for %0d instruction", pass_reg, pass_reg + fail_reg, (pass_reg + fail_reg) / 8
+                 "Top Reg Check %0d/%0d for %0d instruction",
+                 pass_reg, pass_reg + fail_reg, (pass_reg + fail_reg) / 8
                  ));
     result_print(!fail_dmem_store, $sformatf(
-    "Top DMEM Check %0d/%0d for %0d store instruction", pass_dmem_store, pass_dmem_store + fail_dmem_store,
-    store_count ));
+                   "Top DMEM Check %0d/%0d for %0d store instruction", pass_dmem_store,
+                pass_dmem_store + fail_dmem_store,
+                store_count ));
     result_print(!fail_dmem_load, $sformatf(
-      "Top DMEM Check %0d/%0d for %0d load instruction", pass_dmem_load, pass_dmem_load + fail_dmem_load,
-      load_count ));
+                 "Top DMEM Check %0d/%0d for %0d load instruction", pass_dmem_load,
+                 pass_dmem_load + fail_dmem_load,
+                 load_count ));
 
     $finish;
 
