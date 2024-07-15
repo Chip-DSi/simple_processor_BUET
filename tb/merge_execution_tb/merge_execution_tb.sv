@@ -91,6 +91,7 @@ module merge_execution_tb #(
 
   //Sign extention for the imm_iediate
   assign imm_i_extended = {{26{imm_i[5]}}, imm_i};
+  assign dmem_wdata_o_temp = rs2_data_i;
 
   //Memory address and data assignments
   //assign dmem_addr_o  = rs1_data_i;            // RS1 has address which is load
@@ -141,6 +142,7 @@ module merge_execution_tb #(
     fork
       forever begin
         @(posedge clk_i);
+        dmem_we_o_temp = 1'b0;
         case(func_i)
           ADDI    : rd_data_o_temp = rs1_data_i + imm_i_extended;
           ADD     : rd_data_o_temp = rs1_data_i + rs2_data_i;
@@ -159,8 +161,7 @@ module merge_execution_tb #(
                     end
           STORE   : begin
                       dmem_we_o_temp = '1;
-                      dmem_wdata_o_temp = rs2_data_i;
-                      rd_data_o_temp = 'x;  // Not really used, but kept for consistency
+                      rd_data_o_temp = '0;  // Not really used, but kept for consistency
                     end
           default:  rd_data_o_temp = 32'b0;
          endcase

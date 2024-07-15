@@ -1,6 +1,7 @@
 /*
 Description
 Author : Foez Ahmed (foez.official@gmail.com)
+Dmem Functions Added by: Anindya Kishore Choudhury (anindyakchoudhury@gmail.com)
 */
 
 `include "vip/model_pkg.sv"
@@ -109,15 +110,12 @@ module simple_processor_tb;
   //-VARIABLES
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-  int pass, fail;
+  int pass_reg, fail_reg;                       //register checks after every op
+  int pass_dmem_store, fail_dmem_store;         //DMEM check variables for store op
+  int pass_dmem_load, fail_dmem_load;           //DMEM check variables for load op
+  int store_count, load_count;                  //total store and load count instructions
 
-  //////////////////////////////////////////////////////////////////////////////////////////////////
-  //-INTERFACES
-  //////////////////////////////////////////////////////////////////////////////////////////////////
-
-  //////////////////////////////////////////////////////////////////////////////////////////////////
-  //-CLASSES
-  //////////////////////////////////////////////////////////////////////////////////////////////////
+  int instr_addr_temp, model_dmem_data_temp;    //Variables to check RDATA at the next posedge
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-ASSIGNMENTS
@@ -201,10 +199,6 @@ module simple_processor_tb;
   endfunction
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
-  //-SEQUENTIALS
-  //////////////////////////////////////////////////////////////////////////////////////////////////
-
-  //////////////////////////////////////////////////////////////////////////////////////////////////
   //-PROCEDURALS
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -233,21 +227,141 @@ module simple_processor_tb;
       @(posedge clk_i);
       if (core.u_ins_dec_top.is_valid) begin
         model_step();
+
+        //DMEM Check during Store Operations
+        if( core.u_ins_dec_top.func_o == 4'b1010) begin
+          store_count++;
+
+          //Write Enable Check
+
+          if (model_is_dmem_we() == dmem_we_o) begin
+            pass_dmem_store++;
+            $display("\033[1;35mInstr_addr:0x%08h DMEM_WE Model:0x%0h RTL:0x%0h\033[0m",
+                     model_get_PC() - 2, model_is_dmem_we(), dmem_we_o);
+          end else begin
+            fail_dmem_store++;
+            $display("\033[1;35mInstr_addr:0x%08h DMEM_WE Model:0x%0h RTL:0x%0h\033[0m",
+                     model_get_PC() - 2, model_is_dmem_we(), dmem_we_o);
+          end
+
+          //Write Data Address Check
+
+          if (model_dmem_addr() == dmem_addr_o) begin
+            pass_dmem_store++;
+            $display("\033[1;35mInstr_addr:0x%08h DMEM_ADDR Model:0x%0h RTL:0x%0h\033[0m",
+                     model_get_PC() - 2, model_dmem_addr(), dmem_addr_o);
+          end else begin
+            fail_dmem_store++;
+            $display("\033[1;35mInstr_addr:0x%08h DMEM_ADDR Model:0x%0h RTL:0x%0h\033[0m",
+                     model_get_PC() - 2, model_dmem_addr(), dmem_addr_o);
+          end
+
+          //Write Data Check
+
+          if (model_dmem_data() == dmem_wdata_o) begin
+            pass_dmem_store++;
+            $display("\033[1;35mInstr_addr:0x%08h DMEM_WDATA Model:0x%0h RTL:0x%0h\033[0m",
+                     model_get_PC() - 2, model_dmem_data(), dmem_wdata_o);
+          end else begin
+            fail_dmem_store++;
+            $display("\033[1;35mInstr_addr:0x%08h DMEM_WDATA Model:0x%0h RTL:0x%0h\033[0m",
+                     model_get_PC() - 2, model_dmem_data(), dmem_wdata_o);
+          end
+        end
+
+        //DMEM Check during Load Operations
+        if( core.u_ins_dec_top.func_o == 4'b0010) begin
+          load_count++;
+          instr_addr_temp = model_get_PC() - 2;
+          model_dmem_data_temp = model_dmem_data();
+
+          //Extra Read Check@Posedge Starting
+
+          // $display("@negedge Model Mem[RS]= 0x%08h, dmem_rdata_i = 0x%08h, From mergeDMEM read
+          //    = 0x%08h", model_read(model_dmem_addr()),
+          //   dmem_rdata_i, core.u_merge_execution_top.mergeDMEM.read(dmem_addr_o));
+
+          //Write Disable Check for the load operation
+
+          if (model_is_dmem_we() == dmem_we_o) begin
+            pass_dmem_load++;
+            $display("\033[1;35mInstr_addr:0x%08h DMEM_WE Model:0x%0h RTL:0x%0h\033[0m",
+                     model_get_PC() - 2, model_is_dmem_we(), dmem_we_o);
+          end else begin
+            fail_dmem_load++;
+            $display("\033[1;35mInstr_addr:0x%08h DMEM_WE Model:0x%0h RTL:0x%0h\033[0m",
+                     model_get_PC() - 2, model_is_dmem_we(), dmem_we_o);
+          end
+
+          //Read Data Address Check
+
+          if (model_dmem_addr() == dmem_addr_o) begin
+            pass_dmem_load++;
+            $display("\033[1;35mInstr_addr:0x%08h DMEM_ADDR Model:0x%0h RTL:0x%0h\033[0m",
+                     model_get_PC() - 2, model_dmem_addr(), dmem_addr_o);
+          end else begin
+            fail_dmem_load++;
+            $display("\033[1;35mInstr_addr:0x%08h DMEM_ADDR Model:0x%0h RTL:0x%0h\033[0m",
+                     model_get_PC() - 2, model_dmem_addr(), dmem_addr_o);
+          end
+
+          //Read Data Check using dmem_rdata_i
+          //How to get something on the line of dmem_rdata_i? Ask Bhaiya
+          //dmem_rdata_i line is always floating issue should be solved
+
+          // if (model_dmem_data() == dmem_rdata_i) begin
+          //   pass_dmem_load++;
+          //   $display("\033[1;35mInstr_addr:0x%08h DMEM_RDATA Model:0x%0h RTL:0x%0h\033[0m",
+          //            model_get_PC() - 2, model_dmem_data(), dmem_rdata_i);
+          // end else begin
+          //   fail_dmem_load++;
+          //   $display("\033[1;35mInstr_addr:0x%08h DMEM_RDATA Model:0x%0h RTL:0x%0h\033[0m",
+          //            model_get_PC() - 2, model_dmem_data(), dmem_rdata_i);
+          // end
+          //LOAD    X3     X4
+          //STORE   X6     X5
+        end
+
         @(negedge clk_i);
         for (int i = 0; i < 8; i++) begin
           if (model_get_GPR(i) == read_reg(i)) begin
-            pass++;
+            pass_reg++;
             $display("\033[1;33mInstr_addr:0x%08h GPR:%0d Model:0x%08h RTL:0x%08h\033[0m",
                      model_get_PC() - 2, i, model_get_GPR(i), read_reg(i));
           end else begin
-            fail++;
+            fail_reg++;
             $display("\033[1;31mInstr_addr:0x%08h GPR:%0d Model:0x%08h RTL:0x%08h\033[0m",
                      model_get_PC() - 2, i, model_get_GPR(i), read_reg(i));
           end
         end
+
+       // Read Data from Dmem Operation Check using register value, not wire value
+
+        if(instr_addr_temp == model_get_PC() - 2) begin
+          if (model_dmem_data_temp == read_reg(core.u_ins_dec_top.rd_addr_o)) begin
+            pass_dmem_load++;
+
+            //Extra Read Check
+
+            // $display("@negedge Model Mem[RS]= 0x%08h, dmem_rdata_i = 0x%08h from mergeDMEM read
+            //  = 0x%08h", model_read(model_dmem_addr()),
+            // dmem_rdata_i, core.u_merge_execution_top.mergeDMEM.read(dmem_addr_o));
+
+            $display("\033[1;35mInstr_addr:0x%08h DMEM_RDATA Model:0x%0h RTL:0x%0h\033[0m",
+                     model_get_PC() - 2, model_dmem_data_temp,
+                     read_reg(core.u_ins_dec_top.rd_addr_o));
+          end else begin
+            fail_dmem_load++;
+            $display("\033[1;35mInstr_addr:0x%08h DMEM_RDATA Model:0x%0h RTL:0x%0h\033[0m",
+                     model_get_PC() - 2, model_dmem_data_temp,
+                     read_reg(core.u_ins_dec_top.rd_addr_o));
+          end
+        end
+
       end else begin
         break;
       end
+
 
     end
 
@@ -255,9 +369,18 @@ module simple_processor_tb;
     // race condition with printf & $display
     #100ns;
 
-    result_print(!fail, $sformatf(
-                 "Top Reg Check %0d/%0d for %0d instruction", pass, pass + fail, (pass + fail) / 8
+    result_print(!fail_reg, $sformatf(
+                 "Top Reg Check %0d/%0d for %0d instruction",
+                 pass_reg, pass_reg + fail_reg, (pass_reg + fail_reg) / 8
                  ));
+    result_print(!fail_dmem_store, $sformatf(
+                   "Top DMEM Check %0d/%0d for %0d store instruction", pass_dmem_store,
+                pass_dmem_store + fail_dmem_store,
+                store_count ));
+    result_print(!fail_dmem_load, $sformatf(
+                 "Top DMEM Check %0d/%0d for %0d load instruction", pass_dmem_load,
+                 pass_dmem_load + fail_dmem_load,
+                 load_count ));
 
     $finish;
 
