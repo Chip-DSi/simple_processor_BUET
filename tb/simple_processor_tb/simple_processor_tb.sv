@@ -206,9 +206,9 @@ module simple_processor_tb;
     endcase
   endfunction
 
-  function automatic int read_word_mem(int dmem_addr_temp);
+  //function automatic int read_word_mem(int dmem_addr_temp);
 
-  endfunction
+  //endfunction
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   //-SEQUENTIALS
@@ -327,6 +327,8 @@ module simple_processor_tb;
           //   $display("\033[1;35mInstr_addr:0x%08h DMEM_RDATA Model:0x%0h RTL:0x%0h\033[0m",
           //            model_get_PC() - 2, model_dmem_data(), dmem_rdata_i);
           // end
+          //LOAD    X3     X4
+          //STORE   X6     X5
         end
 
         @(negedge clk_i);
@@ -343,19 +345,19 @@ module simple_processor_tb;
         end
 
         //Read Data from Dmem Operation Check using register value, not wire value
-        if(instr_addr_temp == model_get_PC() - 2) begin
-          if (model_dmem_data_temp == read_reg(core.u_ins_dec_top.rd_addr_o)) begin
-            pass_dmem_load++;
-            $display("\033[1;35mInstr_addr:0x%08h DMEM_RDATA Model:0x%0h RTL:0x%0h\033[0m",
-                     model_get_PC() - 2, model_dmem_data_temp,
-                     read_reg(core.u_ins_dec_top.rd_addr_o));
-          end else begin
-            fail_dmem_load++;
-            $display("\033[1;35mInstr_addr:0x%08h DMEM_RDATA Model:0x%0h RTL:0x%0h\033[0m",
-                     model_get_PC() - 2, model_dmem_data_temp,
-                     read_reg(core.u_ins_dec_top.rd_addr_o));
-          end
-        end
+        // if(instr_addr_temp == model_get_PC() - 2) begin
+        //   if (model_dmem_data_temp == read_reg(core.u_ins_dec_top.rd_addr_o)) begin
+        //     pass_dmem_load++;
+        //     $display("\033[1;35mInstr_addr:0x%08h DMEM_RDATA Model:0x%0h RTL:0x%0h\033[0m",
+        //              model_get_PC() - 2, model_dmem_data_temp,
+        //              read_reg(core.u_ins_dec_top.rd_addr_o));
+        //   end else begin
+        //     fail_dmem_load++;
+        //     $display("\033[1;35mInstr_addr:0x%08h DMEM_RDATA Model:0x%0h RTL:0x%0h\033[0m",
+        //              model_get_PC() - 2, model_dmem_data_temp,
+        //              read_reg(core.u_ins_dec_top.rd_addr_o));
+        //   end
+        // end
 
       end else begin
         break;

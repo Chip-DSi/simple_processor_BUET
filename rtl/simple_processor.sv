@@ -89,6 +89,7 @@ import simple_processor_pkg::*;
 
   // Execution Block
   merge_execution #() u_merge_execution_top (
+    .clk_i,                            //added new by akc
     .rs1_data_i(rs1_data_i_temp),      // from reg file
     .rs2_data_i(rs2_data_i_temp),      // from reg file
     .func_i(func_i_temp),              // from reg file
